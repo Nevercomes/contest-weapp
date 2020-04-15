@@ -16,5 +16,7 @@ vue
 
 ##### 小程序组件库
 
+colorui-weapp
+
 vant-weapp
 
