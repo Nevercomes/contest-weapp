@@ -1,6 +1,8 @@
 <template>
 	<view>
-		<basics v-if="PageCur=='basics'"></basics>
+		hello
+		<van-button plain type="primary">朴素按钮</van-button>
+		<!-- <basics v-if="PageCur=='basics'"></basics>
 		<components v-if="PageCur=='component'"></components>
 		<plugin v-if="PageCur=='plugin'"></plugin>
 		<view class="cu-bar tabbar bg-white shadow foot">
@@ -22,7 +24,7 @@
 				</view>
 				<view :class="PageCur=='plugin'?'text-green':'text-gray'">扩展</view>
 			</view>
-		</view>
+		</view> -->
 	</view>
 </template>
 

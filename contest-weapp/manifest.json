@@ -1,6 +1,6 @@
 {
     "name" : "contest-weapp",
-    "appid" : "",
+    "appid" : "__UNI__3B0D278",
     "description" : "",
     "versionName" : "ColorUi for UniApp 2.1.4",
     "versionCode" : 214,
@@ -48,10 +48,12 @@
     /* 快应用特有相关 */
     "mp-weixin" : {
         /* 小程序特有相关 */
-        "appid" : "",
+        "appid" : "wxf4a68b53013e8def",
         "setting" : {
             "urlCheck" : false,
-            "es6" : true
+            "es6" : true,
+            "postcss" : true,
+            "minified" : true
         }
     },
     "h5" : {
