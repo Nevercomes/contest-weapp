@@ -27,7 +27,7 @@ public class BaseEntity implements Serializable {
     /**
      * 创建者
      */
-    private Long createBy;
+    private String createBy;
 
     /**
      * 创建时间
@@ -38,7 +38,7 @@ public class BaseEntity implements Serializable {
     /**
      * 更新者
      */
-    private Long updateBy;
+    private String updateBy;
 
     /**
      * 更新时间
@@ -84,9 +84,9 @@ public class BaseEntity implements Serializable {
      * 插入前设置通用值
      */
     public void preInsert() {
-        this.setCreateBy(SecurityUtils.getUserId());
+        this.setCreateBy(SecurityUtils.getUsername());
         this.setCreateTime(new Date());
-        this.setUpdateBy(SecurityUtils.getUserId());
+        this.setUpdateBy(SecurityUtils.getUsername());
         this.setUpdateTime(new Date());
     }
 
@@ -94,7 +94,7 @@ public class BaseEntity implements Serializable {
      * 更新前设置通用值
      */
     public void preUpdate() {
-        this.setUpdateBy(SecurityUtils.getUserId());
+        this.setUpdateBy(SecurityUtils.getUsername());
         this.setUpdateTime(new Date());
     }
 }

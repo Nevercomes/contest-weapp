@@ -10,4 +10,3 @@ ruoyi-vue后台管理系统源地址:https://gitee.com/y_project/RuoYi-Vue
 2. 对代码生成的格式做了修改
     - 第一个大括号和位于代码的右侧而不是另起一行
     - BaseEntity加入perInsert和preUpdate设置新增和修改
-    - createBy和updateBy注入id而不是登录名

@@ -25,7 +25,7 @@ public class GenUtils {
         genTable.setBusinessName(getBusinessName(genTable.getTableName()));
         genTable.setFunctionName(replaceText(genTable.getTableComment()));
         genTable.setFunctionAuthor(GenConfig.getAuthor());
-        genTable.setCreateBy(operName);
+        genTable.preInsert();
     }
 
     /**
@@ -35,7 +35,7 @@ public class GenUtils {
         String dataType = getDbType(column.getColumnType());
         String columnName = column.getColumnName();
         column.setTableId(table.getTableId());
-        column.setCreateBy(table.getCreateBy());
+        column.preInsert();
         // 设置java字段名
         column.setJavaField(StringUtils.toCamelCase(columnName));
 
@@ -171,7 +171,6 @@ public class GenUtils {
     /**
      * 关键字替换
      *
-     * @param name 需要被替换的名字
      * @return 替换后的名字
      */
     public static String replaceText(String text) {
