@@ -41,4 +41,7 @@ public class TreeEntity extends BaseEntity {
      */
     private List<?> children = new ArrayList<>();
 
+    public void setChildren(List<?> children) {
+        this.children = children;
+    }
 }

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.ci.mapper.InfoClassifyMapper">
+
+    <resultMap type="InfoClassify" id="InfoClassifyResult">
+        <result property="cpInfoId" column="cp_info_id"/>
+        <result property="classifyId" column="classify_id"/>
+    </resultMap>
+
+    <sql id="selectInfoClassifyVo">
+        select
+            cp_info_id,
+            classify_id
+        from ci_info_classify
+    </sql>
+
+    <select id="selectInfoClassifyList" parameterType="InfoClassify" resultMap="InfoClassifyResult">
+        <include refid="selectInfoClassifyVo"/>
+        <where>
+        </where>
+    </select>
+
+    <select id="selectInfoClassifyById" parameterType="Long" resultMap="InfoClassifyResult">
+        <include refid="selectInfoClassifyVo"/>
+        where cp_info_id = #{cpInfoId}
+    </select>
+
+    <insert id="insertInfoClassify" parameterType="InfoClassify">
+        insert into ci_info_classify
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cpInfoId != null ">cp_info_id,</if>
+            <if test="classifyId != null ">classify_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cpInfoId != null ">#{cpInfoId},</if>
+            <if test="classifyId != null ">#{classifyId},</if>
+        </trim>
+    </insert>
+
+    <insert id="batchInfoClassify">
+        insert into ci_info_classify(cp_info_id, classify_id) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.cpInfoId},#{item.classifyId})
+        </foreach>
+    </insert>
+
+    <update id="updateInfoClassify" parameterType="InfoClassify">
+        update ci_info_classify
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="classifyId != null ">classify_id = #{classifyId},</if>
+        </trim>
+        where cp_info_id = #{cpInfoId}
+    </update>
+
+    <delete id="deleteInfoClassifyByInfoId" parameterType="Long">
+        delete from ci_info_classify
+        where cp_info_id = #{cpInfoId}
+    </delete>
+
+    <delete id="deleteRoleMenuByRoleId" parameterType="Long">
+        delete from ci_info_classify
+        where cp_info_id = #{infoId}
+    </delete>
+
+    <delete id="deleteInfoClassifyByIds" parameterType="String">
+        delete from ci_info_classify where cp_info_id in
+        <foreach item="cpInfoId" collection="array" open="(" separator="," close=")">
+            #{cpInfoId}
+        </foreach>
+    </delete>
+
+</mapper>

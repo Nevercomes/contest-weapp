@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.ci.mapper.CompetitionInfoMapper">
+
+    <resultMap type="CompetitionInfo" id="CompetitionInfoResult">
+        <result property="id" column="id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="name" column="name"/>
+        <result property="level" column="level"/>
+        <result property="viewNumber" column="view_number"/>
+        <result property="concernNumber" column="concern_number"/>
+    </resultMap>
+
+    <sql id="selectCompetitionInfoVo">
+        select
+            id,
+            create_by,
+            update_by,
+            create_time,
+            update_time,
+            name,
+            level,
+            view_number,
+            concern_number
+        from ci_competition_info
+    </sql>
+
+    <select id="selectCompetitionInfoList" parameterType="CompetitionInfo" resultMap="CompetitionInfoResult">
+        <include refid="selectCompetitionInfoVo"/>
+        <where>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="level != null  and level != ''">and level = #{level}</if>
+        </where>
+    </select>
+
+    <select id="selectCompetitionInfoById" parameterType="Long" resultMap="CompetitionInfoResult">
+        <include refid="selectCompetitionInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCompetitionInfo" parameterType="CompetitionInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into ci_competition_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="level != null  and level != ''">level,</if>
+            <if test="viewNumber != null ">view_number,</if>
+            <if test="concernNumber != null ">concern_number,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="level != null  and level != ''">#{level},</if>
+            <if test="viewNumber != null ">#{viewNumber},</if>
+            <if test="concernNumber != null ">#{concernNumber},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCompetitionInfo" parameterType="CompetitionInfo">
+        update ci_competition_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="level != null  and level != ''">level = #{level},</if>
+            <if test="viewNumber != null ">view_number = #{viewNumber},</if>
+            <if test="concernNumber != null ">concern_number = #{concernNumber},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCompetitionInfoById" parameterType="Long">
+        delete from ci_competition_info
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteCompetitionInfoByIds" parameterType="String">
+        delete from ci_competition_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
