@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.EduSchoolMapper">
+    
+    <resultMap type="EduSchool" id="EduSchoolResult">
+        <result property="schoolId"    column="school_id"    />
+        <result property="schoolNo"    column="school_no"    />
+        <result property="schoolName"    column="school_name"    />
+        <result property="shortName"    column="short_name"    />
+        <result property="englishName"    column="english_name"    />
+        <result property="englishShortName"    column="english_short_name"    />
+        <result property="schoolFirst"    column="school_first"    />
+        <result property="schoolFirstPy"    column="school_first_py"    />
+        <result property="schoolPinyin"    column="school_pinyin"    />
+        <result property="schoolDegreeType"    column="school_degree_type"    />
+    </resultMap>
+
+    <sql id="selectEduSchoolVo">
+        select school_id, school_no, school_name, short_name, english_name, english_short_name, school_first, school_first_py, school_pinyin, school_degree_type from edu_school
+    </sql>
+
+    <select id="selectEduSchoolList" parameterType="EduSchool" resultMap="EduSchoolResult">
+        <include refid="selectEduSchoolVo"/>
+        <where>  
+            <if test="schoolName != null  and schoolName != ''"> and school_name like concat('%', #{schoolName}, '%')</if>
+            <if test="shortName != null  and shortName != ''"> and short_name like concat('%', #{shortName}, '%')</if>
+            <if test="englishName != null  and englishName != ''"> and english_name like concat('%', #{englishName}, '%')</if>
+            <if test="englishShortName != null  and englishShortName != ''"> and english_short_name like concat('%', #{englishShortName}, '%')</if>
+            <if test="schoolFirst != null  and schoolFirst != ''"> and school_first like concat('%', #{schoolFirst}, '%')</if>
+            <if test="schoolFirstPy != null  and schoolFirstPy != ''"> and school_first_py like concat('%', #{schoolFirstPy}, '%')</if>
+            <if test="schoolPinyin != null  and schoolPinyin != ''"> and school_pinyin like concat('%', #{schoolPinyin}, '%')</if>
+            <if test="schoolDegreeType != null  and schoolDegreeType != ''"> and school_degree_type = #{schoolDegreeType}</if>
+        </where>
+    </select>
+    
+    <select id="selectEduSchoolById" parameterType="Long" resultMap="EduSchoolResult">
+        <include refid="selectEduSchoolVo"/>
+        where school_id = #{schoolId}
+    </select>
+        
+    <insert id="insertEduSchool" parameterType="EduSchool" useGeneratedKeys="true" keyProperty="schoolId">
+        insert into edu_school
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="schoolNo != null  and schoolNo != ''">school_no,</if>
+            <if test="schoolName != null  and schoolName != ''">school_name,</if>
+            <if test="shortName != null  and shortName != ''">short_name,</if>
+            <if test="englishName != null  and englishName != ''">english_name,</if>
+            <if test="englishShortName != null  and englishShortName != ''">english_short_name,</if>
+            <if test="schoolFirst != null  and schoolFirst != ''">school_first,</if>
+            <if test="schoolFirstPy != null  and schoolFirstPy != ''">school_first_py,</if>
+            <if test="schoolPinyin != null  and schoolPinyin != ''">school_pinyin,</if>
+            <if test="schoolDegreeType != null  and schoolDegreeType != ''">school_degree_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="schoolNo != null  and schoolNo != ''">#{schoolNo},</if>
+            <if test="schoolName != null  and schoolName != ''">#{schoolName},</if>
+            <if test="shortName != null  and shortName != ''">#{shortName},</if>
+            <if test="englishName != null  and englishName != ''">#{englishName},</if>
+            <if test="englishShortName != null  and englishShortName != ''">#{englishShortName},</if>
+            <if test="schoolFirst != null  and schoolFirst != ''">#{schoolFirst},</if>
+            <if test="schoolFirstPy != null  and schoolFirstPy != ''">#{schoolFirstPy},</if>
+            <if test="schoolPinyin != null  and schoolPinyin != ''">#{schoolPinyin},</if>
+            <if test="schoolDegreeType != null  and schoolDegreeType != ''">#{schoolDegreeType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEduSchool" parameterType="EduSchool">
+        update edu_school
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="schoolNo != null  and schoolNo != ''">school_no = #{schoolNo},</if>
+            <if test="schoolName != null  and schoolName != ''">school_name = #{schoolName},</if>
+            <if test="shortName != null  and shortName != ''">short_name = #{shortName},</if>
+            <if test="englishName != null  and englishName != ''">english_name = #{englishName},</if>
+            <if test="englishShortName != null  and englishShortName != ''">english_short_name = #{englishShortName},</if>
+            <if test="schoolFirst != null  and schoolFirst != ''">school_first = #{schoolFirst},</if>
+            <if test="schoolFirstPy != null  and schoolFirstPy != ''">school_first_py = #{schoolFirstPy},</if>
+            <if test="schoolPinyin != null  and schoolPinyin != ''">school_pinyin = #{schoolPinyin},</if>
+            <if test="schoolDegreeType != null  and schoolDegreeType != ''">school_degree_type = #{schoolDegreeType},</if>
+        </trim>
+        where school_id = #{schoolId}
+    </update>
+
+    <delete id="deleteEduSchoolById" parameterType="Long">
+        delete from edu_school where school_id = #{schoolId}
+    </delete>
+
+    <delete id="deleteEduSchoolByIds" parameterType="String">
+        delete from edu_school where school_id in 
+        <foreach item="schoolId" collection="array" open="(" separator="," close=")">
+            #{schoolId}
+        </foreach>
+    </delete>
+    
+</mapper>
