@@ -1,6 +1,8 @@
 package com.ruoyi.project.ci.controller;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +43,16 @@ public class CompetitionInfoController extends BaseController {
         startPage();
         List<CompetitionInfo> list = competitionInfoService.selectCompetitionInfoList(competitionInfo);
         return getDataTable(list);
+    }
+
+    /**
+     * 查询竞赛信息模板列表
+     */
+    @PreAuthorize("@ss.hasPermi('ci:info:options')")
+    @GetMapping("/options")
+    public AjaxResult getOptions(CompetitionInfo competitionInfo) {
+        List<Map<String, Object>> options = competitionInfoService.selectCompetitionInfoOptions(competitionInfo);
+        return AjaxResult.success(options);
     }
 
     /**

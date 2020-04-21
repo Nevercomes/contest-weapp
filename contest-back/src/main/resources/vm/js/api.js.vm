@@ -17,6 +17,16 @@ export function get${BusinessName}(${pkColumn.javaField}) {
   })
 }
 
+export function get${BusinessName}Options(label) {
+    return request({
+        url: '/${moduleName}/${businessName}/options',
+        method: 'get',
+        params: {
+          name: label || ''
+        }
+    })
+}
+
 // 新增${functionName}
 export function add${BusinessName}(data) {
   return request({

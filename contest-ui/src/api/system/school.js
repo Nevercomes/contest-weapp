@@ -17,6 +17,17 @@ export function getSchool(schoolId) {
   })
 }
 
+// 查询学校信息选项
+export function getSchoolOptions(label) {
+  return request({
+    url: '/system/school/options',
+    method: 'get',
+    params: {
+      schoolName: label || ''
+    }
+  })
+}
+
 // 新增学校信息
 export function addSchool(data) {
   return request({

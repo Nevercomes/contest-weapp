@@ -75,6 +75,15 @@ public class ${ClassName}Controller extends BaseController {
     }
 
     /**
+     * 获取${functionName}选项信息
+     */
+    @PreAuthorize("@ss.hasPermi('${permissionPrefix}:options')")
+    @GetMapping(value = "/options")
+    public AjaxResult options(${ClassName} ${className}) {
+        return AjaxResult.success(${className}Service.select${ClassName}Options(${className}));
+    }
+
+    /**
      * 新增${functionName}
      */
     @PreAuthorize("@ss.hasPermi('${permissionPrefix}:add')")

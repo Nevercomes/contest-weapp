@@ -50,6 +50,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="select${ClassName}Vo"/>
         where ${pkColumn.columnName} = #{${pkColumn.javaField}}
     </select>
+
+    <select id="select${ClassName}Options" parameterType="${ClassName}" resultMap="java.util.Map">
+         select id as "value",
+         `name` as "label"
+        from ${tableName}
+        <if test="name != null and name != ''">
+            where `name` like concat('%', #{name}, '%')
+         </if>
+        limit 15
+    </select>
         
     <insert id="insert${ClassName}" parameterType="${ClassName}"#if($pkColumn.increment) useGeneratedKeys="true" keyProperty="$pkColumn.javaField"#end>
         insert into ${tableName}

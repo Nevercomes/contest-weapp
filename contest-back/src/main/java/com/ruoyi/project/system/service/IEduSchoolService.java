@@ -1,6 +1,8 @@
 package com.ruoyi.project.system.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.project.system.domain.EduSchool;
 
 /**
@@ -57,4 +59,11 @@ public interface IEduSchoolService {
      * @return 结果
      */
     int deleteEduSchoolById(Long schoolId);
+
+    /**
+     * 查询学校选项
+     * @return
+     * @param eduSchool
+     */
+    List<Map<String, Object>> selectEduSchoolOptions(EduSchool eduSchool);
 }

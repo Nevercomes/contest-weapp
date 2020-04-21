@@ -51,3 +51,14 @@ export function exportInfo(query) {
     params: query
   })
 }
+
+// 获取选择列表
+export function getInfoOptions(label) {
+  return request({
+    url: '/ci/info/options',
+    method: 'get',
+    params: {
+      name: label || ''
+    }
+  })
+}

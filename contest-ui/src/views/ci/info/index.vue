@@ -37,7 +37,7 @@
 
     <el-table v-loading="loading" :data="infoList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="Id" align="center" prop="id" />
+      <el-table-column label="编号" align="center" prop="id" />
       <el-table-column label="竞赛名称" align="center" prop="name" />
       <el-table-column label="竞赛级别" align="center" prop="level" :formatter="levelFormat" />
       <el-table-column label="浏览数" align="center" prop="viewNumber" />

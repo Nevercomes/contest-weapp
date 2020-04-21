@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.ci.mapper.CompetitionPeriodMapper">
+
+    <resultMap type="CompetitionPeriod" id="CompetitionPeriodResult">
+        <result property="id" column="id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="cpInfoId" column="cp_info_id"/>
+        <result property="name" column="name"/>
+        <result property="picUrl" column="pic_url"/>
+        <result property="signBeginTime" column="sign_begin_time"/>
+        <result property="signEndTime" column="sign_end_time"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="holder" column="holder"/>
+    </resultMap>
+
+    <sql id="selectCompetitionPeriodVo">
+        select
+            id,
+            create_by,
+            update_by,
+            create_time,
+            update_time,
+            cp_info_id,
+            name,
+            pic_url,
+            sign_begin_time,
+            sign_end_time,
+            school_id,
+            holder
+        from ci_competition_period
+    </sql>
+
+    <select id="selectCompetitionPeriodList" parameterType="CompetitionPeriod" resultMap="CompetitionPeriodResult">
+        <include refid="selectCompetitionPeriodVo"/>
+        <where>
+            <if test="cpInfoId != null ">and cp_info_id = #{cpInfoId}</if>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="signBeginTime != null ">and sign_begin_time = #{signBeginTime}</if>
+            <if test="signEndTime != null ">and sign_end_time = #{signEndTime}</if>
+            <if test="schoolId != null ">and school_id = #{schoolId}</if>
+            <if test="holder != null  and holder != ''">and holder = #{holder}</if>
+        </where>
+    </select>
+
+    <select id="selectCompetitionPeriodById" parameterType="Long" resultMap="CompetitionPeriodResult">
+        <include refid="selectCompetitionPeriodVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCompetitionPeriod" parameterType="CompetitionPeriod" useGeneratedKeys="true" keyProperty="id">
+        insert into ci_competition_period
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="cpInfoId != null ">cp_info_id,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="picUrl != null  and picUrl != ''">pic_url,</if>
+            <if test="signBeginTime != null ">sign_begin_time,</if>
+            <if test="signEndTime != null ">sign_end_time,</if>
+            <if test="schoolId != null ">school_id,</if>
+            <if test="holder != null  and holder != ''">holder,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="cpInfoId != null ">#{cpInfoId},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="picUrl != null  and picUrl != ''">#{picUrl},</if>
+            <if test="signBeginTime != null ">#{signBeginTime},</if>
+            <if test="signEndTime != null ">#{signEndTime},</if>
+            <if test="schoolId != null ">#{schoolId},</if>
+            <if test="holder != null  and holder != ''">#{holder},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCompetitionPeriod" parameterType="CompetitionPeriod">
+        update ci_competition_period
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="cpInfoId != null ">cp_info_id = #{cpInfoId},</if>
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="picUrl != null  and picUrl != ''">pic_url = #{picUrl},</if>
+            <if test="signBeginTime != null ">sign_begin_time = #{signBeginTime},</if>
+            <if test="signEndTime != null ">sign_end_time = #{signEndTime},</if>
+            <if test="schoolId != null ">school_id = #{schoolId},</if>
+            <if test="holder != null  and holder != ''">holder = #{holder},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateCover">
+        update ci_competition_period
+        set pic_url = #{url}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCompetitionPeriodById" parameterType="Long">
+        delete from ci_competition_period
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteCompetitionPeriodByIds" parameterType="String">
+        delete from ci_competition_period where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

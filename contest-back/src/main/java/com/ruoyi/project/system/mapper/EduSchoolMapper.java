@@ -1,7 +1,10 @@
 package com.ruoyi.project.system.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.project.system.domain.EduSchool;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 学校信息Mapper接口
@@ -57,4 +60,11 @@ public interface EduSchoolMapper {
      * @return 结果
      */
     int deleteEduSchoolByIds(Long[] schoolIds);
+
+    /**
+     * 查询学校信息选项
+     * @param eduSchool
+     * @return
+     */
+    List<Map<String,Object>> selectEduSchoolOptions(EduSchool eduSchool);
 }

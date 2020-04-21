@@ -2,6 +2,7 @@ package com.ruoyi.project.ci.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.ruoyi.project.ci.domain.InfoClassify;
 import com.ruoyi.project.ci.mapper.InfoClassifyMapper;
@@ -98,6 +99,16 @@ public class CompetitionInfoServiceImpl implements ICompetitionInfoService {
     @Override
     public int deleteCompetitionInfoById(Long id) {
         return competitionInfoMapper.deleteCompetitionInfoById(id);
+    }
+
+    /**
+     * 查询竞赛信息模板选项
+     * @param competitionInfo
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> selectCompetitionInfoOptions(CompetitionInfo competitionInfo) {
+        return competitionInfoMapper.selectCompetitionInfoOptions(competitionInfo);
     }
 
     /**

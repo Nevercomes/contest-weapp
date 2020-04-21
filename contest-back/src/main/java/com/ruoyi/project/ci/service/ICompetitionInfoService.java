@@ -1,6 +1,8 @@
 package com.ruoyi.project.ci.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.project.ci.domain.CompetitionInfo;
 
 /**
@@ -57,4 +59,11 @@ public interface ICompetitionInfoService {
      * @return 结果
      */
     int deleteCompetitionInfoById(Long id);
+
+    /**
+     * 查询竞赛信息模板选项
+     * @param competitionInfo
+     * @return
+     */
+    List<Map<String,Object>> selectCompetitionInfoOptions(CompetitionInfo competitionInfo);
 }

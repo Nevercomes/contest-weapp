@@ -113,7 +113,7 @@ export const constantRoutes = [
       {
         path: 'edit',
         component: () => import('@/views/tool/gen/editTable'),
-        name: 'GenEdit',
+        name: 'GenEdit', 
         meta: { title: '修改生成配置' }
       }
     ]

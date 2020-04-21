@@ -1,6 +1,8 @@
 package com.ruoyi.project.system.service.impl;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.project.system.mapper.EduSchoolMapper;
@@ -84,5 +86,15 @@ public class EduSchoolServiceImpl implements IEduSchoolService {
     @Override
     public int deleteEduSchoolById(Long schoolId) {
         return eduSchoolMapper.deleteEduSchoolById(schoolId);
+    }
+
+    /**
+     * 查询学校信息选项
+     * @param eduSchool
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> selectEduSchoolOptions(EduSchool eduSchool) {
+        return eduSchoolMapper.selectEduSchoolOptions(eduSchool);
     }
 }
