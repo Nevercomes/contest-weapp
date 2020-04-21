@@ -17,6 +17,17 @@ export function getPeriod(id) {
   })
 }
 
+// 查询竞赛列表信息选项
+export function getPeriodOptions(query) {
+  return request({
+    url: '/ci/period/options',
+    method: 'get',
+    params: {
+      name: query || ''
+    }
+  })
+}
+
 // 新增竞赛列表信息
 export function addPeriod(data) {
   return request({

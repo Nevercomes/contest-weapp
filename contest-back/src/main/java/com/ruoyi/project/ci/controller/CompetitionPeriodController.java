@@ -1,6 +1,8 @@
 package com.ruoyi.project.ci.controller;
 
 import java.util.List;
+
+import com.ruoyi.project.system.domain.EduSchool;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,6 +64,15 @@ public class CompetitionPeriodController extends BaseController {
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id) {
         return AjaxResult.success(competitionPeriodService.selectCompetitionPeriodById(id));
+    }
+
+    /**
+     * 获取竞赛列表选项
+     */
+    @PreAuthorize("@ss.hasPermi('system:period:options')")
+    @GetMapping(value = "/options")
+    public AjaxResult options(CompetitionPeriod competitionPeriod) {
+        return AjaxResult.success(competitionPeriodService.selectCompetitionPeriodOptions(competitionPeriod));
     }
 
     /**

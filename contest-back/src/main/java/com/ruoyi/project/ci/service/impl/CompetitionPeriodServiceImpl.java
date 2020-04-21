@@ -1,6 +1,8 @@
 package com.ruoyi.project.ci.service.impl;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,5 +87,10 @@ public class CompetitionPeriodServiceImpl implements ICompetitionPeriodService {
     @Override
     public int deleteCompetitionPeriodById(Long id) {
         return competitionPeriodMapper.deleteCompetitionPeriodById(id);
+    }
+
+    @Override
+    public List<Map<String, Object>> selectCompetitionPeriodOptions(CompetitionPeriod competitionPeriod) {
+        return competitionPeriodMapper.selectCompetitionPeriodOptions(competitionPeriod);
     }
 }

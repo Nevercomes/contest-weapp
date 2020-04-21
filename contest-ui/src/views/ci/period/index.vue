@@ -2,18 +2,16 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
       <el-form-item label="竞赛模板" prop="cpInfoId">
-        <el-select v-model="queryParams.cpInfoId" filterable remote :remote-method="queryInfoOptions" placeholder="请选择竞赛模板"
-          clearable size="small">
-          <el-option v-for="item in qInfoOptions" :label="item.label" :value="item.value" :key="item.value" />
+        <el-select v-model="queryParams.cpInfoId" filterable placeholder="请选择竞赛模板" clearable size="small">
+          <el-option v-for="item in infoOptions" :label="item.label" :value="item.value" :key="item.value" />
         </el-select>
       </el-form-item>
       <el-form-item label="名称" prop="name">
         <el-input v-model="queryParams.name" placeholder="请输入名称" clearable size="small" @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="面向学校" prop="schooId">
-        <el-select v-model="queryParams.schooId" filterable remote :remote-method="querySchoolOptions" placeholder="请选择面向学校"
-          clearable size="small">
-          <el-option v-for="item in qSchoolOptions" :label="item.label" :value="item.value" :key="item.value" />
+      <el-form-item label="面向学校" prop="schoolId">
+        <el-select v-model="queryParams.schoolId" filterable placeholder="请选择面向学校" clearable size="small">
+          <el-option v-for="item in schoolOptions" :label="item.label" :value="item.value" :key="item.value" />
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -41,19 +39,19 @@
     <el-table v-loading="loading" :data="periodList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="编号" align="center" prop="id" />
-      <el-table-column label="名称" align="center" prop="name" />
-      <el-table-column label="报名开始" align="center" prop="signupTime" width="180">
+      <el-table-column label="名称" align="center" prop="name" show-overflow-tooltip />
+      <el-table-column label="报名开始" align="center" prop="signBeginTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.signupTime) }}</span>
+          <span>{{ parseTime(scope.row.signBeginTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="报名结束" align="center" prop="competitionTime" width="180">
+      <el-table-column label="报名结束" align="center" prop="signEndTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.competitionTime) }}</span>
+          <span>{{ parseTime(scope.row.signEndTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="图片链接" align="center" prop="picUrl" show-overflow-tooltip />
-      <el-table-column label="面向学校" align="center" prop="schooId" />
+      <el-table-column label="面向学校" align="center" prop="schoolName" />
       <el-table-column label="主办方" align="center" prop="holder" show-overflow-tooltip />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -70,28 +68,26 @@
     <el-dialog :title="title" :visible.sync="open" width="500px">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="竞赛模板" prop="cpInfoId">
-          <el-select v-model="form.cpInfoId" filterable remote :remote-method="formInfoOptions" placeholder="请选择竞赛模板"
-            clearable size="small">
-            <el-option v-for="item in fInfoOptions" :label="item.label" :value="item.value" :key="item.value" />
+          <el-select v-model="form.cpInfoId" filterable placeholder="请选择竞赛模板" clearable size="small">
+            <el-option v-for="item in infoOptions" :label="item.label" :value="item.value" :key="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入名称" />
         </el-form-item>
-        <el-form-item label="报名开始" prop="signupTime">
+        <el-form-item label="报名开始" prop="signBeginTime">
           <el-date-picker clearable size="small" style="width: 200px" v-model="form.signBeginTime" type="datetime"
             value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择报名开始">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="报名结束" prop="competitionTime">
+        <el-form-item label="报名结束" prop="signEndTime">
           <el-date-picker clearable size="small" style="width: 200px" v-model="form.signEndTime" type="datetime"
             value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择报名结束">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="面向学校" prop="schooId">
-          <el-select v-model="form.schooId" filterable remote :remote-method="formSchoolOptions" placeholder="请选择面向学校"
-            clearable size="small">
-            <el-option v-for="item in fSchoolOptions" :label="item.label" :value="item.value" :key="item.value" />
+        <el-form-item label="面向学校" prop="schoolId">
+          <el-select v-model="form.schoolId" filterable placeholder="请选择面向学校" clearable size="small">
+            <el-option v-for="item in schoolOptions" :label="item.label" :value="item.value" :key="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="主办方" prop="holder">
@@ -139,11 +135,9 @@
         // 竞赛列表信息表格数据
         periodList: [],
         // 竞赛模板选项
-        qInfoOptions: [],
-        fInfoOptions: [],
+        infoOptions: [],
         // 学校选项
-        qSchoolOptions: [],
-        fSchoolOptions: [],
+        schoolOptions: [],
         // 弹出层标题
         title: "",
         // 是否显示弹出层
@@ -154,7 +148,7 @@
           pageSize: 10,
           cpInfoId: undefined,
           name: undefined,
-          schooId: undefined,
+          schoolId: undefined,
         },
         // 表单参数
         form: {},
@@ -170,7 +164,7 @@
             message: "名称不能为空",
             trigger: "blur"
           }],
-          schooId: [{
+          schoolId: [{
             required: true,
             message: "面向学校不能为空",
             trigger: "blur"
@@ -185,8 +179,12 @@
     },
     created() {
       this.getList();
-      this.queryInfoOptions()
-      this.querySchoolOptions()
+      getInfoOptions().then(res => {
+        this.infoOptions = res.data
+      })
+      getSchoolOptions().then(res => {
+        this.schoolOptions = res.data
+      })
     },
     methods: {
       /** 查询竞赛列表信息列表 */
@@ -198,29 +196,6 @@
           this.loading = false;
         });
       },
-      // 查询竞赛模板选项
-      queryInfoOptions(query) {
-        getInfoOptions(query).then(res => {
-          this.qInfoOptions = res.data
-        })
-      },
-      // 查询学校选项
-      querySchoolOptions(query) {
-        getSchoolOptions(query).then(res => {
-          this.qSchoolOptions = res.data
-        })
-      },
-      formInfoOptions(query) {
-        getInfoOptions(query).then(res => {
-          this.fInfoOptions = res.data
-        })
-      },
-      // 查询学校选项
-      formSchoolOptions(query) {
-        getSchoolOptions(query).then(res => {
-          this.fSchoolOptions = res.data
-        })
-      },
       // 取消按钮
       cancel() {
         this.open = false;
@@ -230,8 +205,11 @@
       reset() {
         this.form = {
           id: undefined,
+          cpInfoId: undefined,
+          name: undefined,
+          signBeginTime: undefined,
           signEndTime: undefined,
-          schooId: undefined,
+          schoolId: undefined,
           holder: undefined
         };
         this.resetForm("form");

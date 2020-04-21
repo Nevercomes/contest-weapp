@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.ci.mapper.TeamRecruitMapper">
+
+    <resultMap type="TeamRecruit" id="TeamRecruitResult">
+        <result property="id" column="id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="teamId" column="team_id"/>
+        <result property="teamName" column="team_name"/>
+        <result property="work" column="work"/>
+        <result property="capacity" column="capacity"/>
+    </resultMap>
+
+    <sql id="selectTeamRecruitVo">
+        select
+            id,
+            create_by,
+            update_by,
+            create_time,
+            update_time,
+            team_id,
+            (select name
+             from ci_team_info
+             where team_id = ci_team_info.id) as "team_name",
+            work,
+            capacity
+        from ci_team_recruit
+    </sql>
+
+    <select id="selectTeamRecruitList" parameterType="TeamRecruit" resultMap="TeamRecruitResult">
+        <include refid="selectTeamRecruitVo"/>
+        <where>
+            <if test="teamId != null ">and team_id = #{teamId}</if>
+            <if test="work != null  and work != ''">and work = #{work}</if>
+            <if test="capacity != null  and capacity != ''">and capacity = #{capacity}</if>
+        </where>
+    </select>
+
+    <select id="selectTeamRecruitById" parameterType="Long" resultMap="TeamRecruitResult">
+        <include refid="selectTeamRecruitVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectTeamRecruitOptions" parameterType="TeamRecruit" resultType="Map">
+        select id as "value",
+        `name` as "label"
+        from ci_team_recruit
+        <if test="name != null and name != ''">
+            where `name` like concat('%', #{name}, '%')
+        </if>
+    </select>
+
+    <insert id="insertTeamRecruit" parameterType="TeamRecruit">
+        insert into ci_team_recruit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null ">id,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="teamId != null ">team_id,</if>
+            <if test="work != null  and work != ''">work,</if>
+            <if test="capacity != null  and capacity != ''">capacity,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null ">#{id},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="teamId != null ">#{teamId},</if>
+            <if test="work != null  and work != ''">#{work},</if>
+            <if test="capacity != null  and capacity != ''">#{capacity},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTeamRecruit" parameterType="TeamRecruit">
+        update ci_team_recruit
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="teamId != null ">team_id = #{teamId},</if>
+            <if test="work != null  and work != ''">work = #{work},</if>
+            <if test="capacity != null  and capacity != ''">capacity = #{capacity},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTeamRecruitById" parameterType="Long">
+        delete from ci_team_recruit
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTeamRecruitByIds" parameterType="String">
+        delete from ci_team_recruit where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

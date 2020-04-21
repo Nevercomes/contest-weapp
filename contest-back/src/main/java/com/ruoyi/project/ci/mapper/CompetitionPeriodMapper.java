@@ -1,6 +1,8 @@
 package com.ruoyi.project.ci.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.project.ci.domain.CompetitionPeriod;
 import org.apache.ibatis.annotations.Param;
 
@@ -65,4 +67,6 @@ public interface CompetitionPeriodMapper {
      * @param s
      */
     void updateCover(@Param("id") Long cpId, @Param("url") String s);
+
+    List<Map<String,Object>> selectCompetitionPeriodOptions(CompetitionPeriod competitionPeriod);
 }

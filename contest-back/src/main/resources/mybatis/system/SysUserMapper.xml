@@ -166,6 +166,30 @@
         where u.user_id = #{userId}
     </select>
 
+    <select id="selectCreateUser" parameterType="String" resultMap="SysUserResult">
+        select
+            nick_name,
+            avatar,
+            school_id,
+            (select school_name
+             from edu_school
+             where sys_user.school_id = edu_school.school_id) as "school_name"
+        from sys_user
+        where user_name = #{userName}
+    </select>
+
+    <select id="selectAssUser" parameterType="Long" resultMap="SysUserResult">
+        select
+            nick_name,
+            avatar,
+            school_id,
+            (select school_name
+             from edu_school
+             where sys_user.school_id = edu_school.school_id) as "school_name"
+        from sys_user
+        where user_id = #{userId}
+    </select>
+
     <select id="checkUserNameUnique" parameterType="String" resultType="int">
         select count(1)
         from sys_user

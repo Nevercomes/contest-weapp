@@ -1,5 +1,6 @@
 package com.ruoyi.project.ci.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import com.ruoyi.framework.aspectj.lang.annotation.Excel;
@@ -33,15 +34,18 @@ public class CompetitionPeriod extends BaseEntity{
 
     /** 报名时间 */
     @Excel(name = "报名开始", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date signBeginTime;
 
-    /** 比赛时间 */
+    /** 报名结束 */
     @Excel(name = "报名结束", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date signEndTime;
 
     /** 面向学校 */
-    @Excel(name = "面向学校")
     private Long schoolId;
+    @Excel(name = "面向学校")
+    private String schoolName;
 
     /** 主办方 */
     @Excel(name = "主办方")

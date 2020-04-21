@@ -71,7 +71,7 @@
         <if test="schoolName != null and schoolName != ''">
             where school_name like concat('%', #{schoolName} ,'%')
         </if>
-        limit 15
+        limit 100
     </select>
 
     <insert id="insertEduSchool" parameterType="EduSchool" useGeneratedKeys="true" keyProperty="schoolId">

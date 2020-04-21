@@ -1,6 +1,8 @@
 package com.ruoyi.project.ci.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.project.ci.domain.CompetitionPeriod;
 
 /**
@@ -57,4 +59,6 @@ public interface ICompetitionPeriodService {
      * @return 结果
      */
     int deleteCompetitionPeriodById(Long id);
+
+    List<Map<String, Object>> selectCompetitionPeriodOptions(CompetitionPeriod competitionPeriod);
 }

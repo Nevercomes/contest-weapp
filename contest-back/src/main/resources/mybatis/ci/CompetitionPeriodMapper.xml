@@ -16,6 +16,7 @@
         <result property="signBeginTime" column="sign_begin_time"/>
         <result property="signEndTime" column="sign_end_time"/>
         <result property="schoolId" column="school_id"/>
+        <result property="schoolName" column="school_name"/>
         <result property="holder" column="holder"/>
     </resultMap>
 
@@ -32,6 +33,9 @@
             sign_begin_time,
             sign_end_time,
             school_id,
+            (select school_name
+             from edu_school
+             where edu_school.school_id = ci_competition_period.school_id) as "school_name",
             holder
         from ci_competition_period
     </sql>
@@ -51,6 +55,16 @@
     <select id="selectCompetitionPeriodById" parameterType="Long" resultMap="CompetitionPeriodResult">
         <include refid="selectCompetitionPeriodVo"/>
         where id = #{id}
+    </select>
+
+    <select id="selectCompetitionPeriodOptions" parameterType="CompetitionPeriod" resultType="Map">
+        select id as "value",
+        name as "label"
+        from ci_competition_period
+        <if test="name != null and name != ''">
+            where name like concat('%', #{name} ,'%')
+        </if>
+        limit 100
     </select>
 
     <insert id="insertCompetitionPeriod" parameterType="CompetitionPeriod" useGeneratedKeys="true" keyProperty="id">
