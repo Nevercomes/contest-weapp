@@ -111,6 +111,10 @@ public class TeamExpectServiceImpl implements ITeamExpectService {
         return teamExpectMapper.deleteTeamExpectById(id);
     }
 
+    /**
+     * 注入创建的用户
+     * @param teamExpect
+     */
     private void setCreateUserBy(TeamExpect teamExpect) {
         if (teamExpect == null) return;
         if (!StringUtils.isEmpty(teamExpect.getCreateBy())) {
