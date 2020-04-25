@@ -25,7 +25,7 @@ import ${import};
 #end
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ${ClassName} extends ${Entity}{
+public class ${ClassName} extends ${Entity} {
     private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)

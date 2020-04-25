@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.ci.mapper.UserConcernCpMapper">
+
+    <resultMap type="UserConcernCp" id="UserConcernCpResult">
+        <result property="id" column="id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="cpId" column="cp_id"/>
+        <result property="cpName" column="cp_name"/>
+    </resultMap>
+
+    <sql id="selectUserConcernCpVo">
+        select id,
+               create_by,
+               create_time,
+               cp_id,
+               (select `name` from ci_competition_period where cp_id = ci_competition_period.id) as "cp_name"
+        from ci_user_concern_cp
+    </sql>
+
+    <select id="selectUserConcernCpList" parameterType="UserConcernCp" resultMap="UserConcernCpResult">
+        <include refid="selectUserConcernCpVo"/>
+        <where>
+            <if test="createBy != null  and createBy != ''">and create_by like concat('%', #{createBy},'%')</if>
+            <if test="cpId != null ">and cp_id = #{cpId}</if>
+        </where>
+    </select>
+
+    <select id="selectUserConcernCpById" parameterType="Long" resultMap="UserConcernCpResult">
+        <include refid="selectUserConcernCpVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectUserConcernCpOptions" parameterType="UserConcernCp" resultType="Map">
+        select id as "value",
+        `name` as "label"
+        from ci_user_concern_cp
+        <if test="name != null and name != ''">
+            where `name` like concat('%', #{name}, '%')
+        </if>
+    </select>
+
+    <insert id="insertUserConcernCp" parameterType="UserConcernCp" useGeneratedKeys="true" keyProperty="id">
+        insert into ci_user_concern_cp
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="cpId != null ">cp_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="cpId != null ">#{cpId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateUserConcernCp" parameterType="UserConcernCp">
+        update ci_user_concern_cp
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="cpId != null ">cp_id = #{cpId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserConcernCpById" parameterType="Long">
+        delete
+        from ci_user_concern_cp
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteUserConcernCpByIds" parameterType="String">
+        delete from ci_user_concern_cp where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

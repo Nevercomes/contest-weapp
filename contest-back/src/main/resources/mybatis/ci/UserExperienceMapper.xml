@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.ci.mapper.UserExperienceMapper">
+
+    <resultMap type="UserExperience" id="UserExperienceResult">
+        <result property="id" column="id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="time" column="time"/>
+        <result property="name" column="name"/>
+        <result property="awards" column="awards"/>
+        <result property="work" column="work"/>
+    </resultMap>
+
+    <sql id="selectUserExperienceVo">
+        select id,
+               create_by,
+               update_by,
+               create_time,
+               update_time,
+               time,
+               name,
+               awards,
+               work
+        from ci_user_experience
+    </sql>
+
+    <select id="selectUserExperienceList" parameterType="UserExperience" resultMap="UserExperienceResult">
+        <include refid="selectUserExperienceVo"/>
+        <where>
+            <if test="params.beginTime != null and params.beginTime != '' and params.endTime != null and params.endTime != ''">
+                and time between #{params.beginTime} and #{params.endTime}
+            </if>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="awards != null  and awards != ''">and awards = #{awards}</if>
+        </where>
+    </select>
+
+    <select id="selectUserExperienceById" parameterType="Long" resultMap="UserExperienceResult">
+        <include refid="selectUserExperienceVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectUserExperienceOptions" parameterType="UserExperience" resultType="Map">
+        select id as "value",
+        `name` as "label"
+        from ci_user_experience
+        <if test="name != null and name != ''">
+            where `name` like concat('%', #{name}, '%')
+        </if>
+    </select>
+
+    <insert id="insertUserExperience" parameterType="UserExperience" useGeneratedKeys="true" keyProperty="id">
+        insert into ci_user_experience
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="time != null ">time,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="awards != null  and awards != ''">awards,</if>
+            <if test="work != null  and work != ''">work,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="time != null ">#{time},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="awards != null  and awards != ''">#{awards},</if>
+            <if test="work != null  and work != ''">#{work},</if>
+        </trim>
+    </insert>
+
+    <update id="updateUserExperience" parameterType="UserExperience">
+        update ci_user_experience
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="time != null ">time = #{time},</if>
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="awards != null  and awards != ''">awards = #{awards},</if>
+            <if test="work != null  and work != ''">work = #{work},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserExperienceById" parameterType="Long">
+        delete
+        from ci_user_experience
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteUserExperienceByIds" parameterType="String">
+        delete from ci_user_experience where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

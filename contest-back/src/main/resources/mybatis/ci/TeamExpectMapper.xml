@@ -60,9 +60,9 @@
             <if test="createBy != null  and createBy != ''">create_by,</if>
             <if test="createTime != null ">create_time,</if>
             <if test="cpId != null ">cp_id,</if>
-            <if test="work != null  and work != ''">work,</if>
+            <if test="work != null  and work != ''">`work`,</if>
             <if test="capability != null  and capability != ''">capability,</if>
-            <if test="status != null  and status != ''">status,</if>
+            <if test="status != null  and status != ''">`status`,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="createBy != null  and createBy != ''">#{createBy},</if>

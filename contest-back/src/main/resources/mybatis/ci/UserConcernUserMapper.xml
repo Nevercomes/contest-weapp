@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.ci.mapper.UserConcernUserMapper">
+    
+    <resultMap type="UserConcernUser" id="UserConcernUserResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="userId"    column="user_id"    />
+    </resultMap>
+
+    <sql id="selectUserConcernUserVo">
+        select id, create_by, create_time, user_id from ci_user_concern_user
+    </sql>
+
+    <select id="selectUserConcernUserList" parameterType="UserConcernUser" resultMap="UserConcernUserResult">
+        <include refid="selectUserConcernUserVo"/>
+        <where>  
+            <if test="createBy != null  and createBy != ''"> and create_by like concat('%', #{createBy}, '%')</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+        </where>
+    </select>
+    
+    <select id="selectUserConcernUserById" parameterType="Long" resultMap="UserConcernUserResult">
+        <include refid="selectUserConcernUserVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectUserConcernUserOptions" parameterType="UserConcernUser" resultType="Map">
+         select id as "value",
+         `name` as "label"
+        from ci_user_concern_user
+        <if test="name != null and name != ''">
+            where `name` like concat('%', #{name}, '%')
+         </if>
+    </select>
+        
+    <insert id="insertUserConcernUser" parameterType="UserConcernUser" useGeneratedKeys="true" keyProperty="id">
+        insert into ci_user_concern_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="userId != null ">user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="userId != null ">#{userId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUserConcernUser" parameterType="UserConcernUser">
+        update ci_user_concern_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="userId != null ">user_id = #{userId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserConcernUserById" parameterType="Long">
+        delete from ci_user_concern_user where id = #{id}
+    </delete>
+
+    <delete id="deleteUserConcernUserByIds" parameterType="String">
+        delete from ci_user_concern_user where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>
