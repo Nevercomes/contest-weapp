@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.ci.mapper.PostLikeRecordMapper">
+
+    <resultMap type="PostLikeRecord" id="PostLikeRecordResult">
+        <result property="id" column="id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="postId" column="post_id"/>
+        <result property="postName" column="post_name"/>
+    </resultMap>
+
+    <sql id="selectPostLikeRecordVo">
+        select id, create_by, create_time, post_id,(select `name` from ci_post_info where post_id = ci_post_info.id) as "post_name",
+        from ci_post_like_record
+    </sql>
+
+    <select id="selectPostLikeRecordList" parameterType="PostLikeRecord" resultMap="PostLikeRecordResult">
+        <include refid="selectPostLikeRecordVo"/>
+        <where>
+            <if test="postId != null ">and post_id = #{postId}</if>
+        </where>
+    </select>
+
+    <select id="selectPostLikeRecordById" parameterType="Long" resultMap="PostLikeRecordResult">
+        <include refid="selectPostLikeRecordVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectPostLikeRecordOptions" parameterType="PostLikeRecord" resultType="Map">
+        select id as "value",
+        `name` as "label"
+        from ci_post_like_record
+        <if test="name != null and name != ''">
+            where `name` like concat('%', #{name}, '%')
+        </if>
+    </select>
+
+    <insert id="insertPostLikeRecord" parameterType="PostLikeRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into ci_post_like_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="postId != null ">post_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="postId != null ">#{postId},</if>
+        </trim>
+    </insert>
+
+    <update id="updatePostLikeRecord" parameterType="PostLikeRecord">
+        update ci_post_like_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="postId != null ">post_id = #{postId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePostLikeRecordById" parameterType="Long">
+        delete
+        from ci_post_like_record
+        where id = #{id}
+    </delete>
+
+    <delete id="deletePostLikeRecordByIds" parameterType="String">
+        delete from ci_post_like_record where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -2,6 +2,7 @@ package ${packageName}.service.impl;
 
 import java.util.List;
 import java.util.Map;
+import com.ruoyi.common.utils.StringUtils;
 #foreach ($column in $columns)
 #if($column.javaField == 'createTime' || $column.javaField == 'updateTime')
 import com.ruoyi.common.utils.DateUtils;
@@ -24,6 +25,8 @@ import ${packageName}.service.I${ClassName}Service;
 public class ${ClassName}ServiceImpl implements I${ClassName}Service {
     @Autowired
     private ${ClassName}Mapper ${className}Mapper;
+    @Autowired
+    private SysUserMapper userMapper;
 
     /**
      * 查询${functionName}
@@ -101,5 +104,16 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service {
     @Override
     public int delete${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField}) {
         return ${className}Mapper.delete${ClassName}ById(${pkColumn.javaField});
+    }
+
+    /**
+     * 注入创建者
+     * @param ${className} 注入对象
+     */
+    private void setCreated(${ClassName} ${className}) {
+        if(${className} == null) return;
+        if (StringUtils.isNotEmpty(${className}.getCreateBy())) {
+            ${className}.setCreateUser(userMapper.selectCreateUser(${className}.getCreateBy()));
+        }
     }
 }
