@@ -1,9 +1,14 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
-      <el-form-item label="帖子" prop="postId">
-        <el-select v-model="queryParams.postId" filterable="" placeholder="请选择帖子" clearable size="small">
-          <el-option v-for="item in postOptions" :label="item.label" :value="item.value" :key="item.value" />
+      <el-form-item label="创建时间" prop="createTime">
+        <el-date-picker clearable size="small" style="width: 200px" v-model="queryParams.createTime" type="date"
+          value-format="yyyy-MM-dd" placeholder="选择创建时间">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item label="是否已读" prop="readFlag">
+        <el-select v-model="queryParams.readFlag" placeholder="请选择是否已读" clearable size="small">
+          <el-option v-for="dict in readFlagOptions" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue" />
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -14,43 +19,55 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd" v-hasPermi="['ci:postView:add']">新增</el-button>
+        <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd" v-hasPermi="['ci:letter:add']">新增</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button type="success" icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate" v-hasPermi="['ci:postView:edit']">修改</el-button>
+        <el-button type="success" icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate" v-hasPermi="['ci:letter:edit']">修改</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="danger" icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
-          v-hasPermi="['ci:postView:remove']">删除</el-button>
+          v-hasPermi="['ci:letter:remove']">删除</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button type="warning" icon="el-icon-download" size="mini" @click="handleExport" v-hasPermi="['ci:postView:export']">导出</el-button>
+        <el-button type="warning" icon="el-icon-download" size="mini" @click="handleExport" v-hasPermi="['ci:letter:export']">导出</el-button>
       </el-col>
     </el-row>
 
-    <el-table v-loading="loading" :data="postViewList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="letterList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="编号" align="center" prop="id" />
       <el-table-column label="创建者" align="center" prop="createBy" />
-      <el-table-column label="帖子" align="center" prop="postName" />
+      <el-table-column label="接收用户" align="center" prop="receiveUser" />
+      <el-table-column label="内容" align="center" prop="content" />
+      <el-table-column label="是否已读" align="center" prop="readFlag" :formatter="readFlagFormat" />
+      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createTime) }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)" v-hasPermi="['ci:postView:edit']">修改</el-button>
-          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)" v-hasPermi="['ci:postView:remove']">删除</el-button>
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)" v-hasPermi="['ci:letter:edit']">修改</el-button>
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)" v-hasPermi="['ci:letter:remove']">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
 
     <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
       @pagination="getList" />
 
-    <!-- 添加或修改帖子浏览记录对话框 -->
+    <!-- 添加或修改私信管理对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="帖子">
-          <el-select v-model="form.postId" placeholder="请选择帖子">
-            <el-option label="请选择字典生成" value="" />
+        <el-form-item label="内容" prop="content">
+          <el-input v-model="form.content" placeholder="请输入内容" />
+        </el-form-item>
+        <el-form-item label="接收用户" prop="receiveUser">
+          <el-input v-model="form.receiveUser" placeholder="请输入接收用户" />
+        </el-form-item>
+        <el-form-item label="是否已读">
+          <el-select v-model="form.readFlag" placeholder="请选择是否已读">
+            <el-option v-for="dict in readFlagOptions" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -64,19 +81,16 @@
 
 <script>
   import {
-    listPostView,
-    getPostView,
-    delPostView,
-    addPostView,
-    updatePostView,
-    exportPostView
-  } from "@/api/ci/postView";
-  import {
-    getPostInfoOptions
-  } from "@/api/ci/postInfo"
+    listLetter,
+    getLetter,
+    delLetter,
+    addLetter,
+    updateLetter,
+    exportLetter
+  } from "@/api/ci/letter";
 
   export default {
-    name: "PostView",
+    name: "Letter",
     data() {
       return {
         // 遮罩层
@@ -89,47 +103,46 @@
         multiple: true,
         // 总条数
         total: 0,
-        // 帖子浏览记录表格数据
-        postViewList: [],
-        // 帖子选项
-        postOptions: [],
+        // 私信管理表格数据
+        letterList: [],
         // 弹出层标题
         title: "",
         // 是否显示弹出层
         open: false,
+        // 是否已读字典
+        readFlagOptions: [],
         // 查询参数
         queryParams: {
           pageNum: 1,
           pageSize: 10,
-          postId: undefined
+          createTime: undefined,
+          readFlag: undefined
         },
         // 表单参数
         form: {},
         // 表单校验
-        rules: {
-          postId: [{
-            required: true,
-            message: "帖子不能为空",
-            trigger: "blur"
-          }]
-        }
+        rules: {}
       };
     },
     created() {
       this.getList();
-      getPostInfoOptions().then(res => {
-        this.postOptions = res.data
-      })
+      this.getDicts("sys_yes_no").then(response => {
+        this.readFlagOptions = response.data;
+      });
     },
     methods: {
-      /** 查询帖子浏览记录列表 */
+      /** 查询私信管理列表 */
       getList() {
         this.loading = true;
-        listPostView(this.queryParams).then(response => {
-          this.postViewList = response.rows;
+        listLetter(this.queryParams).then(response => {
+          this.letterList = response.rows;
           this.total = response.total;
           this.loading = false;
         });
+      },
+      // 是否已读字典翻译
+      readFlagFormat(row, column) {
+        return this.selectDictLabel(this.readFlagOptions, row.readFlag);
       },
       // 取消按钮
       cancel() {
@@ -142,7 +155,9 @@
           id: undefined,
           createBy: undefined,
           createTime: undefined,
-          postId: undefined
+          content: undefined,
+          receiveUser: undefined,
+          readFlag: undefined
         };
         this.resetForm("form");
       },
@@ -166,16 +181,16 @@
       handleAdd() {
         this.reset();
         this.open = true;
-        this.title = "添加帖子浏览记录";
+        this.title = "添加私信管理";
       },
       /** 修改按钮操作 */
       handleUpdate(row) {
         this.reset();
         const id = row.id || this.ids
-        getPostView(id).then(response => {
+        getLetter(id).then(response => {
           this.form = response.data;
           this.open = true;
-          this.title = "修改帖子浏览记录";
+          this.title = "修改私信管理";
         });
       },
       /** 提交按钮 */
@@ -183,7 +198,7 @@
         this.$refs["form"].validate(valid => {
           if (valid) {
             if (this.form.id != undefined) {
-              updatePostView(this.form).then(response => {
+              updateLetter(this.form).then(response => {
                 if (response.code === 200) {
                   this.msgSuccess("修改成功");
                   this.open = false;
@@ -193,7 +208,7 @@
                 }
               });
             } else {
-              addPostView(this.form).then(response => {
+              addLetter(this.form).then(response => {
                 if (response.code === 200) {
                   this.msgSuccess("新增成功");
                   this.open = false;
@@ -209,12 +224,12 @@
       /** 删除按钮操作 */
       handleDelete(row) {
         const ids = row.id || this.ids;
-        this.$confirm('是否确认删除帖子浏览记录编号为"' + ids + '"的数据项?', "警告", {
+        this.$confirm('是否确认删除私信管理编号为"' + ids + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return delPostView(ids);
+          return delLetter(ids);
         }).then(() => {
           this.getList();
           this.msgSuccess("删除成功");
@@ -223,12 +238,12 @@
       /** 导出按钮操作 */
       handleExport() {
         const queryParams = this.queryParams;
-        this.$confirm('是否确认导出所有帖子浏览记录数据项?', "警告", {
+        this.$confirm('是否确认导出所有私信管理数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return exportPostView(queryParams);
+          return exportLetter(queryParams);
         }).then(response => {
           this.download(response.msg);
         }).catch(function() {});

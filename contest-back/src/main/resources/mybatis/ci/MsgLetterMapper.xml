@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.ci.mapper.MsgLetterMapper">
+    
+    <resultMap type="MsgLetter" id="MsgLetterResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="content"    column="content"    />
+        <result property="receiveUser"    column="receive_user"    />
+        <result property="readFlag"    column="read_flag"    />
+    </resultMap>
+
+    <sql id="selectMsgLetterVo">
+        select id, create_by, create_time, content, receive_user, read_flag from ci_msg_letter
+    </sql>
+
+    <select id="selectMsgLetterList" parameterType="MsgLetter" resultMap="MsgLetterResult">
+        <include refid="selectMsgLetterVo"/>
+        <where>  
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+            <if test="readFlag != null  and readFlag != ''"> and read_flag = #{readFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectMsgLetterById" parameterType="Long" resultMap="MsgLetterResult">
+        <include refid="selectMsgLetterVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectMsgLetterOptions" parameterType="MsgLetter" resultType="Map">
+         select id as "value",
+         `name` as "label"
+        from ci_msg_letter
+        <if test="name != null and name != ''">
+            where `name` like concat('%', #{name}, '%')
+         </if>
+    </select>
+        
+    <insert id="insertMsgLetter" parameterType="MsgLetter" useGeneratedKeys="true" keyProperty="id">
+        insert into ci_msg_letter
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="content != null  and content != ''">content,</if>
+            <if test="receiveUser != null ">receive_user,</if>
+            <if test="readFlag != null  and readFlag != ''">read_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="content != null  and content != ''">#{content},</if>
+            <if test="receiveUser != null ">#{receiveUser},</if>
+            <if test="readFlag != null  and readFlag != ''">#{readFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMsgLetter" parameterType="MsgLetter">
+        update ci_msg_letter
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="content != null  and content != ''">content = #{content},</if>
+            <if test="receiveUser != null ">receive_user = #{receiveUser},</if>
+            <if test="readFlag != null  and readFlag != ''">read_flag = #{readFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMsgLetterById" parameterType="Long">
+        delete from ci_msg_letter where id = #{id}
+    </delete>
+
+    <delete id="deleteMsgLetterByIds" parameterType="String">
+        delete from ci_msg_letter where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

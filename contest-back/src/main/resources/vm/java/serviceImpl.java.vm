@@ -9,6 +9,7 @@ import com.ruoyi.common.utils.DateUtils;
 #break
 #end
 #end
+import com.ruoyi.project.system.mapper.SysUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ${packageName}.mapper.${ClassName}Mapper;
@@ -113,7 +114,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service {
     private void setCreated(${ClassName} ${className}) {
         if(${className} == null) return;
         if (StringUtils.isNotEmpty(${className}.getCreateBy())) {
-            ${className}.setCreateUser(userMapper.selectCreateUser(${className}.getCreateBy()));
+           // ${className}.setCreateUser(userMapper.selectCreateUser(${className}.getCreateBy()));
         }
     }
 }

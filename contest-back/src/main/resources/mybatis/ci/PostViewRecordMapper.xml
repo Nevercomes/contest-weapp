@@ -1,54 +1,59 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.project.ci.mapper.PostViewRecordMapper">
-    
+
     <resultMap type="PostViewRecord" id="PostViewRecordResult">
-        <result property="id"    column="id"    />
-        <result property="createBy"    column="create_by"    />
-        <result property="createTime"    column="create_time"    />
-        <result property="postId"    column="post_id"    />
+        <result property="id" column="id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="postId" column="post_id"/>
         <result property="postName" column="post_name"/>
     </resultMap>
 
     <sql id="selectPostViewRecordVo">
-        select id, create_by, create_time, post_id,(select `name` from ci_post_info where post_id = ci_post_info.id) as "post_name", from ci_post_view_record
+        select id,
+               create_by,
+               create_time,
+               post_id,
+               (select `name` from ci_post_info where post_id = ci_post_info.id) as "post_name"
+        from ci_post_view_record
     </sql>
 
     <select id="selectPostViewRecordList" parameterType="PostViewRecord" resultMap="PostViewRecordResult">
         <include refid="selectPostViewRecordVo"/>
-        <where>  
-            <if test="postId != null "> and post_id = #{postId}</if>
+        <where>
+            <if test="postId != null ">and post_id = #{postId}</if>
         </where>
     </select>
-    
+
     <select id="selectPostViewRecordById" parameterType="Long" resultMap="PostViewRecordResult">
         <include refid="selectPostViewRecordVo"/>
         where id = #{id}
     </select>
 
     <select id="selectPostViewRecordOptions" parameterType="PostViewRecord" resultType="Map">
-         select id as "value",
-         `name` as "label"
+        select id as "value",
+        `name` as "label"
         from ci_post_view_record
         <if test="name != null and name != ''">
             where `name` like concat('%', #{name}, '%')
-         </if>
+        </if>
     </select>
-        
+
     <insert id="insertPostViewRecord" parameterType="PostViewRecord" useGeneratedKeys="true" keyProperty="id">
         insert into ci_post_view_record
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="createBy != null  and createBy != ''">create_by,</if>
             <if test="createTime != null ">create_time,</if>
             <if test="postId != null ">post_id,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="createBy != null  and createBy != ''">#{createBy},</if>
             <if test="createTime != null ">#{createTime},</if>
             <if test="postId != null ">#{postId},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updatePostViewRecord" parameterType="PostViewRecord">
@@ -62,14 +67,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deletePostViewRecordById" parameterType="Long">
-        delete from ci_post_view_record where id = #{id}
+        delete
+        from ci_post_view_record
+        where id = #{id}
     </delete>
 
     <delete id="deletePostViewRecordByIds" parameterType="String">
-        delete from ci_post_view_record where id in 
+        delete from ci_post_view_record where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
-    
+
 </mapper>

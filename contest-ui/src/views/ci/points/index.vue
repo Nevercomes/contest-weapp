@@ -1,10 +1,21 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
-      <el-form-item label="帖子" prop="postId">
-        <el-select v-model="queryParams.postId" filterable="" placeholder="请选择帖子" clearable size="small">
-          <el-option v-for="item in postOptions" :label="item.label" :value="item.value" :key="item.value" />
+      <el-form-item label="创建者" prop="createBy">
+        <el-input v-model="queryParams.createBy" placeholder="请输入创建者" clearable size="small" @keyup.enter.native="handleQuery" />
+      </el-form-item>
+      <el-form-item label="正负" prop="changeType">
+        <el-select v-model="queryParams.changeType" placeholder="请选择正负" clearable size="small">
+          <el-option v-for="dict in changeTypeOptions" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue" />
         </el-select>
+      </el-form-item>
+      <el-form-item label="变化原因" prop="changeCause">
+        <el-select v-model="queryParams.changeCause" placeholder="请选择变化原因" clearable size="small">
+          <el-option v-for="dict in changeCauseOptions" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="归属用户" prop="ownUser">
+        <el-input v-model="queryParams.ownUser" placeholder="请输入归属用户" clearable size="small" @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -14,44 +25,57 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd" v-hasPermi="['ci:postView:add']">新增</el-button>
+        <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd" v-hasPermi="['ci:points:add']">新增</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button type="success" icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate" v-hasPermi="['ci:postView:edit']">修改</el-button>
+        <el-button type="success" icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate" v-hasPermi="['ci:points:edit']">修改</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="danger" icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
-          v-hasPermi="['ci:postView:remove']">删除</el-button>
+          v-hasPermi="['ci:points:remove']">删除</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button type="warning" icon="el-icon-download" size="mini" @click="handleExport" v-hasPermi="['ci:postView:export']">导出</el-button>
+        <el-button type="warning" icon="el-icon-download" size="mini" @click="handleExport" v-hasPermi="['ci:points:export']">导出</el-button>
       </el-col>
     </el-row>
 
-    <el-table v-loading="loading" :data="postViewList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="pointsList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="编号" align="center" prop="id" />
       <el-table-column label="创建者" align="center" prop="createBy" />
-      <el-table-column label="帖子" align="center" prop="postName" />
+      <el-table-column label="正负" align="center" prop="changeType" :formatter="changeTypeFormat" />
+      <el-table-column label="变化原因" align="center" prop="changeCause" :formatter="changeCauseFormat" />
+      <el-table-column label="值" align="center" prop="value" />
+      <el-table-column label="归属用户" align="center" prop="ownUser" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)" v-hasPermi="['ci:postView:edit']">修改</el-button>
-          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)" v-hasPermi="['ci:postView:remove']">删除</el-button>
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)" v-hasPermi="['ci:points:edit']">修改</el-button>
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)" v-hasPermi="['ci:points:remove']">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
 
     <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
       @pagination="getList" />
 
-    <!-- 添加或修改帖子浏览记录对话框 -->
+    <!-- 添加或修改积分记录对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="帖子">
-          <el-select v-model="form.postId" placeholder="请选择帖子">
-            <el-option label="请选择字典生成" value="" />
+        <el-form-item label="正负">
+          <el-select v-model="form.changeType" placeholder="请选择正负">
+            <el-option v-for="dict in changeTypeOptions" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue"></el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="变化原因">
+          <el-select v-model="form.changeCause" placeholder="请选择变化原因">
+            <el-option v-for="dict in changeCauseOptions" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="值" prop="value">
+          <el-input v-model="form.value" placeholder="请输入值" />
+        </el-form-item>
+        <el-form-item label="归属用户" prop="ownUser">
+          <el-input v-model="form.ownUser" placeholder="请输入归属用户" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -64,19 +88,16 @@
 
 <script>
   import {
-    listPostView,
-    getPostView,
-    delPostView,
-    addPostView,
-    updatePostView,
-    exportPostView
-  } from "@/api/ci/postView";
-  import {
-    getPostInfoOptions
-  } from "@/api/ci/postInfo"
+    listPoints,
+    getPoints,
+    delPoints,
+    addPoints,
+    updatePoints,
+    exportPoints
+  } from "@/api/ci/points";
 
   export default {
-    name: "PostView",
+    name: "Points",
     data() {
       return {
         // 遮罩层
@@ -89,47 +110,57 @@
         multiple: true,
         // 总条数
         total: 0,
-        // 帖子浏览记录表格数据
-        postViewList: [],
-        // 帖子选项
-        postOptions: [],
+        // 积分记录表格数据
+        pointsList: [],
         // 弹出层标题
         title: "",
         // 是否显示弹出层
         open: false,
+        // 正负字典
+        changeTypeOptions: [],
+        // 变化原因字典
+        changeCauseOptions: [],
         // 查询参数
         queryParams: {
           pageNum: 1,
           pageSize: 10,
-          postId: undefined
+          createBy: undefined,
+          changeType: undefined,
+          changeCause: undefined,
+          ownUser: undefined
         },
         // 表单参数
         form: {},
         // 表单校验
-        rules: {
-          postId: [{
-            required: true,
-            message: "帖子不能为空",
-            trigger: "blur"
-          }]
-        }
+        rules: {}
       };
     },
     created() {
       this.getList();
-      getPostInfoOptions().then(res => {
-        this.postOptions = res.data
-      })
+      this.getDicts("points_positive_negative").then(response => {
+        this.changeTypeOptions = response.data;
+      });
+      this.getDicts("points_change_type").then(response => {
+        this.changeCauseOptions = response.data;
+      });
     },
     methods: {
-      /** 查询帖子浏览记录列表 */
+      /** 查询积分记录列表 */
       getList() {
         this.loading = true;
-        listPostView(this.queryParams).then(response => {
-          this.postViewList = response.rows;
+        listPoints(this.queryParams).then(response => {
+          this.pointsList = response.rows;
           this.total = response.total;
           this.loading = false;
         });
+      },
+      // 正负字典翻译
+      changeTypeFormat(row, column) {
+        return this.selectDictLabel(this.changeTypeOptions, row.changeType);
+      },
+      // 变化原因字典翻译
+      changeCauseFormat(row, column) {
+        return this.selectDictLabel(this.changeCauseOptions, row.changeCause);
       },
       // 取消按钮
       cancel() {
@@ -142,7 +173,10 @@
           id: undefined,
           createBy: undefined,
           createTime: undefined,
-          postId: undefined
+          changeType: undefined,
+          changeCause: undefined,
+          value: undefined,
+          ownUser: undefined
         };
         this.resetForm("form");
       },
@@ -166,16 +200,16 @@
       handleAdd() {
         this.reset();
         this.open = true;
-        this.title = "添加帖子浏览记录";
+        this.title = "添加积分记录";
       },
       /** 修改按钮操作 */
       handleUpdate(row) {
         this.reset();
         const id = row.id || this.ids
-        getPostView(id).then(response => {
+        getPoints(id).then(response => {
           this.form = response.data;
           this.open = true;
-          this.title = "修改帖子浏览记录";
+          this.title = "修改积分记录";
         });
       },
       /** 提交按钮 */
@@ -183,7 +217,7 @@
         this.$refs["form"].validate(valid => {
           if (valid) {
             if (this.form.id != undefined) {
-              updatePostView(this.form).then(response => {
+              updatePoints(this.form).then(response => {
                 if (response.code === 200) {
                   this.msgSuccess("修改成功");
                   this.open = false;
@@ -193,7 +227,7 @@
                 }
               });
             } else {
-              addPostView(this.form).then(response => {
+              addPoints(this.form).then(response => {
                 if (response.code === 200) {
                   this.msgSuccess("新增成功");
                   this.open = false;
@@ -209,12 +243,12 @@
       /** 删除按钮操作 */
       handleDelete(row) {
         const ids = row.id || this.ids;
-        this.$confirm('是否确认删除帖子浏览记录编号为"' + ids + '"的数据项?', "警告", {
+        this.$confirm('是否确认删除积分记录编号为"' + ids + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return delPostView(ids);
+          return delPoints(ids);
         }).then(() => {
           this.getList();
           this.msgSuccess("删除成功");
@@ -223,12 +257,12 @@
       /** 导出按钮操作 */
       handleExport() {
         const queryParams = this.queryParams;
-        this.$confirm('是否确认导出所有帖子浏览记录数据项?', "警告", {
+        this.$confirm('是否确认导出所有积分记录数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return exportPostView(queryParams);
+          return exportPoints(queryParams);
         }).then(response => {
           this.download(response.msg);
         }).catch(function() {});

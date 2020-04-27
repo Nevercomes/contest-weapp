@@ -13,7 +13,11 @@
     </resultMap>
 
     <sql id="selectPostLikeRecordVo">
-        select id, create_by, create_time, post_id,(select `name` from ci_post_info where post_id = ci_post_info.id) as "post_name",
+        select id,
+               create_by,
+               create_time,
+               post_id,
+               (select `name` from ci_post_info where post_id = ci_post_info.id) as "post_name"
         from ci_post_like_record
     </sql>
 
