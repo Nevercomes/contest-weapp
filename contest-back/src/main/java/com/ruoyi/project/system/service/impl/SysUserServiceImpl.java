@@ -403,4 +403,24 @@ public class SysUserServiceImpl implements ISysUserService {
         return successMsg.toString();
     }
 
+    /**
+     * 创建小程序用户
+     * @param openId
+     * @param pwd
+     * @return
+     */
+    @Override
+    @Transactional
+    public SysUser createWeappUser(String openId, String pwd) {
+        SysUser user = new SysUser();
+        user.setOpenId(openId);
+        user.setUserName(openId);
+        user.setPassword(pwd);
+        userMapper.insertUser(user);
+        Long[] roleIds = {2L};
+        user.setRoleIds(roleIds);
+        insertUserRole(user);
+        return user;
+    }
+
 }

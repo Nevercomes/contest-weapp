@@ -134,3 +134,12 @@ oss:
   avatarFile: avatar
   # 竞赛封面文件夹
   competionFile: competition
+
+# 小程序参数
+weapp:
+  # appId
+  appId: wxf4a68b53013e8def
+  # appSecret
+  appSecret: f3546751d8cb7e9ca6be6f3a14d6c536
+  # 获取openId的api
+  jscode2session: https://api.weixin.qq.com/sns/jscode2session

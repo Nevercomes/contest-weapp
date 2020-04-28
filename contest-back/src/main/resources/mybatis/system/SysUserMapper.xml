@@ -28,6 +28,7 @@
         <result property="grade" column="grade"/>
         <result property="trueName" column="true_name"/>
         <result property="schoolName" column="school_name"/>
+        <result property="openId" column="open_id"/>
         <association property="dept" column="dept_id" javaType="SysDept" resultMap="deptResult"/>
         <collection property="roles" javaType="java.util.List" resultMap="RoleResult"/>
     </resultMap>
@@ -51,62 +52,62 @@
     </resultMap>
 
     <select id="selectUserInfoVo">
-        select
-            u.user_id,
-            u.user_name,
-            u.nick_name,
-            u.email,
-            u.avatar,
-            u.phonenumber,
-            u.school_id,
-            u.major,
-            u.grade,
-            u.true_name,
-            s.school_name
+        select u.user_id,
+               u.user_name,
+               u.nick_name,
+               u.email,
+               u.avatar,
+               u.phonenumber,
+               u.school_id,
+               u.major,
+               u.grade,
+               u.true_name,
+               u.open_id,
+               s.school_name
         from sys_user u
-            left join edu_school s on s.school_id = u.school_id
+                 left join edu_school s on s.school_id = u.school_id
     </select>
 
     <sql id="selectUserVo">
-        select
-            u.user_id,
-            u.dept_id,
-            u.user_name,
-            u.nick_name,
-            u.email,
-            u.avatar,
-            u.phonenumber,
-            u.password,
-            u.sex,
-            u.status,
-            u.del_flag,
-            u.login_ip,
-            u.login_date,
-            u.create_by,
-            u.create_time,
-            u.remark,
-            u.major,
-            u.school_id,
-            u.grade,
-            u.true_name,
-            d.dept_id,
-            d.parent_id,
-            d.dept_name,
-            d.order_num,
-            d.leader,
-            d.status as dept_status,
-            r.role_id,
-            r.role_name,
-            r.role_key,
-            r.role_sort,
-            r.data_scope,
-            r.status as role_status,
-            s.school_name
+        select u.user_id,
+               u.dept_id,
+               u.user_name,
+               u.nick_name,
+               u.email,
+               u.avatar,
+               u.phonenumber,
+               u.password,
+               u.sex,
+               u.status,
+               u.del_flag,
+               u.login_ip,
+               u.login_date,
+               u.create_by,
+               u.create_time,
+               u.remark,
+               u.major,
+               u.school_id,
+               u.grade,
+               u.true_name,
+               u.open_id,
+               d.dept_id,
+               d.parent_id,
+               d.dept_name,
+               d.order_num,
+               d.leader,
+               d.status as dept_status,
+               r.role_id,
+               r.role_name,
+               r.role_key,
+               r.role_sort,
+               r.data_scope,
+               r.status as role_status,
+               s.school_name
         from sys_user u
-            left join sys_dept d on u.dept_id = d.dept_id
-            left join sys_user_role ur on u.user_id = ur.user_id
-            left join sys_role r on r.role_id = ur.role_id
-            left join edu_school s on s.school_id = u.school_id
+                 left join sys_dept d on u.dept_id = d.dept_id
+                 left join sys_user_role ur on u.user_id = ur.user_id
+                 left join sys_role r on r.role_id = ur.role_id
+                 left join edu_school s on s.school_id = u.school_id
     </sql>
 
     <select id="selectUserList" parameterType="SysUser" resultMap="SysUserResult">
@@ -115,6 +116,7 @@
         u.school_id,
         u.grade,
         u.true_name,
+        u.open_id,
         u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.dept_name, d.leader,
         s.school_name from
         sys_user u
@@ -167,25 +169,23 @@
     </select>
 
     <select id="selectCreateUser" parameterType="String" resultMap="SysUserResult">
-        select
-            nick_name,
-            avatar,
-            school_id,
-            (select school_name
-             from edu_school
-             where sys_user.school_id = edu_school.school_id) as "school_name"
+        select nick_name,
+               avatar,
+               school_id,
+               (select school_name
+                from edu_school
+                where sys_user.school_id = edu_school.school_id) as "school_name"
         from sys_user
         where user_name = #{userName}
     </select>
 
     <select id="selectAssUser" parameterType="Long" resultMap="SysUserResult">
-        select
-            nick_name,
-            avatar,
-            school_id,
-            (select school_name
-             from edu_school
-             where sys_user.school_id = edu_school.school_id) as "school_name"
+        select nick_name,
+               avatar,
+               school_id,
+               (select school_name
+                from edu_school
+                where sys_user.school_id = edu_school.school_id) as "school_name"
         from sys_user
         where user_id = #{userId}
     </select>
@@ -197,17 +197,15 @@
     </select>
 
     <select id="checkPhoneUnique" parameterType="String" resultMap="SysUserResult">
-        select
-            user_id,
-            phonenumber
+        select user_id,
+               phonenumber
         from sys_user
         where phonenumber = #{phonenumber}
     </select>
 
     <select id="checkEmailUnique" parameterType="String" resultMap="SysUserResult">
-        select
-            user_id,
-            email
+        select user_id,
+               email
         from sys_user
         where email = #{email}
     </select>
@@ -299,7 +297,8 @@
     </update>
 
     <delete id="deleteUserById" parameterType="Long">
-        delete from sys_user
+        delete
+        from sys_user
         where user_id = #{userId}
     </delete>
 

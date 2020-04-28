@@ -80,12 +80,10 @@
 		{
 			"path": "pages/component/swiper",
 			"style": {}
-		},
-		{
+		}, {
 			"path": "pages/component/modal",
 			"style": {}
-		},
-		{
+		}, {
 			"path": "pages/component/steps",
 			"style": {}
 		}, {
@@ -100,7 +98,28 @@
 		}, {
 			"path": "pages/plugin/verticalnav",
 			"style": {}
+		},
+		{
+			"path": "pages/ci/home-index",
+			"style": {}
+		},
+		{
+			"path": "pages/ci/competition-index",
+			"style": {}
+		},
+		{
+			"path": "pages/ci/message-index",
+			"style": {}
+		},
+		{
+			"path": "pages/ci/news-index",
+			"style": {}
+		},
+		{
+			"path": "pages/ci/user-index",
+			"style": {}
 		}
+
 	],
 	"globalStyle": {
 		"mp-alipay": {
