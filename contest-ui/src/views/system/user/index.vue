@@ -96,6 +96,13 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
+            <el-form-item label="学校" prop="schoolId">
+              <el-select v-model="form.schoolId" filterable placeholder="请选择学校">
+                <el-option v-for="item in schoolOptions" :label="item.label" :value="item.value" :key="item.value"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
             <el-form-item label="专业" prop="major">
               <el-input v-model="form.major" placeholder="请输入专业" />
             </el-form-item>
@@ -182,6 +189,9 @@
   import {
     treeselect
   } from "@/api/system/dept";
+  import {
+    getSchoolOptions
+  } from '@/api/system/school.js'
   import Treeselect from "@riophae/vue-treeselect";
   import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
@@ -226,6 +236,8 @@
         roleOptions: [],
         // 年级选项
         gradeOptions: [],
+        // 学校选项
+        schoolOptions: [],
         // 表单参数
         form: {},
         defaultProps: {
@@ -302,6 +314,9 @@
       this.getConfigKey("sys.user.initPassword").then(response => {
         this.initPassword = response.msg;
       });
+      getSchoolOptions().then(res => {
+        this.schoolOptions = res.data
+      })
     },
     methods: {
       /** 查询用户列表 */
@@ -356,6 +371,7 @@
           userName: undefined,
           nickName: undefined,
           trueName: undefined,
+          schoolId: undefined,
           major: undefined,
           grade: undefined,
           password: undefined,

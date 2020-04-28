@@ -18,26 +18,57 @@
         <result property="schoolId" column="school_id"/>
         <result property="schoolName" column="school_name"/>
         <result property="holder" column="holder"/>
+        <association property="details" column="cp_id" javaType="CompetitionPeriodDetails" resultMap="detailsResult"/>
+    </resultMap>
+
+    <resultMap type="CompetitionPeriodDetails" id="detailsResult">
+        <result property="cpId" column="cp_id"/>
+        <result property="intro" column="intro"/>
+        <result property="content" column="content"/>
+        <result property="officialLink" column="official_link"/>
     </resultMap>
 
     <sql id="selectCompetitionPeriodVo">
-        select
-            id,
-            create_by,
-            update_by,
-            create_time,
-            update_time,
-            cp_info_id,
-            name,
-            pic_url,
-            sign_begin_time,
-            sign_end_time,
-            school_id,
-            (select school_name
-             from edu_school
-             where edu_school.school_id = ci_competition_period.school_id) as "school_name",
-            holder
+        select id,
+               create_by,
+               update_by,
+               create_time,
+               update_time,
+               cp_info_id,
+               name,
+               pic_url,
+               sign_begin_time,
+               sign_end_time,
+               school_id,
+               (select school_name
+                from edu_school
+                where edu_school.school_id = ci_competition_period.school_id) as "school_name",
+               holder
         from ci_competition_period
+    </sql>
+
+    <sql id="selectCompetitionPeriodDetailsVo">
+        select id,
+               create_by,
+               update_by,
+               create_time,
+               update_time,
+               cp_info_id,
+               name,
+               pic_url,
+               sign_begin_time,
+               sign_end_time,
+               school_id,
+               (select school_name
+                from edu_school
+                where edu_school.school_id = ci_competition_period.school_id) as "school_name",
+               holder,
+               d.cp_id,
+               d.official_link,
+               d.intro,
+               d.content
+        from ci_competition_period
+                 left join ci_competition_period_details d on d.cp_id = id
     </sql>
 
     <select id="selectCompetitionPeriodList" parameterType="CompetitionPeriod" resultMap="CompetitionPeriodResult">
@@ -53,7 +84,7 @@
     </select>
 
     <select id="selectCompetitionPeriodById" parameterType="Long" resultMap="CompetitionPeriodResult">
-        <include refid="selectCompetitionPeriodVo"/>
+        <include refid="selectCompetitionPeriodDetailsVo"/>
         where id = #{id}
     </select>
 
@@ -122,7 +153,8 @@
     </update>
 
     <delete id="deleteCompetitionPeriodById" parameterType="Long">
-        delete from ci_competition_period
+        delete
+        from ci_competition_period
         where id = #{id}
     </delete>
 

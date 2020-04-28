@@ -39,7 +39,13 @@
     <el-table v-loading="loading" :data="periodList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="编号" align="center" prop="id" />
-      <el-table-column label="名称" align="center" prop="name" show-overflow-tooltip />
+      <el-table-column label="名称" align="center" show-overflow-tooltip>
+        <template slot-scope="scope">
+          <router-link :to="'/cp/periodDetails/' + scope.row.id" class="link-type">
+            <span>{{ scope.row.name }}</span>
+          </router-link>
+        </template>
+      </el-table-column>
       <el-table-column label="报名开始" align="center" prop="signBeginTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.signBeginTime) }}</span>
@@ -172,6 +178,16 @@
           holder: [{
             required: true,
             message: "主办方不能为空",
+            trigger: "blur"
+          }],
+          signBeginTime: [{
+            required: true,
+            message: '报名开始时间不能为空',
+            trigger: "blur"
+          }],
+          signEndTime: [{
+            required: true,
+            message: '报名结束时间不能为空',
             trigger: "blur"
           }]
         }

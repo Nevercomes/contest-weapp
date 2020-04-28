@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.project.ci.domain.CompetitionPeriodDetails;
+import com.ruoyi.project.ci.service.ICompetitionPeriodDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.project.ci.mapper.CompetitionPeriodMapper;
 import com.ruoyi.project.ci.domain.CompetitionPeriod;
 import com.ruoyi.project.ci.service.ICompetitionPeriodService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 竞赛列表信息Service业务层处理
@@ -20,6 +23,8 @@ import com.ruoyi.project.ci.service.ICompetitionPeriodService;
 public class CompetitionPeriodServiceImpl implements ICompetitionPeriodService {
     @Autowired
     private CompetitionPeriodMapper competitionPeriodMapper;
+    @Autowired
+    private ICompetitionPeriodDetailsService competitionPeriodDetailsService;
 
     /**
      * 查询竞赛列表信息
@@ -50,9 +55,16 @@ public class CompetitionPeriodServiceImpl implements ICompetitionPeriodService {
      * @return 结果
      */
     @Override
+    @Transactional
     public int insertCompetitionPeriod(CompetitionPeriod competitionPeriod) {
         competitionPeriod.preInsert();
-        return competitionPeriodMapper.insertCompetitionPeriod(competitionPeriod);
+        int res = competitionPeriodMapper.insertCompetitionPeriod(competitionPeriod);
+        CompetitionPeriodDetails details = competitionPeriod.getDetails();
+        if (details != null) {
+            details.setCpId(competitionPeriod.getId());
+        }
+        competitionPeriodDetailsService.insertCompetitionPeriodDetails(details);
+        return res;
     }
 
     /**
@@ -62,9 +74,20 @@ public class CompetitionPeriodServiceImpl implements ICompetitionPeriodService {
      * @return 结果
      */
     @Override
+    @Transactional
     public int updateCompetitionPeriod(CompetitionPeriod competitionPeriod) {
         competitionPeriod.preUpdate();
-        return competitionPeriodMapper.updateCompetitionPeriod(competitionPeriod);
+        int res = competitionPeriodMapper.updateCompetitionPeriod(competitionPeriod);
+        CompetitionPeriodDetails details = competitionPeriod.getDetails();
+        if (details != null) {
+            if (details.getCpId() != null) {
+                competitionPeriodDetailsService.updateCompetitionPeriodDetails(details);
+            } else {
+                details.setCpId(competitionPeriod.getId());
+                competitionPeriodDetailsService.insertCompetitionPeriodDetails(details);
+            }
+        }
+        return res;
     }
 
     /**

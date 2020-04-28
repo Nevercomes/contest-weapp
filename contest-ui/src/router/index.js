@@ -24,6 +24,8 @@ import Layout from '@/layout'
   }
  */
 
+import periodForm from '@/views/ci/period/form'
+
 // 公共路由
 export const constantRoutes = [
   {
@@ -113,8 +115,21 @@ export const constantRoutes = [
       {
         path: 'edit',
         component: () => import('@/views/tool/gen/editTable'),
-        name: 'GenEdit', 
+        name: 'GenEdit',
         meta: { title: '修改生成配置' }
+      }
+    ]
+  },
+  {
+    path: '/cp',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'periodDetails/:periodId(\\d+)',
+        component: periodForm,
+        name: 'periodDetails',
+        meta: { title: '竞赛详情' }
       }
     ]
   }
