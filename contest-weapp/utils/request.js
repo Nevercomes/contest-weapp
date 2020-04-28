@@ -13,14 +13,19 @@ const param = {
 	// 默认的请求头
 	headers: {
 		// 内容类型
-		Content - Type: 'application/json;charset=utf-8',
+		'Content-Type': 'application/json;charset=utf-8',
 		// 请求携带token
-		Authorization: 'Bearer ' + getToken()
+		Authorization: getToken() ? 'Bearer ' + getToken() : ''
 	},
 	dataType: 'json'
 }
 
-export function request(url, method, data, mask) {
+export function request({
+	url: url,
+	method: method,
+	data: data,
+	mask: mask
+}) {
 	return new Promise((resolve, reject) => {
 		if (mask) {
 			uni.showLoading({

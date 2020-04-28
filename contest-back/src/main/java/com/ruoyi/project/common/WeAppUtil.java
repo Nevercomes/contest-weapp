@@ -1,9 +1,13 @@
 package com.ruoyi.project.common;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.http.HttpUtils;
+import com.ruoyi.project.system.domain.SysUser;
+import com.ruoyi.project.system.mapper.SysUserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 /**
@@ -16,25 +20,23 @@ public final class WeAppUtil {
 
     private static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
 
-    @Value("${weapp.appId}")
-    private static String appId;
-    @Value("${weapp.appSecret}")
-    private static String appSecret;
-    @Value("${weapp.jscode2session}")
-    private static String jscode2sessionUrl;
+    private final static String APP_ID = "wxf4a68b53013e8def";
+    private final static String APP_SECRET = "f3546751d8cb7e9ca6be6f3a14d6c536";
+    private final static String JSCODE_SESSION_URL = "https://api.weixin.qq.com/sns/jscode2session";
 
     public static String getOpenId(String code) {
         try {
-            String param = "appid=" + appId + "&secret=" + appSecret + "&js_code=" + code
+            String param = "appid=" + APP_ID + "&secret=" + APP_SECRET + "&js_code=" + code
                     + "&grant_type=authorization_code";
-            String accessJson = HttpUtils.sendGet(jscode2sessionUrl, param);
+            String accessJson = HttpUtils.sendGet(JSCODE_SESSION_URL, param);
             JSONObject jsonObject = JSONObject.parseObject(accessJson);
-            String errCode = jsonObject.getString("errcode");
-            String errMsg = jsonObject.getString("errmsg");
-            if (!"0".equals(errCode)) {
-                log.error("获取openId失败, code:{}, msg:{}", errCode, errMsg);
+            String openId = jsonObject.getString("openid");
+            if (StringUtils.isEmpty(openId)) {
+                String errCode = jsonObject.getString("errcode");
+                String errMsg = jsonObject.getString("errmsg");
+                log.warn("获取openId失败, code:{}, msg:{}", errCode, errMsg);
             }
-            return jsonObject.getString("openid");
+            return openId;
 
         } catch (Exception e) {
             log.error("获取openId发生错误:{}", e.getMessage());

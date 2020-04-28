@@ -13,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.exception.CustomException;
@@ -24,6 +25,7 @@ import com.ruoyi.framework.manager.AsyncManager;
 import com.ruoyi.framework.manager.factory.AsyncFactory;
 import com.ruoyi.framework.redis.RedisCache;
 import com.ruoyi.framework.security.LoginUser;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,6 +61,7 @@ public class SysLoginService {
     public String login(String username, String password, String code, String uuid) {
         String verifyKey = Constants.CAPTCHA_CODE_KEY + uuid;
         String captcha = redisCache.getCacheObject(verifyKey);
+        System.err.println(password);
         redisCache.deleteObject(verifyKey);
         if (captcha == null) {
             AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.expire")));
@@ -95,6 +98,7 @@ public class SysLoginService {
      * @param code
      * @return
      */
+    @Transactional
     public Map<String, Object> wxLogin(String code) {
         String openId = WeAppUtil.getOpenId(code);
         Map<String, Object> res = new HashMap<>();
@@ -102,10 +106,11 @@ public class SysLoginService {
         if (StringUtils.isNotEmpty(openId)) {
             // 通过openId查找用户
             SysUser user = userService.selectUserByUserName(openId);
-            String pwd = "";
+            String pwd = "sdy1923g204987h3387";
+            String BCPwd = new BCryptPasswordEncoder().encode(pwd);
             if (user == null) {
                 // 根据openId创建用户
-                user = userService.createWeappUser(openId, pwd);
+                userService.createWeappUser(openId, BCPwd);
                 res.put("register", true);
             }
             Authentication authentication = null;

@@ -1,5 +1,6 @@
 <script>
 	import Vue from 'vue'
+
 	export default {
 		onLaunch: function() {
 			uni.getSystemInfo({
@@ -24,6 +25,16 @@
 					Vue.prototype.StatusBar = e.statusBarHeight;
 					Vue.prototype.CustomBar = e.statusBarHeight + e.titleBarHeight;
 					// #endif
+				}
+			})
+
+			// 进行初次登录
+			this.$store.dispatch('Login').then(res => {
+				if (res.register) {
+					// 上传微信信息
+					console.log('首次登录')
+				} else {
+					console.log('非首次登录')
 				}
 			})
 

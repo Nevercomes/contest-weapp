@@ -61,7 +61,7 @@ public class SysLoginController {
      * @param code wxCode
      * @return token和是否首次登录
      */
-    @PostMapping("/wxLogin")
+    @GetMapping("/wxLogin")
     public AjaxResult wxLogin(@RequestParam("code") String code) {
         return AjaxResult.success(loginService.wxLogin(code));
     }
