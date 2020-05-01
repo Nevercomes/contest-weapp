@@ -47,8 +47,8 @@ const user = {
 					provider: 'weixin',
 					success(wxRes) {
 						login(wxRes.code).then(res => {
-							setToken(res.token)
-							commit('SET_TOKEN', res.token)
+							setToken(res.data.token)
+							commit('SET_TOKEN', res.data.token)
 							resolve(res)
 						}).catch(error => {
 							reject(error)
@@ -68,6 +68,7 @@ const user = {
 		}) {
 			return new Promise((resolve, reject) => {
 				getInfo().then(res => {
+					res = res.data
 					const user = res.user
 					const avatar = user.avatar == "" ? require("@/static/logo.png") : config.REQ_API +
 						user.avatar;

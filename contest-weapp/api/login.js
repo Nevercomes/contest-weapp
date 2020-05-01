@@ -1,12 +1,10 @@
-import {
-	request
-} from '../utils/request.js'
+import http from '@/utils/request.js'
 
 // 调用微信登录
 export function login(code) {
-	return request({
+	return http.request({
 		url: '/wxLogin',
-		method: 'get',
+		method: 'GET',
 		data: {
 			code: code
 		}
@@ -15,17 +13,17 @@ export function login(code) {
 
 // 获取用户详细信息
 export function getInfo() {
-	return request({
+	return http.request({
 		url: '/getInfo',
-		method: 'get'
+		method: 'GET'
 	})
 }
 
 // 退出方法
 export function logout() {
-  return request({
+  return http.request({
     url: '/logout',
-    method: 'post'
+    method: 'POST'
   })
 }
 

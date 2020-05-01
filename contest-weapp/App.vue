@@ -29,14 +29,17 @@
 			})
 
 			// 进行初次登录
-			this.$store.dispatch('Login').then(res => {
-				if (res.register) {
-					// 上传微信信息
-					console.log('首次登录')
-				} else {
-					console.log('非首次登录')
-				}
-			})
+			const token = uni.getStorageSync('Zhulu-Token')
+			if(!token) {
+				this.$store.dispatch('Login').then(res => {
+					if (res.register) {
+						// 上传微信信息
+						console.log('首次登录')
+					} else {
+						console.log('非首次登录')
+					}
+				})
+			}
 
 			Vue.prototype.ColorList = [{
 					title: '嫣红',
