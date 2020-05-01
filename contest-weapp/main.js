@@ -22,6 +22,35 @@ import {
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
 
+// 使用toast进行消息反馈
+Vue.prototype.msgInfo = (msg) => {
+	uni.showToast({
+		title: msg,
+		icon: 'none',
+		position: 'bottom'
+	})
+}
+
+// 使用toast进行成功消息反馈
+Vue.prototype.msgSuccess = (msg) => {
+	uni.showToast({
+		title: msg,
+		icon: 'success'
+	})
+}
+
+Vue.prototype.hasMore = (total, pageNum, pageSize = 10) => {
+	try {
+		if(total <= 0 || pageNum < 1) {
+			return false
+		} else {
+			return total > pageNum * pageSize
+		}
+	} catch (e) {
+		return false
+	}
+}
+
 Vue.config.productionTip = false
 
 App.mpType = 'app'

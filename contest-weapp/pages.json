@@ -130,6 +130,14 @@
 		{
 			"path": "pages/ci/user-identify-form",
 			"style": {}
+		},
+
+		// 系统-公共相关
+		{
+			"path": "pages/ci/sys-school-list",
+			"style": {
+				"enablePullDownRefresh": true
+			}
 		}
 
 	],
@@ -253,6 +261,10 @@
 		}, {
 			"name": "userIdentifyForm",
 			"path": "pages/ci/user-identify-form",
+			"query": ""
+		}, {
+			"name": "schoolList",
+			"path": "pages/ci/sys-school-list",
 			"query": ""
 		}]
 	}

@@ -9,23 +9,22 @@
 		<form @submit="submitForm">
 			<view class="cu-form-group margin-top">
 				<view class="title">姓名</view>
-				<input v-model="form.trueName" name="trueName" placeholder="请输入真实姓名" confirm-type="next"></input>
+				<input v-model="form.trueName" name="trueName" placeholder="请输入真实姓名" confirm-type="next" />
 			</view>
 			<view class="cu-form-group">
 				<view class="title">学校</view>
-				<input v-model="form.schoolName" name="schoolName" disabled placeholder="请选择学校"></input>
+				<view class="input-picker" @click="goToSchoolList">
+					<input v-model="form.schoolName" name="schoolName" disabled placeholder="请选择学校" />
+				</view>
 			</view>
 			<view class="cu-form-group">
 				<view class="title">专业</view>
-				<input v-model="form.major" name="major" placeholder="请输入专业" confirm-type="next"></input>
+				<input v-model="form.major" name="major" placeholder="请输入专业" confirm-type="next" />
 			</view>
 			<view class="cu-form-group">
 				<view class="title">年级</view>
 				<picker @change="pickerChange" :value="index" :range="gradeOptionsPicker">
-					<!-- <view class="picker">
-						{{index>-1?picker[index]:''}}
-					</view> -->
-					<input v-model="form.gradeLabel" name="gradeLabel" disabled placeholder="请选择年级"></input>
+					<input v-model="form.gradeLabel" name="gradeLabel" disabled placeholder="请选择年级" />
 				</picker>
 			</view>
 
@@ -96,17 +95,12 @@
 		},
 		onLoad() {
 			this.getDicts('sys_user_grade').then(res => {
-				if(res == 'login') {
-					this.getDicts('sys_user_grade')
-				} else {
-					this.gradeOptions = res.data
-					this.gradeOptionsPicker = res.data.map(item => item.dictLabel)
-					this.getDicts('sys_user_grade')
-				}
-			}).catch(() => {
+				this.gradeOptions = res.data
+				this.gradeOptionsPicker = res.data.map(item => item.dictLabel)
 			})
-			
-			this.reset()
+		},
+		onShow() {
+			console.log(this.form)
 		},
 		methods: {
 			reset() {
@@ -125,22 +119,26 @@
 				this.form.gradeLabel = this.gradeOptions[index].dictLabel
 				console.log(this.form)
 			},
-			submitForm(e) {
-				if (this.validForm(e)) {
+			submitForm() {
+				if (this.validForm(this.form)) {
 					// 调用提交方法
 				}
 			},
 			validForm(params) {
+				console.log(params)
 				let wxValidate = new WxValidate(this.rules, this.messages)
 				if (!wxValidate.checkForm(params)) {
 					const error = wxValidate.errorList[0]
 					console.log(wxValidate.errorList)
-					uni.showToast({
-						title: error.msg,
-					})
+					this.msgInfo(error.msg)
 					return false
 				}
 				return true
+			},
+			goToSchoolList() {
+				uni.navigateTo({
+					url: '/pages/ci/sys-school-list'
+				})
 			}
 		}
 	}

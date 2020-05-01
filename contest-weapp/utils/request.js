@@ -32,7 +32,7 @@ http.interceptor.request((config, cancel) => {
 
 // 配置响应拦截器,每次请求前都会调用
 http.interceptor.response((res) => {
-	console.log(res)
+	console.log(res.data)
 	const code = res.data.code
 	// 登录状态过期,调用微信进行静默登录
 	if (code === 401) {
