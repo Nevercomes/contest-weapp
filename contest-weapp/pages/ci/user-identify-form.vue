@@ -43,6 +43,9 @@
 <script>
 	import NlMaskLoading from '@/nl_componet/nl-mask-loading.vue'
 	import WxValidate from '@/utils/WxValidate.js'
+	import {
+		identify
+	} from '@/api/system/user.js'
 
 	export default {
 		name: 'UserIdentifyForm',
@@ -99,9 +102,6 @@
 				this.gradeOptionsPicker = res.data.map(item => item.dictLabel)
 			})
 		},
-		onShow() {
-			console.log(this.form)
-		},
 		methods: {
 			reset() {
 				this.form = {
@@ -117,19 +117,24 @@
 				const index = e.target.value
 				this.form.grade = this.gradeOptions[index].dictValue
 				this.form.gradeLabel = this.gradeOptions[index].dictLabel
-				console.log(this.form)
+				this.$forceUpdate()
 			},
 			submitForm() {
-				if (this.validForm(this.form)) {
+				// if (this.validForm(this.form)) {
 					// 调用提交方法
-				}
+					this.loading = true
+					identify(this.form).then(res => {
+						this.loading = false
+						this.msgSuccess('实名认证成功')
+					}).catch(() => {
+						this.loading = false
+					})
+				// }
 			},
 			validForm(params) {
-				console.log(params)
 				let wxValidate = new WxValidate(this.rules, this.messages)
 				if (!wxValidate.checkForm(params)) {
 					const error = wxValidate.errorList[0]
-					console.log(wxValidate.errorList)
 					this.msgInfo(error.msg)
 					return false
 				}

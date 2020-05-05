@@ -173,4 +173,11 @@ public interface ISysUserService {
      * @return
      */
     SysUser createWeappUser(String openId, String pwd);
+
+    /**
+     * 创建认证
+     * @param user
+     * @return
+     */
+    int createUserIdentify(SysUser user);
 }

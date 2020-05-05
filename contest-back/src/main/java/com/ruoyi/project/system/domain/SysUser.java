@@ -164,6 +164,11 @@ public class SysUser extends BaseEntity {
      */
     private String grade;
 
+    /**
+     * 认证状态
+     */
+    private String identified;
+
     public SysUser() {
 
     }

@@ -423,4 +423,22 @@ public class SysUserServiceImpl implements ISysUserService {
         return user;
     }
 
+    /**
+     * 创建用户认证身份
+     * @param user
+     * @return
+     */
+    @Override
+    @Transactional
+    public int createUserIdentify(SysUser user) {
+        int rows = userMapper.createUserIdentify(user);
+        // 删除旧的角色权限
+        userRoleMapper.deleteUserRoleByUserId(user.getUserId());
+        Long[] roleIds = {101L};
+        user.setRoleIds(roleIds);
+        // 添加认证用户权限
+        insertUserRole(user);
+        return rows;
+    }
+
 }

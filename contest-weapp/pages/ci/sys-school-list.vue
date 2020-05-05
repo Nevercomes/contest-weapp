@@ -60,7 +60,6 @@
 				})
 			},
 			onSearch(e) {
-				console.log(e)
 				this.dataList = []
 				this.queryParams.schoolName = e.detail
 				this.queryParams.pageNum = 1

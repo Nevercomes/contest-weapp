@@ -176,4 +176,19 @@ public class SysUserController extends BaseController {
         user.preUpdate();
         return toAjax(userService.updateUserStatus(user));
     }
+
+    /**
+     * 状态修改
+     */
+    @PreAuthorize("@ss.hasPermi('system:user:identify')")
+    @Log(title = "实名认证", businessType = BusinessType.UPDATE)
+    @PostMapping("/identify")
+    public AjaxResult identify(@RequestBody SysUser user) {
+        Long userId = SecurityUtils.getUserId();
+        user.setUserId(userId);
+        int rows = userService.createUserIdentify(user);
+        // TODO 更新缓存内的用户权限数据
+
+        return toAjax(rows);
+    }
 }

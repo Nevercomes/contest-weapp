@@ -125,4 +125,11 @@ public interface SysUserMapper {
      * @return
      */
     SysUser selectAssUser(Long userId);
+
+    /**
+     * 添加用户认证
+     * @param user
+     * @return
+     */
+    int createUserIdentify(SysUser user);
 }
