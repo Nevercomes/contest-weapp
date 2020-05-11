@@ -62,8 +62,8 @@ public class CompetitionPeriodServiceImpl implements ICompetitionPeriodService {
         CompetitionPeriodDetails details = competitionPeriod.getDetails();
         if (details != null) {
             details.setCpId(competitionPeriod.getId());
+            competitionPeriodDetailsService.insertCompetitionPeriodDetails(details);
         }
-        competitionPeriodDetailsService.insertCompetitionPeriodDetails(details);
         return res;
     }
 

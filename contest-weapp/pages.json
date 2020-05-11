@@ -109,6 +109,10 @@
 			"path": "pages/ci/competition-index",
 			"style": {}
 		},
+		{
+			"path": "pages/ci/competition-select",
+			"style": {}
+		},
 
 		// 消息相关
 		{
@@ -131,7 +135,28 @@
 			"path": "pages/ci/user-identify-form",
 			"style": {}
 		},
-
+		// 队伍相关
+		{
+			"path": "pages/ci/team-public",
+			"style": {}
+		},
+		{
+			"path":"pages/ci/team-public-member",
+			"style": {}
+		},
+		{
+			"path":"pages/ci/team-public-member-form",
+			"style": {}
+		},
+		// 搜索
+		{
+			"path": "pages/ci/search-index",
+			"style": {}
+		},
+		{
+			"path": "pages/ci/search-result",
+			"style": {}
+		},
 		// 系统-公共相关
 		{
 			"path": "pages/ci/sys-school-list",
@@ -263,8 +288,12 @@
 			"path": "pages/ci/user-identify-form",
 			"query": ""
 		}, {
-			"name": "schoolList",
-			"path": "pages/ci/sys-school-list",
+			"name": "homeIndex",
+			"path": "pages/ci/home-index",
+			"query": ""
+		}, {
+			"name": "teamPublic",
+			"path": "pages/ci/team-public",
 			"query": ""
 		}]
 	}

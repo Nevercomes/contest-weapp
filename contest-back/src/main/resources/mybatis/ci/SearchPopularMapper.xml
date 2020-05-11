@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.ci.mapper.SearchPopularMapper">
+    
+    <resultMap type="SearchPopular" id="SearchPopularResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="keyword"    column="keyword"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="type"    column="type"    />
+    </resultMap>
+
+    <sql id="selectSearchPopularVo">
+        select id, create_by, create_time, keyword, order_num, type from ci_search_popular
+    </sql>
+
+    <select id="selectSearchPopularList" parameterType="SearchPopular" resultMap="SearchPopularResult">
+        <include refid="selectSearchPopularVo"/>
+        <where>  
+            <if test="keyword != null  and keyword != ''"> and keyword like concat('%', #{keyword}, '%')</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+        </where>
+    </select>
+    
+    <select id="selectSearchPopularById" parameterType="Long" resultMap="SearchPopularResult">
+        <include refid="selectSearchPopularVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectSearchPopularOptions" parameterType="SearchPopular" resultType="Map">
+         select id as "value",
+         `name` as "label"
+        from ci_search_popular
+        <if test="name != null and name != ''">
+            where `name` like concat('%', #{name}, '%')
+         </if>
+    </select>
+        
+    <insert id="insertSearchPopular" parameterType="SearchPopular" useGeneratedKeys="true" keyProperty="id">
+        insert into ci_search_popular
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="keyword != null  and keyword != ''">keyword,</if>
+            <if test="orderNum != null ">order_num,</if>
+            <if test="type != null  and type != ''">type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="keyword != null  and keyword != ''">#{keyword},</if>
+            <if test="orderNum != null ">#{orderNum},</if>
+            <if test="type != null  and type != ''">#{type},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSearchPopular" parameterType="SearchPopular">
+        update ci_search_popular
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="keyword != null  and keyword != ''">keyword = #{keyword},</if>
+            <if test="orderNum != null ">order_num = #{orderNum},</if>
+            <if test="type != null  and type != ''">type = #{type},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSearchPopularById" parameterType="Long">
+        delete from ci_search_popular where id = #{id}
+    </delete>
+
+    <delete id="deleteSearchPopularByIds" parameterType="String">
+        delete from ci_search_popular where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -2,22 +2,22 @@
 	<view class="app-container">
 		<cu-custom bgColor="bg-gradual-pink" :isBack="true">
 			<block slot="backText">返回</block>
-			<block slot="content">选择学校</block>
+			<block slot="content">选择竞赛</block>
 		</cu-custom>
-		<van-search :value="queryParams.schoolName" placeholder="请输入学校名称" show-action @search="onSearch" @cancel="onCancel" />
+		<van-search :value="queryParams.name" placeholder="请输入竞赛名称" show-action @search="onSearch" @cancel="onCancel" />
 		<van-cell-group>
-		  <van-cell v-for="item in dataList" :key="item.schoolId" @click="onItemClick(item)" clickable :title="item.schoolName"  />
+			<van-cell v-for="item in dataList" :key="item.id" @click="onItemClick(item)" clickable :title="item.name" />
 		</van-cell-group>
 	</view>
 </template>
 
 <script>
 	import {
-		listSchool
-	} from '@/api/system/school.js'
+		listPeriod
+	} from '@/api/ci/period.js'
 
 	export default {
-		name: 'SysSchoolSelect',
+		name: 'CompetitionPeriodSelect',
 		data() {
 			return {
 				// 加载状态
@@ -28,7 +28,7 @@
 				queryParams: {
 					pageNum: 1,
 					pageSize: 30,
-					schoolName: undefined
+					name: undefined
 				},
 				// 数据列表
 				dataList: [],
@@ -52,7 +52,7 @@
 		methods: {
 			loadList() {
 				this.loading = true
-				listSchool(this.queryParams).then(res => {
+				listPeriod(this.queryParams).then(res => {
 					this.loading = false
 					// 计算是否有更多数据
 					this.hasMoreData = this.hasMore(res.total, this.queryParams.pageNum, this.queryParams.pageSize)
@@ -61,7 +61,7 @@
 			},
 			onSearch(e) {
 				this.dataList = []
-				this.queryParams.schoolName = e.detail
+				this.queryParams.name = e.detail
 				this.queryParams.pageNum = 1
 				this.loadList()
 			},
@@ -70,14 +70,14 @@
 			},
 			onItemClick(row) {
 				const pages = getCurrentPages()
-				if(pages.length >= 2) {
+				if (pages.length >= 2) {
 					const prePage = pages[pages.length - 2]
 					prePage.setData({
-						'form.schoolName': row.schoolName
+						'form.compName': row.name
 					})
 					// 这样子form可以绑定上数据，但是页面不会渲染, 所以前面添加一个setData
-					prePage.$vm.form.schoolName = row.schoolName
-					prePage.$vm.form.schoolId = row.schoolId
+					prePage.$vm.form.compName = row.name
+					prePage.$vm.form.compId = row.id
 					console.log(prePage)
 				}
 				uni.navigateBack({
@@ -89,5 +89,5 @@
 </script>
 
 <style scoped lang="scss">
-	
+
 </style>
