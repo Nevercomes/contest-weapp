@@ -16,11 +16,13 @@ import cuCustom from './colorui/components/cu-custom.vue'
 Vue.component('cu-custom', cuCustom)
 
 import {
-	getDicts
+	getDicts,
+	selectDictLabel
 } from './api/system/dict.js'
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
+Vue.prototype.selectDictLabel = selectDictLabel
 
 // 使用toast进行消息反馈
 Vue.prototype.msgInfo = (msg) => {

@@ -3,7 +3,7 @@
 		<view style="height: 50px; background: #fff; width: 100%;"></view>
 		<!-- 头像-基本信息 -->
 		<van-cell-group>
-			<van-cell is-link url="#" center>
+			<van-cell is-link :url="cellUrl.profile" center>
 				<view slot="title" class="cell-userinfo">
 					<!-- 头像 -->
 					<image v-if="avatar" class="cell-avatar" :src="avatar"></image>
@@ -28,14 +28,14 @@
 		</van-cell-group>
 		<!-- 一类 -->
 		<van-cell-group custom-class="margin-top:10px; margin-bottom: 10px">
-			<van-cell title="我的主页" is-link></van-cell>
+			<van-cell title="我的主页" :url="cellUrl.detail" is-link></van-cell>
 			<van-cell title="我的积分" is-link></van-cell>
 		</van-cell-group>
 		
 		<!-- 二类 -->
 		<van-cell-group>
 			<van-cell title="我的队伍" is-link></van-cell>
-			<van-cell title="我的发布" is-link></van-cell>
+			<van-cell title="我的动态" is-link></van-cell>
 			<van-cell title="我的关注" is-link></van-cell>
 			<van-cell title="我的收藏" is-link></van-cell>
 		</van-cell-group>
@@ -70,7 +70,12 @@
 		},
 		data() {
 			return {
-				loading: true
+				loading: true,
+				// cell的跳转路径
+				cellUrl: {
+					profile: '/pages/ci/user-profile',
+					detail: '/pages/ci/user-detail'
+				}
 			}
 		},
 		onLoad() {

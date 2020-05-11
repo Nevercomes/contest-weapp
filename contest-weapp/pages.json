@@ -147,6 +147,27 @@
 			"path": "pages/ci/user-identify-form",
 			"style": {}
 		},
+		{
+			"path":"pages/ci/user-profile",
+			"style": {}
+		},
+		{
+			"path":"pages/ci/user-detail",
+			"style": {}
+		},
+		{
+			"path":"pages/ci/user-detail-intro",
+			"style": {}
+		},
+		{
+			"path":"pages/ci/user-detail-experience",
+			"style": {}
+		},
+		{
+			"path":"pages/ci/user-detail-showsetting",
+			"style": {}
+		},
+		
 		// 队伍相关
 		{
 			"path": "pages/ci/team-public",
