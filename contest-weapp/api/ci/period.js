@@ -8,3 +8,11 @@ export function listPeriod(query) {
     params: query
   })
 }
+
+// 查询竞赛信息
+export function getPeriod(id) {
+  return http.request({
+    url: '/ci/period/' + id,
+    method: 'GET'
+  })
+}

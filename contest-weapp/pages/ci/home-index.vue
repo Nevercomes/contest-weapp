@@ -6,7 +6,7 @@
 			<!-- <block slot="content">操作条</block> -->
 		</cu-custom>
 		<!-- 搜索部分 -->
-		<van-search :value="keyWords" use-action-slot placeholder="请输入搜索关键词" @focus="goToSearchPage">
+		<van-search :value="keywords" use-action-slot placeholder="请输入搜索关键词" @focus="goToSearchPage">
 			<view style="display: flex; align-items: center;" slot="action" @tap="goToSettingPage">
 				<van-icon size="24" name="setting-o"></van-icon>
 			</view>
@@ -38,7 +38,7 @@
 		data() {
 			return {
 				// 搜索关键词
-				keyWords: undefined,
+				keywords: undefined,
 
 				// 轮播参数
 				cardCur: 0,

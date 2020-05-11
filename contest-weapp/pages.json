@@ -113,6 +113,14 @@
 			"path": "pages/ci/competition-select",
 			"style": {}
 		},
+		{
+			"path": "pages/ci/competition-info",
+			"style": {}
+		}, 
+		{
+			"path": "pages/ci/competition-comment",
+			"style": {}
+		},
 
 		// 消息相关
 		{
@@ -123,6 +131,10 @@
 		// 动态相关
 		{
 			"path": "pages/ci/news-index",
+			"style": {}
+		},
+		{
+			"path": "pages/ci/news-competition",
 			"style": {}
 		},
 
@@ -141,19 +153,23 @@
 			"style": {}
 		},
 		{
-			"path":"pages/ci/team-public-member",
+			"path": "pages/ci/team-public-member",
 			"style": {}
 		},
 		{
-			"path":"pages/ci/team-public-member-form",
+			"path": "pages/ci/team-public-member-form",
 			"style": {}
 		},
 		{
-			"path":"pages/ci/team-public-success",
+			"path": "pages/ci/team-public-success",
 			"style": {}
 		},
 		{
-			"path":"pages/ci/team-public-expect-success",
+			"path": "pages/ci/team-public-expect-success",
+			"style": {}
+		},
+		{
+			"path": "pages/ci/team-list-competition",
 			"style": {}
 		},
 		// 搜索
@@ -163,6 +179,10 @@
 		},
 		{
 			"path": "pages/ci/search-result",
+			"style": {}
+		},
+		{
+			"path": "pages/ci/search-competition",
 			"style": {}
 		},
 		// 系统-公共相关
