@@ -42,7 +42,27 @@
 				<view></view>
 			</van-tab>
 			<van-tab title="发布加入">
-				发布加入
+				<form @submit="submitAddForm">
+					<view class="cu-form-group margin-top">
+						<view class="title">比赛</view>
+						<view class="input-picker" @click="goToCompSelectPage">
+							<input v-model="form.compName" name="compName" disabled placeholder="请选择比赛" />
+						</view>
+					</view>
+					<view class="cu-form-group">
+						<view class="title">期望分工</view>
+						<picker @change="pickerChange" :value="index" :range="workOptionsPicker">
+							<input v-model="form.workLabel" name="workLabel" disabled placeholder="请选择分工" />
+						</picker>
+					</view>
+					<view class="cu-form-group">
+						<view class="title">个人能力</view>
+						<view v-for="(item,index) in capabilityList" :key="index" class='cu-tag radius' @click="onNotSelectClick(item)">{{item}}</view>
+					</view>
+					<view class="padding flex flex-direction">
+						<button class="cu-btn bg-green margin-tb-sm lg" form-type="submit">发布加入信息</button>
+					</view>
+				</form>
 			</van-tab>
 		</van-tabs>
 	</view>
@@ -50,6 +70,10 @@
 
 <script>
 	import WxValidate from '@/utils/WxValidate.js'
+	
+	import {
+		addExpect
+	} from '@/api/ci/expect.js'
 
 	export default {
 		name: 'TeamPublic',
@@ -69,6 +93,22 @@
 					name: '创建完成'
 				}],
 				form: {},
+				rules2: {
+					compName: {
+						required: true
+					},
+					workLabel: {
+						required: true
+					}
+				},
+				messages2: {
+					compName: {
+						required: '比赛不能为空'
+					},
+					workLabel: {
+						required: '期望分工不能为空'
+					}
+				},
 				rules1: {
 					compName: {
 						required: true
@@ -98,16 +138,24 @@
 				},
 				// 步骤进度
 				step: 0,
+				// 分工选项
+				workOptions: [],
+				workOptionsPicker: [],
+				// 默认能力期望标签
+				capabilityOptions: [],
+				capabilityLabelOptions: [],
+				// 个人能力
+				capabilityList: [],
 
 			}
 		},
 		onLoad() {
-
+			
 		},
 		methods: {
 			reset() {
 				this.form = {
-					compId: undefined,
+					cpId: undefined,
 					compName: undefined,
 					teamNumber: undefined,
 					recruitNumber: undefined
@@ -116,6 +164,16 @@
 			submitForm() {
 				if (this.validForm(this.form)) {
 					this.step = 1
+				}
+			},
+			submitAddForm() {
+				if(this.validAddForm(this.form)) {
+					// 发布加入信息
+					addExpect(this.form).then(res => {
+						uni.navigateTo({
+							url: 'team-public-expect-success?cpId=' + this.form.cpId
+						})
+					})
 				}
 			},
 			// 验证form1
@@ -128,10 +186,20 @@
 				}
 				return true
 			},
+			// 验证加入意愿信息表单
+			validAddForm() {
+				let wxValidate = new WxValidate(this.rules2, this.messages2)
+				if (!wxValidate.checkForm(params)) {
+					const error = wxValidate.errorList[0]
+					this.msgInfo(error.msg)
+					return false
+				}
+				return true
+			},
 			// 跳转到竞赛选取页面
 			goToCompSelectPage() {
 				uni.navigateTo({
-					url: 'competition-select?compId=' + this.form.compId + "&teamNumber=" + this.form.teamNumber + "&recruitNumber=" +
+					url: 'competition-select?cpId=' + this.form.cpId + "&teamNumber=" + this.form.teamNumber + "&recruitNumber=" +
 						this.form.recruitNumber
 				})
 			}

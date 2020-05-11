@@ -77,7 +77,7 @@
 					})
 					// 这样子form可以绑定上数据，但是页面不会渲染, 所以前面添加一个setData
 					prePage.$vm.form.compName = row.name
-					prePage.$vm.form.compId = row.id
+					prePage.$vm.form.cpId = row.id
 					console.log(prePage)
 				}
 				uni.navigateBack({

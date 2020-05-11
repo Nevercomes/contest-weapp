@@ -7,7 +7,7 @@
 		<view>队员{{index}}招募信息</view>
 		<form>
 			<view class="cu-form-group">
-				<view class="title">年级</view>
+				<view class="title">分工</view>
 				<picker @change="pickerChange" :value="index" :range="workOptionsPicker">
 					<input v-model="form.workLabel" name="workLabel" disabled placeholder="请选择分工" />
 				</picker>

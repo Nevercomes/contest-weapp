@@ -148,6 +148,14 @@
 			"path":"pages/ci/team-public-member-form",
 			"style": {}
 		},
+		{
+			"path":"pages/ci/team-public-success",
+			"style": {}
+		},
+		{
+			"path":"pages/ci/team-public-expect-success",
+			"style": {}
+		},
 		// 搜索
 		{
 			"path": "pages/ci/search-index",
