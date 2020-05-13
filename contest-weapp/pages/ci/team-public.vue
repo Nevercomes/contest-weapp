@@ -6,7 +6,7 @@
 			<block slot="content">队伍</block>
 		</cu-custom>
 		<!-- 队伍创建 -->
-		<van-tabs :active="active" bind:change="onChange">
+		<van-tabs :active="active" @change="onChange">
 			<van-tab title="创建队伍">
 				<view class="bg-white padding">
 					<view class="cu-steps">
@@ -195,6 +195,9 @@
 					return false
 				}
 				return true
+			},
+			onChange() {
+				
 			},
 			// 跳转到竞赛选取页面
 			goToCompSelectPage() {

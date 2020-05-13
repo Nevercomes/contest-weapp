@@ -17,3 +17,15 @@ export function addExpect(data) {
     data: data
   })
 }
+
+// 撤回意愿
+export function undoExpect(id) {
+	return http.request({
+		url: '/ci/expect',
+		method: 'put',
+		data: {
+			id: id,
+			status: '2'
+		}
+	})
+}

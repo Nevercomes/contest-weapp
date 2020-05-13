@@ -102,7 +102,7 @@ export default class Request {
       options.data = options.data || {}
       options.params = options.params || {}
       options.header = {...this.config.header, ...(options.header || {})}
-      options.method = options.method || this.config.method
+      options.method = options.method ? options.method.toLocaleUpperCase() : this.config.method
       options.custom =  {...this.config.custom,...(options.custom || {})}
       // #ifdef APP-PLUS
       options.sslVerify = options.sslVerify === undefined ? this.config.sslVerify : options.sslVerify

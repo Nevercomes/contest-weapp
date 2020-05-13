@@ -30,7 +30,7 @@
 </template>
 
 <script>
-	import WxValidate from '../utils/WxValidate.js'
+	import WxValidate from '@/utils/WxValidate.js'
 	import {
 		getExperience,
 		addExperience,

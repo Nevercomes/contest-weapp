@@ -164,11 +164,32 @@
 			"style": {}
 		},
 		{
+			"path":"pages/ci/user-detail-experience-form",
+			"style": {}
+		},
+		{
 			"path":"pages/ci/user-detail-showsetting",
 			"style": {}
 		},
+		{
+			"path":"pages/ci/user-concern-index",
+			"style": {}
+		},
+		{
+			"path":"pages/ci/user-collection-index",
+			"style": {}
+		},
+		{
+			"path":"pages/ci/user-collection-list",
+			"style": {}
+		},
+		
 		
 		// 队伍相关
+		{
+			"path":"pages/ci/team-info",
+			"style": {}
+		},
 		{
 			"path": "pages/ci/team-public",
 			"style": {}
@@ -193,6 +214,27 @@
 			"path": "pages/ci/team-list-competition",
 			"style": {}
 		},
+		{
+			"path":"pages/ci/user-team-index",
+			"style": {}
+		},
+		{
+			"path":"pages/ci/user-team-list",
+			"style": {}
+		},
+		{
+			"path":"pages/ci/user-team-expect",
+			"style": {}
+		},
+		{
+			"path":"pages/ci/user-team-invite",
+			"style": {}
+		},
+		{
+			"path":"pages/ci/user-team-apply",
+			"style": {}
+		},
+		
 		// 搜索
 		{
 			"path": "pages/ci/search-index",
@@ -206,12 +248,35 @@
 			"path": "pages/ci/search-competition",
 			"style": {}
 		},
+		// 积分
+		{
+			"path":"pages/ci/points-index",
+			"style": {}
+		},
+		{
+			"path":"pages/ci/points-action-list",
+			"style": {}
+		},
+		{
+			"path":"pages/ci/points-shop",
+			"style": {}
+		},
+		{
+			"path":"pages/ci/points-obtain-manual",
+			"style": {}
+		},
+		
+		
 		// 系统-公共相关
 		{
 			"path": "pages/ci/sys-school-list",
 			"style": {
 				"enablePullDownRefresh": true
 			}
+		},
+		{
+			"path":"pages/ci/sys-help-feedback",
+			"style": {}
 		}
 
 	],
