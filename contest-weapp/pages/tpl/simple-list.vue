@@ -4,7 +4,7 @@
 			<block slot="backText">返回</block>
 			<block slot="content">竞赛经历</block>
 		</cu-custom>
-		<view @click="goToExpFormPage(item.id)" @longtap="onLongtap(item.id)" v-for="(item, index) in dataList" :key="index" class="experience-card">
+		<view @longtap="onLongtap(item.id)" v-for="(item, index) in dataList" :key="index" class="experience-card">
 			{{item.name}}{{item.work}}{{item.awards}}{{item.time}}
 		</view>
 		<view class="padding flex flex-direction">
@@ -43,14 +43,17 @@
 		onLoad() {
 			this.loadList()
 		},
-		onShow() {
-			this.loadList()
-		},
 		// 列表数据刷新
 		onPullDownRefresh() {
 			this.queryParams.pageNum = 1
 			this.dataList = []
 			this.loadList()
+		},
+		onReachBottom() {
+			if (this.hasMoreData) {
+				this.queryParams.pageNum = this.queryParams.pageNum + 1
+				this.loadList()
+			}
 		},
 		methods: {
 			loadList() {
@@ -77,15 +80,8 @@
 			},
 			// 添加竞赛经历
 			onAddClick() {
-				uni.navigateTo({
-					url: 'user-detail-experience-form'
-				})
-			},
-			goToExpFormPage(id) {
-				uni.navigateTo({
-					url: 'user-detail-experience-form?id=' + id
-				})
-			},
+				
+			}
 		}
 	}
 </script>

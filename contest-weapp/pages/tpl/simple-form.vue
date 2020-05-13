@@ -49,7 +49,7 @@
 				}
 			},
 			submitForm(e) {
-				if (this.validForm(e)) {
+				if (this.validForm(this.form)) {
 					// 调用提交方法
 				}
 			},
