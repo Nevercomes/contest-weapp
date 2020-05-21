@@ -29,6 +29,7 @@
         <result property="trueName" column="true_name"/>
         <result property="schoolName" column="school_name"/>
         <result property="openId" column="open_id"/>
+        <result property="identified" column="identified"/>
         <association property="dept" column="dept_id" javaType="SysDept" resultMap="deptResult"/>
         <collection property="roles" javaType="java.util.List" resultMap="RoleResult"/>
     </resultMap>
@@ -63,6 +64,7 @@
                u.grade,
                u.true_name,
                u.open_id,
+               u.identified,
                s.school_name
         from sys_user u
                  left join edu_school s on s.school_id = u.school_id
@@ -90,6 +92,7 @@
                u.grade,
                u.true_name,
                u.open_id,
+               u.identified,
                d.dept_id,
                d.parent_id,
                d.dept_name,
@@ -117,6 +120,7 @@
         u.grade,
         u.true_name,
         u.open_id,
+        u.identified,
         u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.dept_name, d.leader,
         s.school_name from
         sys_user u

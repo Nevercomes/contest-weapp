@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.project.system.mapper.SysUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,9 @@ public class UserExperienceServiceImpl implements IUserExperienceService {
      */
     @Override
     public List<UserExperience> selectUserExperienceList(UserExperience userExperience) {
+        if (!SecurityUtils.isAdmin(SecurityUtils.getUserId()) && StringUtils.isEmpty(userExperience.getCreateBy())) {
+            userExperience.setCreateBy(SecurityUtils.getUsername());
+        }
         List<UserExperience> list = userExperienceMapper.selectUserExperienceList(userExperience);
         for (UserExperience experience : list) {
             setCreated(experience);

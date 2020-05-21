@@ -12,7 +12,7 @@ export function listShowSetting(query) {
 // 查询用户显示设置详细
 export function getShowSetting(ownUserId) {
   return http.request({
-    url: '/ci/showSetting/' + ownUserId,
+    url: ownUserId ? '/ci/showSetting/' + ownUserId : '/ci/showSetting',
     method: 'GET'
   })
 }

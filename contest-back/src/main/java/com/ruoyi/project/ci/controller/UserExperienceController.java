@@ -1,16 +1,13 @@
 package com.ruoyi.project.ci.controller;
 
 import java.util.List;
+
+import com.ruoyi.framework.aspectj.lang.annotation.DataScope;
+import com.ruoyi.project.system.domain.SysUser;
+import com.ruoyi.project.system.service.ISysUserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
 import com.ruoyi.project.ci.domain.UserExperience;
@@ -31,13 +28,19 @@ import com.ruoyi.framework.web.page.TableDataInfo;
 public class UserExperienceController extends BaseController {
     @Autowired
     private IUserExperienceService userExperienceService;
+    @Autowired
+    private ISysUserService userService;
 
     /**
      * 查询竞赛经历列表
      */
     @PreAuthorize("@ss.hasPermi('ci:experience:list')")
     @GetMapping("/list")
-    public TableDataInfo list(UserExperience userExperience) {
+    public TableDataInfo list(UserExperience userExperience, @RequestParam(value = "userId", required = false) Long userId) {
+        if (userId != null) {
+            SysUser user = userService.selectUserById(userId);
+            userExperience.setCreateBy(user.getCreateBy());
+        }
         startPage();
         List<UserExperience> list = userExperienceService.selectUserExperienceList(userExperience);
         return getDataTable(list);

@@ -1,31 +1,34 @@
 <template>
 	<view class="app-container">
-		<cu-custom bgColor="bg-gradual-pink" :isBack="true">
-			<block slot="backText">返回</block>
-			<block slot="content">新增竞赛经历</block>
-		</cu-custom>
 		<form @submit="submitForm">
 			<view class="cu-form-group margin-top">
 				<view class="title">竞赛名称</view>
 				<input v-model="form.name" name="name" placeholder="请输入竞赛名称" confirm-type="next"></input>
 			</view>
-			<view class="cu-form-group margin-top">
+			<view class="cu-form-group ">
 				<view class="title">参加时间</view>
-				<input v-model="form.time" name="time" placeholder="请选择参加时间" confirm-type="next" disabled="true" @click="show = true"></input>
+				<view class="input-picker" @click="show = true">
+					<input v-model="form.time" name="time" disabled placeholder="请选择参加时间" />
+				</view>
 			</view>
-			<view class="cu-form-group margin-top">
+			<view class="cu-form-group ">
 				<view class="title">队内分工</view>
 				<input v-model="form.work" name="work" placeholder="请输入队内分工" confirm-type="next"></input>
 			</view>
-			<view class="cu-form-group margin-top">
+			<view class="cu-form-group ">
 				<view class="title">获得奖项</view>
 				<input v-model="form.awards" name="awards" placeholder="请输入获得奖项" confirm-type="done"></input>
 			</view>
 			<view class="padding flex flex-direction">
-				<button class="cu-btn bg-green margin-tb-sm lg" form-type="submit">添加竞赛经历</button>
+				<button class="cu-btn bg-green margin-tb-sm lg shadow-blur round" form-type="submit">保 存</button>
 			</view>
 		</form>
-		<van-calendar :show="show" round="false" position="right" @confirm="onCalConfirm" />
+		<!-- <van-calendar :show="show" :min-date="minDate" :max-date="maxDate" show-confirm="false" round="false" @confirm="onCalConfirm" @close="show = false" /> -->
+		<van-popup :show="show" position="bottom">
+			<van-datetime-picker type="date" :value="currentDate" :min-date="minDate" :max-date="maxDate" :formatter="formatter"
+			 @confirm="onInput" @cancel="show = false" />
+		</van-popup>
+
 	</view>
 </template>
 
@@ -38,9 +41,23 @@
 	} from '@/api/ci/experience.js'
 
 	export default {
-		name: '',
+		name: 'UserDetailExperienceForm',
+		computed: {
+			minDate: function() {
+				// 今天的四年前
+				const date = new Date()
+				return date.getTime() - (1000 * 60 * 60 * 24 * 365 * 6)
+			},
+			maxDate: function() {
+				// 今天
+				let date = new Date()
+				return date.getTime()
+			}
+		},
 		data() {
 			return {
+				// 日历显示
+				show: false,
 				// 表单数据
 				form: {},
 				// 校验规则
@@ -72,11 +89,24 @@
 					awards: {
 						required: '获得奖项不能为空'
 					}
+				},
+				currentDate: new Date().getTime(),
+				formatter(type, value) {
+					if (type === 'year') {
+						return `${value}年`;
+					} else if (type === 'month') {
+						return `${value}月`;
+					}
+					return value;
 				}
 			}
 		},
 		onLoad(options) {
-			this.form.id = options.id
+			if (options.id) {
+				getExperience(options.id).then(res => {
+					this.form = res.data
+				})
+			}
 		},
 		methods: {
 			reset() {
@@ -91,37 +121,32 @@
 			submitForm(e) {
 				if (this.validForm(this.form)) {
 					if (this.form.id != undefined) {
-					  updateExperience(this.form).then(response => {
-					    if (response.code === 200) {
-					      this.msgSuccess("修改成功");
-					      uni.navigateBack({
-					      	delta: 1
-					      })
-					    } else {
-					      this.msgInfo(response.msg);
-					    }
-					  });
+						updateExperience(this.form).then(response => {
+							if (response.code === 200) {
+								this.msgSuccess("修改成功");
+								this.back()
+							} else {
+								this.msgInfo(response.msg);
+							}
+						});
 					} else {
-					  addExperience(this.form).then(response => {
-					    if (response.code === 200) {
-					      this.msgSuccess("新增成功");
-					      uni.navigateBack({
-					      	delta: 1
-					      })
-					    } else {
-					      this.msgInfo(response.msg);
-					    }
-					  });
+						addExperience(this.form).then(response => {
+							if (response.code === 200) {
+								this.msgSuccess("新增成功");
+								this.back()
+							} else {
+								this.msgInfo(response.msg);
+							}
+						});
 					}
 				}
 			},
 			validForm(params) {
 				let wxValidate = new WxValidate(this.rules, this.messages)
+				console.log(params)
 				if (!wxValidate.checkForm(params)) {
-					const error = this.WxValidate.errorList[0]
-					uni.showToast({
-						title: error
-					})
+					const error = wxValidate.errorList[0]
+					this.msgInfo(error.msg)
 					return false
 				}
 				return true
@@ -130,9 +155,14 @@
 				this.show = false
 				this.form.time = this.formatDate(e.detail)
 			},
+			onInput(e) {
+				this.currentDate = e.detail
+				this.form.time = this.formatDate(e.detail)
+				this.show = false
+			},
 			formatDate(date) {
 				date = new Date(date);
-				return `${date.getMonth() + 1}/${date.getDate()}`;
+				return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 			}
 		}
 	}

@@ -3,6 +3,8 @@ package com.ruoyi.project.system.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ruoyi.project.ci.domain.UserShowSetting;
+import com.ruoyi.project.ci.service.IUserShowSettingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,8 @@ public class SysUserServiceImpl implements ISysUserService {
 
     @Autowired
     private ISysConfigService configService;
+    @Autowired
+    private IUserShowSettingService userShowSettingService;
 
     /**
      * 根据条件分页查询用户列表
@@ -405,6 +409,7 @@ public class SysUserServiceImpl implements ISysUserService {
 
     /**
      * 创建小程序用户
+     *
      * @param openId
      * @param pwd
      * @return
@@ -412,6 +417,7 @@ public class SysUserServiceImpl implements ISysUserService {
     @Override
     @Transactional
     public SysUser createWeappUser(String openId, String pwd) {
+        // 1. 创建用户
         SysUser user = new SysUser();
         user.setOpenId(openId);
         user.setUserName(openId);
@@ -420,11 +426,16 @@ public class SysUserServiceImpl implements ISysUserService {
         Long[] roleIds = {2L};
         user.setRoleIds(roleIds);
         insertUserRole(user);
+        // 2. 初始化用户设置
+        UserShowSetting userShowSetting = new UserShowSetting();
+        userShowSetting.setOwnUserId(user.getUserId());
+        userShowSettingService.insertUserShowSetting(userShowSetting);
         return user;
     }
 
     /**
      * 创建用户认证身份
+     *
      * @param user
      * @return
      */

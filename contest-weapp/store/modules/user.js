@@ -14,6 +14,7 @@ const user = {
 	state: {
 		token: getToken(),
 		name: '',
+		nickName: '',
 		avatar: '',
 		roles: [],
 		permissions: []
@@ -25,6 +26,9 @@ const user = {
 		},
 		SET_NAME: (state, name) => {
 			state.name = name
+		},
+		SET_NICKNAME: (state, nickName) => {
+			state.nickName = nickName
 		},
 		SET_AVATAR: (state, avatar) => {
 			state.avatar = avatar
@@ -68,10 +72,8 @@ const user = {
 		}) {
 			return new Promise((resolve, reject) => {
 				getInfo().then(res => {
-					res = res.data
 					const user = res.user
-					const avatar = user.avatar == "" ? require("@/static/logo.png") : config.REQ_API +
-						user.avatar;
+					const avatar = user.avatar
 					if (res.roles && res.roles.length > 0) { // 验证返回的roles是否是一个非空数组
 						commit('SET_ROLES', res.roles)
 						commit('SET_PERMISSIONS', res.permissions)
@@ -79,6 +81,7 @@ const user = {
 						commit('SET_ROLES', ['ROLE_DEFAULT'])
 					}
 					commit('SET_NAME', user.username)
+					commit('SET_NICKNAME', user.nickName)
 					commit('SET_AVATAR', avatar)
 					resolve(res)
 				}).catch(error => {

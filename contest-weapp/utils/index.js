@@ -10,7 +10,8 @@ export function formatDate(cellValue) {
   var hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours() 
   var minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes() 
   var seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
-  return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds
+  // return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds
+  return year + '-' + month + '-' + day
 }
 
 /**
@@ -382,5 +383,17 @@ export function camelCase(str) {
 
 export function isNumberStr(str) {
   return /^[+-]?(0|([1-9]\d*))(\.\d+)?$/g.test(str)
+}
+
+// 回显数据字典
+export function selectDictLabel(datas, value) {
+	var actions = [];
+	Object.keys(datas).map((key) => {
+		if (datas[key].dictValue == ('' + value)) {
+			actions.push(datas[key].dictLabel);
+			return false;
+		}
+	})
+	return actions.join('');
 }
  

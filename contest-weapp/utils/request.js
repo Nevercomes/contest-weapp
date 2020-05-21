@@ -69,7 +69,7 @@ http.interceptor.response((res) => {
 			})
 			// 调用处进入catch
 			return Promise.reject(res)
-		} else if (code !== 200) {
+		} else if (code != 200) {
 			// toast显示错误信息
 			uni.showToast({
 				title: res.data.msg

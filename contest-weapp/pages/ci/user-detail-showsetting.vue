@@ -39,7 +39,7 @@
 			</checkbox-group>
 
 			<view class="padding flex flex-direction">
-				<button class="cu-btn bg-green margin-tb-sm lg" form-type="submit">提 交</button>
+				<button class="cu-btn bg-green margin-tb-sm lg shadow-blur round" form-type="submit">保 存</button>
 			</view>
 		</form>
 	</view>
@@ -47,26 +47,25 @@
 
 <script>
 	import {
-		mapGetters
-	} from 'vuex'
-	import {
 		getShowSetting
 	} from '@/api/ci/showSetting.js'
 
 	export default {
 		name: 'UserDetailShowsetting',
-		computed: {
-			...mapGetters([
-				'showSetting'
-			])
-		},
+		// computed: {
+		// 	...mapGetters([
+		// 		'showSetting'
+		// 	])
+		// },
 		data() {
 			return {
-				setting: {}
+				showSetting: {}
 			}
 		},
 		onLoad() {
-
+			getShowSetting().then(res => {
+				this.showSetting = res.data
+			})
 		},
 		methods: {
 			showNameClick() {
@@ -88,9 +87,7 @@
 				this.$store.dispatch('SetShowSetting',
 					this.showSetting).then(res => {
 					this.msgSuccess('修改成功')
-					uni.navigateBack({
-						delta: 1
-					})
+					this.back()
 				})
 			}
 		}

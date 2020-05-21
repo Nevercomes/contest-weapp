@@ -23,8 +23,8 @@ public class UserExperience extends BaseEntity {
     private Long id;
 
     /** 比赛时间 */
-    @Excel(name = "比赛时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "比赛时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date time;
 
     /** 比赛名称 */
@@ -35,8 +35,8 @@ public class UserExperience extends BaseEntity {
     @Excel(name = "奖项")
     private String awards;
 
-    /** 对内职务 */
-    @Excel(name = "对内职务")
+    /** 队内职务 */
+    @Excel(name = "队内职务")
     private String work;
 
     private SysUser createUser;

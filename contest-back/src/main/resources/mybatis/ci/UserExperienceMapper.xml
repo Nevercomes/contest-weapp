@@ -37,7 +37,9 @@
             </if>
             <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
             <if test="awards != null  and awards != ''">and awards = #{awards}</if>
+            <if test="createBy != null and createBy != ''">and create_by = #{createBy}</if>
         </where>
+        order by create_time desc
     </select>
 
     <select id="selectUserExperienceById" parameterType="Long" resultMap="UserExperienceResult">

@@ -125,6 +125,10 @@ oss:
   # 访问节点
   endpoint: oss-cn-hangzhou.aliyuncs.com
   # github 上不显示key和secret
+  # accessKeyId
+  accessKeyId: LTAI4G7akq1qCJ8Ak5Br2t8X
+  # accessKeySecret
+  accessKeySecret: WUVuYpAosL53leFKT42mn2e5GjtqGu
   # bucket名
   bucketName: dream-road-oss
   # avatar文件夹

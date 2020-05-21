@@ -16,21 +16,20 @@ export function getUserProfile() {
   })
 }
 
-
-// 查询用户的扩展信息
-export function getUserExt() {
+// 更新用户个人信息
+export function updateUserProfile(data) {
 	return http.request({
-	  url: '/system/user/ext',
-	  method: 'GET'
+		url: '/system/user/profile',
+		method: 'put',
+		data: data
 	})
 }
 
-// 更新用户扩展信息
-export function updateUserExt(data) {
-	return http.request({
-	  url: '/system/user/ext',
-	  method: 'POST',
-	  data: data
+// 上传用户头像
+export function uploadAvatar(path) {
+	return http.upload('/system/user/profile/avatar', {
+		'filePath': path,
+		'name': 'avatarfile'
 	})
 }
 

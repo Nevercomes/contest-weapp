@@ -1,9 +1,5 @@
 <template>
 	<view class="app-container">
-		<cu-custom bgColor="bg-gradual-pink" :isBack="true">
-			<block slot="backText">返回</block>
-			<block slot="content">选择学校</block>
-		</cu-custom>
 		<van-search :value="queryParams.schoolName" placeholder="请输入学校名称" show-action @search="onSearch" @cancel="onCancel" />
 		<van-cell-group>
 		  <van-cell v-for="item in dataList" :key="item.schoolId" @click="onItemClick(item)" clickable :title="item.schoolName"  />

@@ -1,6 +1,6 @@
 <template>
 	<view class="app-container">
-		<view style="height: 50px; background: #fff; width: 100%;"></view>
+		
 		<!-- 头像-基本信息 -->
 		<van-cell-group>
 			<van-cell is-link :url="cellUrl.profile" center>
@@ -13,7 +13,7 @@
 					<!-- 昵称和积分信息 -->
 					<view class="cell-userinfo__info">
 						<view class="solid-bottom text-xl">
-							<text v-if="name" class="text-black text-bold">{{name}}</text>
+							<text v-if="nickName" class="text-black text-bold">{{nickName}}</text>
 							<open-data v-else type="userNickName" class="text-black text-bold" ></open-data>
 						</view>
 						<van-row gutter="10">
@@ -65,7 +65,8 @@
 		computed: {
 			...mapGetters([
 				'name',
-				'avatar'
+				'avatar',
+				'nickName'
 			])
 		},
 		data() {

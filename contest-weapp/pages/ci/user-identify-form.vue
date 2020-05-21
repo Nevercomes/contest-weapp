@@ -1,11 +1,6 @@
 <template>
 	<view class="app-container">
-		<cu-custom bgColor="bg-gradual-pink" :isBack="true">
-			<block slot="backText">返回</block>
-			<block slot="content">实名认证</block>
-		</cu-custom>
 		<!-- 表单 -->
-
 		<form @submit="submitForm">
 			<view class="cu-form-group margin-top">
 				<view class="title">姓名</view>
@@ -29,7 +24,7 @@
 			</view>
 
 			<view class="padding flex flex-direction">
-				<button class="cu-btn bg-green margin-tb-sm lg" form-type="submit">提 交</button>
+				<button class="cu-btn bg-green margin-tb-sm lg shadow-blur round" form-type="submit">提 交</button>
 			</view>
 		</form>
 

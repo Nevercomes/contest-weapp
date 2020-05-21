@@ -38,8 +38,12 @@
 					} else {
 						console.log('非首次登录')
 					}
+					this.$store.dispatch('GetInfo')
 				})
+			} else {
+				this.$store.dispatch('GetInfo')
 			}
+			
 
 			Vue.prototype.ColorList = [{
 					title: '嫣红',

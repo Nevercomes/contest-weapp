@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.SysUserExtMapper">
+
+    <resultMap type="SysUserExt" id="SysUserExtResult">
+        <result property="userId" column="user_id"/>
+        <result property="intro" column="intro"/>
+    </resultMap>
+
+    <sql id="selectSysUserExtVo">
+        select user_id, intro
+        from sys_user_ext
+    </sql>
+
+    <select id="selectSysUserExtList" parameterType="SysUserExt" resultMap="SysUserExtResult">
+        <include refid="selectSysUserExtVo"/>
+        <where>
+            <if test="intro != null  and intro != ''">and intro like concat('%', #{intro}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectSysUserExtById" parameterType="Long" resultMap="SysUserExtResult">
+        <include refid="selectSysUserExtVo"/>
+        where user_id = #{userId}
+    </select>
+
+    <select id="selectSysUserExtOptions" parameterType="SysUserExt" resultType="Map">
+        select id as "value",
+        `name` as "label"
+        from sys_user_ext
+        <if test="name != null and name != ''">
+            where `name` like concat('%', #{name}, '%')
+        </if>
+    </select>
+
+    <insert id="insertSysUserExt" parameterType="SysUserExt">
+        insert into sys_user_ext
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null ">user_id,</if>
+            <if test="intro != null  and intro != ''">intro,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null ">#{userId},</if>
+            <if test="intro != null  and intro != ''">#{intro},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysUserExt" parameterType="SysUserExt">
+        update sys_user_ext
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="intro != null  and intro != ''">intro = #{intro},</if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
+    <delete id="deleteSysUserExtById" parameterType="Long">
+        delete
+        from sys_user_ext
+        where user_id = #{userId}
+    </delete>
+
+    <delete id="deleteSysUserExtByIds" parameterType="String">
+        delete from sys_user_ext where user_id in
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+
+</mapper>

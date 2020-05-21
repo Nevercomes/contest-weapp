@@ -1,29 +1,5 @@
 <template>
 	<view class="app-container">
-		<cu-custom bgColor="bg-gradual-pink" :isBack="true">
-			<block slot="backText">返回</block>
-			<block slot="content">操作条</block>
-		</cu-custom>
-		<view class="cell-userinfo">
-			<!-- 头像 -->
-			<image v-if="avatar" class="cell-avatar" :src="avatar"></image>
-			<view v-else class="cell-avatar">
-				<open-data  type="userAvatarUrl"></open-data>
-			</view>
-			<!-- 昵称和积分信息 -->
-			<view class="cell-userinfo__info">
-				<view class="solid-bottom text-xl">
-					<text v-if="name" class="text-black text-bold">{{name}}</text>
-					<open-data v-else type="userNickName" class="text-black text-bold" ></open-data>
-				</view>
-				<van-row gutter="10">
-					<van-col>
-						<!-- <van-icon name="points" /> -->
-					积分</van-col>
-					<van-col>10</van-col>
-				</van-row>
-			</view>
-		</view>
 		<van-cell-group>
 			<van-cell title="个人简介" center is-link :url="cellUrl.intro"></van-cell>
 			<van-cell title="竞赛经历" center is-link :url="cellUrl.experience"></van-cell>
