@@ -1,10 +1,6 @@
 <!-- 队伍创建、发布 -->
 <template>
 	<view class="app-container">
-		<cu-custom bgColor="bg-gradual-pink" :isBack="true">
-			<block slot="backText">返回</block>
-			<block slot="content">队伍</block>
-		</cu-custom>
 		<!-- 队伍创建 -->
 		<van-tabs :active="active" @change="onChange">
 			<van-tab title="创建队伍">
@@ -36,7 +32,7 @@
 						<input v-model="form.recruitNumber" name="recruitNumber" type="number" placeholder="请输入队伍招募人数" confirm-type="submit"></input>
 					</view>
 					<view class="padding flex flex-direction">
-						<button class="cu-btn bg-green margin-tb-sm lg" form-type="submit">下一步</button>
+						<button class="cu-btn bg-green margin-tb-sm lg shadow-blur round" form-type="submit">下一步</button>
 					</view>
 				</form>
 				<view></view>
@@ -60,7 +56,7 @@
 						<view v-for="(item,index) in capabilityList" :key="index" class='cu-tag radius' @click="onNotSelectClick(item)">{{item}}</view>
 					</view>
 					<view class="padding flex flex-direction">
-						<button class="cu-btn bg-green margin-tb-sm lg" form-type="submit">发布加入信息</button>
+						<button class="cu-btn bg-green margin-tb-sm lg  shadow-blur round" form-type="submit">发布加入信息</button>
 					</view>
 				</form>
 			</van-tab>
@@ -70,10 +66,13 @@
 
 <script>
 	import WxValidate from '@/utils/WxValidate.js'
-	
+
 	import {
 		addExpect
 	} from '@/api/ci/expect.js'
+	import {
+		addTeamInfo
+	} from '@/api/ci/team.js'
 
 	export default {
 		name: 'TeamPublic',
@@ -113,27 +112,31 @@
 					compName: {
 						required: true
 					},
+					name: {
+						required: true,
+						maxlengtn: 10
+					},
 					teamNumber: {
 						required: true
 					},
 					recruitNumber: {
 						required: true
 					},
-					name: {
-						required: true,
-						maxlengtn: 10
-					}
+					
 				},
 				messages1: {
 					compName: {
 						required: '比赛不能为空'
+					},
+					name: {
+						required: '队伍名不能为空',
+						maxlengtn: '名字太长啦'
 					},
 					teamNumber: {
 						required: '队伍人数不能为空'
 					},
 					recruitNumber: {
 						required: '招募人数不能为空',
-						maxlengtn: '名字太长啦'
 					}
 				},
 				// 步骤进度
@@ -150,7 +153,7 @@
 			}
 		},
 		onLoad() {
-			
+
 		},
 		methods: {
 			reset() {
@@ -164,10 +167,14 @@
 			submitForm() {
 				if (this.validForm(this.form)) {
 					this.step = 1
+					uni.navigateTo({
+						url: 'team-public-member?cpId=' + this.form.cpId + '&teamNumber=' + this.form.teamNumber + '&recruitNumber=' +
+							this.form.recruitNumber
+					})
 				}
 			},
 			submitAddForm() {
-				if(this.validAddForm(this.form)) {
+				if (this.validAddForm(this.form)) {
 					// 发布加入信息
 					addExpect(this.form).then(res => {
 						uni.navigateTo({
@@ -197,7 +204,7 @@
 				return true
 			},
 			onChange() {
-				
+
 			},
 			// 跳转到竞赛选取页面
 			goToCompSelectPage() {

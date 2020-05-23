@@ -1,5 +1,5 @@
 module.exports = {
-  title: '若依管理系统',
+  title: '赛舟后台管理',
 
   /**
    * 是否系统布局配置

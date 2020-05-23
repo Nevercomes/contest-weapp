@@ -10,7 +10,7 @@
 
 <script>
 	export default {
-		name: '',
+		name: 'UserDetail',
 		data() {
 			return {
 				cellUrl: {

@@ -1,10 +1,5 @@
 <template>
 	<view class="app-container">
-		<!-- navbar -->
-		<cu-custom bgColor="bg-gradual-pink" :isBack="false">
-			<!-- <block slot="backText">返回</block> -->
-			<!-- <block slot="content">操作条</block> -->
-		</cu-custom>
 		<!-- 搜索部分 -->
 		<van-search :value="keywords" use-action-slot placeholder="请输入搜索关键词" @focus="goToSearchPage">
 			<view style="display: flex; align-items: center;" slot="action" @tap="goToSettingPage">
@@ -15,7 +10,7 @@
 		<swiper class="card-swiper" :class="dotStyle?'square-dot':'round-dot'" :indicator-dots="true" :circular="true"
 		 :autoplay="true" interval="5000" duration="500" @change="cardSwiper" indicator-color="#8799a3"
 		 indicator-active-color="#0081ff">
-			<swiper-item v-for="(item,index) in swiperList" :key="index" :class="cardCur==index?'cur':''">
+			<swiper-item v-for="(item,index) in swiperList" :key="index" :class="cardCur==index?'cur':''" @click="goToRecommendPage(item.url)">
 				<view class="swiper-item">
 					<image :src="item.url" mode="aspectFill" v-if="item.type=='image'"></image>
 					<video :src="item.url" autoplay loop muted :show-play-btn="false" :controls="false" objectFit="cover" v-if="item.type=='video'"></video>
@@ -29,10 +24,39 @@
 			<van-button type="primary" @click="goToCollPage">收藏</van-button>
 			<van-button type="primary" @click="goToBookPage">图书</van-button>
 		</view>
+		
+		<view class="cu-bar bg-white margin-top">
+			<view class="action">
+				<text class="cuIcon-title text-green"></text>
+				<text class="text-lg text-bold">竞赛推荐</text>
+			</view>
+		</view>
+		<view class="content-container content-flex">
+			<view v-for="(item, index) in compList" :key="index" class="item-2 margin-bottom" @click="goToCompInfoPage">
+				<image style="width: 100%;  height: 300upx;" :src="item.picUrl" ></image>
+				<view class="text-sm">{{item.name}}</view>
+			</view>
+		</view>
+		
+		<view class="cu-bar bg-white margin-top">
+			<view class="action">
+				<text class="cuIcon-title text-green"></text>
+				<text class="text-lg text-bold">动态推荐</text>
+			</view>
+		</view>
+		<view class="content-container content-flex">
+			
+		</view>
+		
 	</view>
 </template>
 
 <script>
+	
+	import {
+		getRecommendComp
+	} from '@/api/ci/period.js'
+	
 	export default {
 		name: "HomeIndex",
 		data() {
@@ -72,12 +96,20 @@
 					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg'
 				}],
 				dotStyle: false,
-				towerStart: 0,
-				direction: ''
+				// 竞赛推荐list
+				compList: [],
+				// 动态推俄舰list
+				newsList: []
+				
 			}
 		},
 		onLoad() {
-
+			getRecommendComp({
+				pageNum: 1,
+				pageSize: 30
+			}).then(res => {
+				this.compList = res.data
+			})
 		},
 		methods: {
 			// 当搜索框聚焦的时候跳转到搜索界面
@@ -88,24 +120,46 @@
 			},
 			// 取代搜索事件改为setting设置
 			geToSettingPage() {
-
+				
 			},
 			// 主页的发布组队
 			goToTeamPage() {
-				
+				uni.navigateTo({
+					url: 'team-public'
+				})
 			},
 			// 竞赛页面
 			goToCompPage() {
-				
+				uni.navigateTo({
+					url: 'competition-index'
+				})
+			},
+			goToCompInfoPage(id) {
+				uni.navigateTo({
+					url: 'competition-info?id=' + id
+				})
 			},
 			// 收藏页面
 			goToCollPage() {
-				
+				uni.navigateTo({
+					url: 'user-collection-index'
+				})
+			},
+			// 图书界面
+			goToBookPage() {
+				this.msgInfo('即将到来')
+			},
+			goToRecommendPage(url) {
+				this.msgInfo('跳转到指定页面')
+				// uni.navigateTo({
+				// 	url: url
+				// })
 			},
 			// 样式相关
 			cardSwiper(e) {
 				this.cardCur = e.detail.current
 			},
+			
 		}
 	}
 </script>

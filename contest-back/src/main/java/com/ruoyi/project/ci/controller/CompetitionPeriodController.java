@@ -1,7 +1,12 @@
 package com.ruoyi.project.ci.controller;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import com.ruoyi.common.utils.CommonUtil;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.project.system.domain.EduSchool;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +48,17 @@ public class CompetitionPeriodController extends BaseController {
         startPage();
         List<CompetitionPeriod> list = competitionPeriodService.selectCompetitionPeriodList(competitionPeriod);
         return getDataTable(list);
+    }
+
+    /**
+     * 查询竞赛列表信息列表
+     */
+    @PreAuthorize("@ss.hasPermi('ci:period:list')")
+    @GetMapping("/recommend")
+    public AjaxResult recommendList(CompetitionPeriod competitionPeriod) {
+        startPage();
+        List<CompetitionPeriod> list = competitionPeriodService.selectCompetitionPeriodList(competitionPeriod);
+        return AjaxResult.success(randomList(list, 4));
     }
 
     /**
@@ -103,5 +119,20 @@ public class CompetitionPeriodController extends BaseController {
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids) {
         return toAjax(competitionPeriodService.deleteCompetitionPeriodByIds(ids));
+    }
+
+    private List<CompetitionPeriod> randomList(List<CompetitionPeriod> list, Integer num) {
+        List<CompetitionPeriod> res = new ArrayList<>();
+        if (StringUtils.isNotEmpty(list)) {
+            if (list.size() <= num) {
+                return list;
+            }
+            while (num-- > 0) {
+                int idx = CommonUtil.getRandom(0, list.size() - 1);
+                res.add(list.get(idx));
+                list.remove(idx);
+            }
+        }
+        return res;
     }
 }

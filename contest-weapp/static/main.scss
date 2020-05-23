@@ -1,0 +1,14 @@
+.content-container {
+	padding: 20upx 30upx;
+}
+
+.content-flex {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.content-flex .item-2 {
+	width: 315upx;
+}

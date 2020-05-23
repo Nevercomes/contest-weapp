@@ -28,8 +28,9 @@
 		</van-cell-group>
 		<!-- 一类 -->
 		<van-cell-group custom-class="margin-top:10px; margin-bottom: 10px">
-			<van-cell title="我的主页" :url="cellUrl.detail" is-link></van-cell>
-			<van-cell title="我的积分" is-link></van-cell>
+			<van-cell title="我的主页" is-link :url="cellUrl.detail"></van-cell>
+			<van-cell title="我的积分" is-link :url="cellUrl.points"></van-cell>
+			<van-cell title="我的消息" is-link :url="cellUrl.message"></van-cell>
 		</van-cell-group>
 		
 		<!-- 二类 -->
@@ -75,7 +76,9 @@
 				// cell的跳转路径
 				cellUrl: {
 					profile: '/pages/ci/user-profile',
-					detail: '/pages/ci/user-detail'
+					detail: '/pages/ci/user-detail',
+					points: '/pages/ci/points-index',
+					message: '/pages/ci/message-index'
 				}
 			}
 		},

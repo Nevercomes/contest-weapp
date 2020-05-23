@@ -1,9 +1,5 @@
 <template>
 	<view class="app-container">
-		<cu-custom bgColor="bg-gradual-pink" :isBack="true">
-			<block slot="backText">返回</block>
-			<block slot="content">发布成功</block>
-		</cu-custom>
 		<view class="user-expect-list">
 			<!-- TODO 切换淡入淡出的动画 -->
 			<view v-for="(item,index) in teamList" :key="index" @click="goToTeamShowPage">

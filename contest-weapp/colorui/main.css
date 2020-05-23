@@ -3028,6 +3028,10 @@ scroll-view.cu-steps .cu-item {
 	margin: 0;
 }
 
+.margin-xxs {
+	margin: 5upx;
+}
+
 .margin-xs {
 	margin: 10upx;
 }

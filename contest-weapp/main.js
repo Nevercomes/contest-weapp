@@ -21,7 +21,6 @@ Vue.component('nl-mask-loading', NlMaskLoading)
 import NlEmpty from './nl_componet/nl-empty.vue'
 Vue.component('nl-empty', NlEmpty)
 
-
 import {
 	getDicts
 } from './api/system/dict.js'

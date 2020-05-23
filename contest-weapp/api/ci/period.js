@@ -16,3 +16,11 @@ export function getPeriod(id) {
     method: 'GET'
   })
 }
+
+export function getRecommendComp(query) {
+	return http.request({
+		url: '/ci/period/recommend',
+		method: 'get',
+		params: query
+	})
+}

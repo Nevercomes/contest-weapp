@@ -1,9 +1,6 @@
 <template>
 	<view class="app-container">
-		<cu-custom bgColor="bg-gradual-pink" :isBack="true">
-			<block slot="backText">返回</block>
-			<block slot="content">创建完成</block>
-		</cu-custom>
+		
 		<view class="bg-white padding">
 			<view class="cu-steps">
 				<view class="cu-item" :class="index>step?'':'text-red'" v-for="(item,index) in stepList" :key="index">

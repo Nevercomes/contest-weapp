@@ -29,20 +29,20 @@
 			})
 
 			// 进行初次登录
-			const token = uni.getStorageSync('Zhulu-Token')
-			if(!token) {
-				this.$store.dispatch('Login').then(res => {
-					if (res.register) {
-						// 上传微信信息
-						console.log('首次登录')
-					} else {
-						console.log('非首次登录')
-					}
-					this.$store.dispatch('GetInfo')
-				})
-			} else {
-				this.$store.dispatch('GetInfo')
-			}
+			// const token = uni.getStorageSync('Zhulu-Token')
+			// if(!token) {
+			// 	this.$store.dispatch('Login').then(res => {
+			// 		if (res.register) {
+			// 			// 上传微信信息
+			// 			console.log('首次登录')
+			// 		} else {
+			// 			console.log('非首次登录')
+			// 		}
+			// 		this.$store.dispatch('GetInfo')
+			// 	})
+			// } else {
+			// 	this.$store.dispatch('GetInfo')
+			// }
 			
 
 			Vue.prototype.ColorList = [{
@@ -136,6 +136,7 @@
 <style>
 	@import "colorui/main.css";
 	@import "colorui/icon.css";
+	@import "static/main.scss"; 	/* 自定义的全局样式 */
 
 	.nav-list {
 		display: flex;

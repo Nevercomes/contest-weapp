@@ -105,8 +105,8 @@ public class PointsActionServiceImpl implements IPointsActionService {
 
     private void setAssociated(PointsAction pointsAction) {
         if(pointsAction == null) return;
-        if (pointsAction.getOwnUser() == null) {
-            pointsAction.setAssUser(userMapper.selectAssUser(pointsAction.getOwnUser()));
+        if (pointsAction.getUserId() == null) {
+            pointsAction.setAssUser(userMapper.selectAssUser(pointsAction.getUserId()));
         }
     }
 }

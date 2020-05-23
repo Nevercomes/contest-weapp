@@ -1,9 +1,6 @@
 <template>
 	<view class="app-container">
-		<cu-custom bgColor="bg-gradual-pink" :isBack="true">
-			<block slot="backText">返回</block>
-			<block slot="content">操作条</block>
-		</cu-custom>
+
 		<view class="bg-white padding">
 			<view class="cu-steps">
 				<view class="cu-item" :class="index>step?'':'text-red'" v-for="(item,index) in stepList" :key="index">
@@ -11,15 +8,22 @@
 				</view>
 			</view>
 		</view>
-		<view v-for="(item,index) in recruitList" :key="index">
-			<view>队员分工：{{item.workLabel}}</view>
-			<view>能力期望：
-				<view v-for="(cap,capIndex) in item.capabilityList" :key="capIndex" class='cu-tag radius'>{{cap}}</view>
+
+		<view class="cu-card article padding no-card" v-for="(item,index) in recruitList" :key="index">
+			<view class="cu-item shadow">
+				<view class="">队员分工：{{item.workLabel}}</view>
+				<view class="margin-top">能力期望：
+					<view v-for="(cap,capIndex) in item.capabilityList" :key="capIndex" class='cu-tag round'>{{cap}}</view>
+				</view>
 			</view>
 		</view>
-		<van-button @click="onAddClick"></van-button>
+
+		<view class="cu-bar btn-group margin-top">
+			<button class="cu-btn text-green line-green round shadow-blur" @click="onAddClick">添加队员</button>
+		</view>
+
 		<view class="padding flex flex-direction">
-			<button class="cu-btn bg-green margin-tb-sm lg" @click="submitForm">创建队伍</button>
+			<button class="cu-btn bg-green margin-tb-sm lg shadow-blur round" @click="submitForm">创建队伍</button>
 		</view>
 		<nl-mask-loading :loading="loading" :loadingMsg="'提交中...'"></nl-mask-loading>
 	</view>
@@ -40,8 +44,8 @@
 		data() {
 			return {
 				loading: false,
-				// tab激活页
-				active: 1,
+				// 步骤进度
+				step: 1,
 				// 步骤条进度
 				stepList: [{
 					cuIcon: 'usefullfill',
@@ -81,7 +85,7 @@
 		methods: {
 			reset() {
 				this.form = {
-
+					
 				}
 			},
 			submitForm(e) {
@@ -94,7 +98,7 @@
 						this.loading = false
 						// 跳转到成功页面,传入对应的竞赛id
 						uni.navigateTo({
-							url:'team-public-success?compId=' + this.form.cpId
+							url: 'team-public-success?compId=' + this.form.cpId
 						})
 					})
 				}
@@ -102,7 +106,7 @@
 			validForm(params) {
 				let wxValidate = new WxValidate(this.rules, this.messages)
 				if (!wxValidate.checkForm(params)) {
-					const error = this.WxValidate.errorList[0]
+					const error = wxValidate.errorList[0]
 					uni.showToast({
 						title: error
 					})

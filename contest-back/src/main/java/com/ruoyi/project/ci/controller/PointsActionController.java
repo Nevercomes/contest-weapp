@@ -1,6 +1,8 @@
 package com.ruoyi.project.ci.controller;
 
 import java.util.List;
+
+import com.ruoyi.framework.aspectj.lang.annotation.DataScope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +39,7 @@ public class PointsActionController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('ci:points:list')")
     @GetMapping("/list")
+    @DataScope(userAlias = "u")
     public TableDataInfo list(PointsAction pointsAction) {
         startPage();
         List<PointsAction> list = pointsActionService.selectPointsActionList(pointsAction);

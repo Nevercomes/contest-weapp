@@ -34,7 +34,7 @@ public class PointsAction extends BaseEntity {
 
     /** 归属用户 */
     @Excel(name = "归属用户")
-    private Long ownUser;
+    private Long userId;
 
     private SysUser assUser;
 

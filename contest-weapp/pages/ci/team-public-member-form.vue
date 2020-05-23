@@ -1,10 +1,11 @@
 <template>
 	<view class="app-container">
-		<cu-custom bgColor="bg-gradual-pink" :isBack="true">
-			<block slot="backText">返回</block>
-			<block slot="content">招募信息</block>
-		</cu-custom>
-		<view>队员{{index}}招募信息</view>
+		<view class="cu-bar bg-white">
+			<view class="action">
+				<text class="cuIcon-title text-green"></text>
+				<text>队员{{index}}招募信息</text>
+			</view>
+		</view>
 		<form>
 			<view class="cu-form-group">
 				<view class="title">分工</view>
@@ -14,18 +15,29 @@
 			</view>
 			<view class="cu-form-group">
 				<view class="title">能力期望</view>
-				<view v-for="(item,index) in capabilityList" :key="index" class='cu-tag radius' @click="onNotSelectClick(item)">{{item}}</view>
+				<view v-for="(item,index) in capabilityList" :key="index" class='cu-tag round' @click="onNotSelectClick(item)">{{item}}</view>
 			</view>
 		</form>
+		
 		<!-- 默认的能力选择label -->
-		<view v-for="(item,index) in capabilityLabelOptions" :key="index" class='cu-tag radius' @click="onSelectClick(item)">{{item}}</view>
-		<view></view>
-		<van-button type="primary" @click="onConfirmClick">确定</van-button>
-		<van-button type="primary" @click="onNextClick">添加下一个招募信息</van-button>
+		<view class="box bg-white padding-top-xs" style="height: 130upx;">
+			<view v-for="(item,index) in capabilityLabelOptions" :key="index" class='cu-tag round' @click="onSelectClick(item)">{{item}}</view>
+		</view>
+		
+		<view class="box">
+			<view class="cu-bar btn-group">
+				<button class="cu-btn bg-green shadow-blur round lg" @click="onConfirmClick">确定</button>
+				<button class="cu-btn bg-green shadow-blur round lg" @click="onNextClick">继续添加</button>
+			</view>
+		</view>
+		
 	</view>
 </template>
 
 <script>
+	
+	import WxValidate from '@/utils/WxValidate.js'
+	
 	export default {
 		name: 'TeamPublicMemberForm',
 		data() {
@@ -45,14 +57,26 @@
 				workOptionsPicker: [],
 				// 默认能力期望标签
 				capabilityOptions: [],
-				capabilityLabelOptions: []
+				capabilityLabelOptions: [],
+				rules: {
+					workLabel: {
+						required: true
+					}
+				},
+				messages: {
+					workLabel: {
+						required: '队员分工不能为空'
+					}
+				}
 			}
 		},
 		onLoad(options) {
 			this.recruitNumber = options.recruitNumber
 			this.index = options.index
+			if(this.index) this.index = Number(this.index)
 			this.getDicts('team_work_type').then(res => {
 				this.workOptions = res.data
+				this.workOptionsPicker = res.data.map(item => item.dictLabel)
 			})
 			this.getDicts('team_capability_default').then(res => {
 				this.capabilityOptions = res.data
@@ -66,6 +90,7 @@
 					workLabel: undefined,
 				}
 				this.capabilityList = []
+				this.capabilityLabelOptions = this.capabilityOptions.map(item => item.dictLabel)
 			},
 			pickerChange(e) {
 				const index = e.target.value
@@ -85,11 +110,11 @@
 				// 保存数据，清空表单
 				if (this.index + 1 > this.recruitNumber) {
 					this.msgInfo('已达到招募人数最大值')
-					return
+				} else {
+					this.saveRecruit()
+					this.reset()
+					this.index = this.index + 1
 				}
-				this.saveRecruit()
-				this.reset()
-				this.index = this.index + 1
 			},
 			onNotSelectClick(label) {
 				const idx = this.capabilityList.indexOf(label)
@@ -100,7 +125,7 @@
 			},
 			// TODO Label的动效
 			onSelectClick(label) {
-				if(this.capabilityList.length >= 5) {
+				if(this.capabilityList.length >= 3) {
 					this.msgInfo('不能再多啦')
 					return
 				}
@@ -117,11 +142,13 @@
 				if (pages.length >= 2) {
 					const prePage = pages[pages.length - 2]
 					const self = this
+					let allList = prePage.$vm.recruitList
+					allList = allList.concat(this.recruitList)
 					prePage.setData({
-						'recruitList': self.recruitList
+						'recruitList': allList
 					})
 					// 这样子form可以绑定上数据，但是页面不会渲染, 所以前面添加一个setData
-					prePage.$vm.recruitList = self.recruitList
+					prePage.$vm.recruitList = allList
 				}
 			}
 		}
