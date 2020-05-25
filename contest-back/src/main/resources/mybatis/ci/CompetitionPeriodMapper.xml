@@ -18,7 +18,15 @@
         <result property="schoolId" column="school_id"/>
         <result property="schoolName" column="school_name"/>
         <result property="holder" column="holder"/>
+        <association property="basic" column="cp_info_id" javaType="CompetitionInfo" resultMap="infoResult"/>
         <association property="details" column="cp_id" javaType="CompetitionPeriodDetails" resultMap="detailsResult"/>
+    </resultMap>
+
+    <resultMap type="CompetitionInfo" id="infoResult">
+        <result property="id" column="id"/>
+        <result property="level" column="level"/>
+        <result property="viewNumber" column="view_number"/>
+        <result property="concernNumber" column="concern_number"/>
     </resultMap>
 
     <resultMap type="CompetitionPeriodDetails" id="detailsResult">
@@ -47,14 +55,37 @@
         from ci_competition_period
     </sql>
 
-    <sql id="selectCompetitionPeriodDetailsVo">
-        select id,
-               create_by,
-               update_by,
-               create_time,
-               update_time,
+    <sql id="selectCompetitionPeriodInfoVo">
+        select ci_competition_period.id,
+               ci_competition_period.create_by,
+               ci_competition_period.update_by,
+               ci_competition_period.create_time,
+               ci_competition_period.update_time,
                cp_info_id,
-               name,
+               ci_competition_period.name,
+               pic_url,
+               sign_begin_time,
+               sign_end_time,
+               school_id,
+               (select school_name
+                from edu_school
+                where edu_school.school_id = ci_competition_period.school_id) as "school_name",
+               holder,
+               cci.level,
+               cci.view_number,
+               cci.concern_number
+        from ci_competition_period
+                 left join ci_competition_info cci on ci_competition_period.cp_info_id = cci.id
+    </sql>
+
+    <sql id="selectCompetitionPeriodDetailsVo">
+        select ci_competition_period.id,
+               ci_competition_period.create_by,
+               ci_competition_period.update_by,
+               ci_competition_period.create_time,
+               ci_competition_period.update_time,
+               cp_info_id,
+               ci_competition_period.name,
                pic_url,
                sign_begin_time,
                sign_end_time,
@@ -66,16 +97,20 @@
                d.cp_id,
                d.official_link,
                d.intro,
-               d.content
+               d.content,
+               cci.level,
+               cci.view_number,
+               cci.concern_number
         from ci_competition_period
                  left join ci_competition_period_details d on d.cp_id = id
+                 left join ci_competition_info cci on ci_competition_period.cp_info_id = cci.id
     </sql>
 
     <select id="selectCompetitionPeriodList" parameterType="CompetitionPeriod" resultMap="CompetitionPeriodResult">
-        <include refid="selectCompetitionPeriodVo"/>
+        <include refid="selectCompetitionPeriodInfoVo"/>
         <where>
             <if test="cpInfoId != null ">and cp_info_id = #{cpInfoId}</if>
-            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="name != null  and name != ''">and ci_competition_period.name like concat('%', #{name}, '%')</if>
             <if test="signBeginTime != null ">and sign_begin_time = #{signBeginTime}</if>
             <if test="signEndTime != null ">and sign_end_time = #{signEndTime}</if>
             <if test="schoolId != null ">and school_id = #{schoolId}</if>

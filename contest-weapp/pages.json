@@ -474,6 +474,11 @@
 				"name": "teamPublicSuccess",
 				"path": "pages/ci/team-public-success",
 				"query": "cpId=1"
+			},
+			{
+				"name":"compList",
+				"path":"pages/ci/competition-index",
+				"query":""
 			}
 		]
 	}

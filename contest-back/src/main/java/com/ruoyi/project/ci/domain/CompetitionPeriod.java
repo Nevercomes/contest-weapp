@@ -44,15 +44,15 @@ public class CompetitionPeriod extends BaseEntity {
     /**
      * 报名时间
      */
-    @Excel(name = "报名开始", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "报名开始", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date signBeginTime;
 
     /**
      * 报名结束
      */
-    @Excel(name = "报名结束", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "报名结束", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date signEndTime;
 
     /**
@@ -67,6 +67,11 @@ public class CompetitionPeriod extends BaseEntity {
      */
     @Excel(name = "主办方")
     private String holder;
+
+    /**
+     * 基本信息
+     */
+    private CompetitionInfo basic;
 
     /**
      * 详情信息
