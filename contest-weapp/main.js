@@ -21,6 +21,9 @@ Vue.component('nl-mask-loading', NlMaskLoading)
 import NlEmpty from './nl_componet/nl-empty.vue'
 Vue.component('nl-empty', NlEmpty)
 
+import NlSuccess from './nl_componet/nl-success.vue'
+Vue.component('nl-success', NlSuccess)
+
 import {
 	getDicts
 } from './api/system/dict.js'

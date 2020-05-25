@@ -40,7 +40,7 @@ public interface ITeamInfoService {
      * @param teamInfo 队伍信息
      * @return 结果
      */
-    int insertTeamInfo(TeamInfo teamInfo);
+    TeamInfo insertTeamInfo(TeamInfo teamInfo);
 
     /**
      * 修改队伍信息

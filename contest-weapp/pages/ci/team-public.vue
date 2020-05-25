@@ -55,6 +55,12 @@
 						<view class="title">个人能力</view>
 						<view v-for="(item,index) in capabilityList" :key="index" class='cu-tag radius' @click="onNotSelectClick(item)">{{item}}</view>
 					</view>
+					
+					<!-- 默认的能力选择label -->
+					<view class="box bg-white padding-top-xs" style="height: 130upx;">
+						<view v-for="(item,index) in capabilityLabelOptions" :key="index" class='cu-tag round' @click="onSelectClick(item)">{{item}}</view>
+					</view>
+					
 					<view class="padding flex flex-direction">
 						<button class="cu-btn bg-green margin-tb-sm lg  shadow-blur round" form-type="submit">发布加入信息</button>
 					</view>
@@ -153,7 +159,14 @@
 			}
 		},
 		onLoad() {
-
+			this.getDicts('team_work_type').then(res => {
+				this.workOptions = res.data
+				this.workOptionsPicker = res.data.map(item => item.dictLabel)
+			})
+			this.getDicts('team_capability_default').then(res => {
+				this.capabilityOptions = res.data
+				this.capabilityLabelOptions = res.data.map(item => item.dictLabel)
+			})
 		},
 		methods: {
 			reset() {
@@ -166,7 +179,6 @@
 			},
 			submitForm() {
 				if (this.validForm(this.form)) {
-					this.step = 1
 					uni.navigateTo({
 						url: 'team-public-member?cpId=' + this.form.cpId + '&teamNumber=' + this.form.teamNumber + '&recruitNumber=' +
 							this.form.recruitNumber
@@ -176,6 +188,7 @@
 			submitAddForm() {
 				if (this.validAddForm(this.form)) {
 					// 发布加入信息
+					this.form.capability = this.capabilityList.join(',')
 					addExpect(this.form).then(res => {
 						uni.navigateTo({
 							url: 'team-public-expect-success?cpId=' + this.form.cpId
@@ -194,7 +207,7 @@
 				return true
 			},
 			// 验证加入意愿信息表单
-			validAddForm() {
+			validAddForm(params) {
 				let wxValidate = new WxValidate(this.rules2, this.messages2)
 				if (!wxValidate.checkForm(params)) {
 					const error = wxValidate.errorList[0]
@@ -206,11 +219,36 @@
 			onChange() {
 
 			},
+			onNotSelectClick(label) {
+				const idx = this.capabilityList.indexOf(label)
+				if(idx != -1) {
+					this.capabilityList.splice(idx, 1)
+					this.capabilityLabelOptions.push(label)
+				}
+			},
+			// TODO Label的动效
+			onSelectClick(label) {
+				if(this.capabilityList.length >= 3) {
+					this.msgInfo('不能再多啦')
+					return
+				}
+				const idx = this.capabilityLabelOptions.indexOf(label)
+				if(idx != -1) {
+					this.capabilityLabelOptions.splice(idx, 1)
+					this.capabilityList.push(label)
+				}
+			},
+			pickerChange(e) {
+				const index = e.target.value
+				this.form.work = this.workOptions[index].dictValue
+				this.form.workLabel = this.workOptions[index].dictLabel
+				this.$forceUpdate()
+			},
 			// 跳转到竞赛选取页面
 			goToCompSelectPage() {
 				uni.navigateTo({
 					url: 'competition-select?cpId=' + this.form.cpId + "&teamNumber=" + this.form.teamNumber + "&recruitNumber=" +
-						this.form.recruitNumber
+						this.form.recruitNumber + "&name=" + this.form.name
 				})
 			}
 		}

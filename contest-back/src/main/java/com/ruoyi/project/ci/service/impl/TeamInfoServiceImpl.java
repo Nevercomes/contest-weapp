@@ -59,9 +59,10 @@ public class TeamInfoServiceImpl implements ITeamInfoService {
      * @return 结果
      */
     @Override
-    public int insertTeamInfo(TeamInfo teamInfo) {
+    public TeamInfo insertTeamInfo(TeamInfo teamInfo) {
         teamInfo.preInsert();
-        return teamInfoMapper.insertTeamInfo(teamInfo);
+        int res =  teamInfoMapper.insertTeamInfo(teamInfo);
+        return teamInfo;
     }
 
     /**

@@ -80,7 +80,7 @@ public class TeamInfoController extends BaseController {
     @Log(title = "队伍信息", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody TeamInfo teamInfo) {
-        return toAjax(teamInfoService.insertTeamInfo(teamInfo));
+        return AjaxResult.success(teamInfoService.insertTeamInfo(teamInfo));
     }
 
     /**

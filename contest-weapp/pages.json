@@ -112,7 +112,7 @@
 		{
 			"path": "pages/ci/competition-select",
 			"style": {
-				"navigationBarTitleText":"选择竞赛"
+				"navigationBarTitleText": "选择竞赛"
 			}
 		},
 		{
@@ -219,37 +219,37 @@
 		{
 			"path": "pages/ci/team-info",
 			"style": {
-				"navigationBarTitleText":"队伍信息"
+				"navigationBarTitleText": "队伍信息"
 			}
 		},
 		{
 			"path": "pages/ci/team-public",
 			"style": {
-				"navigationBarTitleText":"队伍"
+				"navigationBarTitleText": "队伍"
 			}
 		},
 		{
 			"path": "pages/ci/team-public-member",
 			"style": {
-				"navigationBarTitleText":"创建队伍"
+				"navigationBarTitleText": "创建队伍"
 			}
 		},
 		{
 			"path": "pages/ci/team-public-member-form",
 			"style": {
-				"navigationBarTitleText":"招募队员"
+				"navigationBarTitleText": "招募队员"
 			}
 		},
 		{
 			"path": "pages/ci/team-public-success",
 			"style": {
-				"navigationBarTitleText":""
+				"navigationBarTitleText": ""
 			}
 		},
 		{
 			"path": "pages/ci/team-public-expect-success",
 			"style": {
-				"navigationBarTitleText":"组队期望"
+				"navigationBarTitleText": "组队期望"
 			}
 		},
 		{
@@ -294,25 +294,25 @@
 		{
 			"path": "pages/ci/points-index",
 			"style": {
-				"navigationBarTitleText":"我的积分"
+				"navigationBarTitleText": "我的积分"
 			}
 		},
 		{
 			"path": "pages/ci/points-action-list",
 			"style": {
-				"navigationBarTitleText":"积分账单"
+				"navigationBarTitleText": "积分账单"
 			}
 		},
 		{
 			"path": "pages/ci/points-shop",
 			"style": {
-				"navigationBarTitleText":"积分商城"
+				"navigationBarTitleText": "积分商城"
 			}
 		},
 		{
 			"path": "pages/ci/points-obtain-manual",
 			"style": {
-				"navigationBarTitleText":"积分获取"
+				"navigationBarTitleText": "积分获取"
 			}
 		},
 
@@ -457,25 +457,11 @@
 				"query": ""
 			},
 			{
-				"name": "userDetailShow",
-				"path": "pages/ci/user-detail-show",
-				"query": ""
-			},
-			{
-				"name": "userDetailShowsetting",
-				"path": "pages/ci/user-detail-showsetting",
-				"query": ""
-			},
-			{
 				"name": "userIdentifyForm",
 				"path": "pages/ci/user-identify-form",
 				"query": ""
 			},
 			{
-				"name": "userExperienceForm",
-				"path": "pages/ci/user-detail-experience-form",
-				"query": ""
-			}, {
 				"name": "homeIndex",
 				"path": "pages/ci/home-index",
 				"query": ""
@@ -483,10 +469,11 @@
 				"name": "teamPublic",
 				"path": "pages/ci/team-public",
 				"query": ""
-			}, {
-				"name": "userProfile",
-				"path": "pages/ci/user-profile",
-				"query": ""
+			},
+			{
+				"name": "teamPublicSuccess",
+				"path": "pages/ci/team-public-success",
+				"query": "cpId=1"
 			}
 		]
 	}

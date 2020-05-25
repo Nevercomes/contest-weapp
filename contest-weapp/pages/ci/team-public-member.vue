@@ -35,6 +35,9 @@
 	import {
 		addTeamInfo
 	} from '@/api/ci/team.js'
+	import {
+		addRecruit
+	} from '@/api/ci/recruit.js'
 
 	export default {
 		name: 'TeamPublicMember',
@@ -79,6 +82,7 @@
 		},
 		onLoad(options) {
 			this.form.cpId = options.cpId
+			this.form.name = options.name
 			this.form.teamNumber = options.teamNumber
 			this.recruitNumber = options.recruitNumber
 		},
@@ -93,10 +97,18 @@
 					// 提交队伍信息
 					this.loading = true
 					// 将能力期望转化成,连接
-					this.form.expect = this.form.capabilityList.join(',')
 					addTeamInfo(this.form).then(res => {
 						this.loading = false
 						// 跳转到成功页面,传入对应的竞赛id
+						const teamId = res.data.id
+						this.recruitList.forEach(item => {
+							let recruit = {
+								teamId: teamId,
+								work: item.workId,
+								capacity: item.capabilityList.join(',')
+							}
+							addRecruit(recruit)
+						})
 						uni.navigateTo({
 							url: 'team-public-success?compId=' + this.form.cpId
 						})
@@ -105,7 +117,7 @@
 			},
 			validForm(params) {
 				let wxValidate = new WxValidate(this.rules, this.messages)
-				if (!wxValidate.checkForm(params)) {
+				if (!wxValidate.checkForm(this.form)) {
 					const error = wxValidate.errorList[0]
 					uni.showToast({
 						title: error

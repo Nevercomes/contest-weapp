@@ -1,6 +1,6 @@
 <template>
 	<view class="app-container">
-		
+
 		<view class="bg-white padding">
 			<view class="cu-steps">
 				<view class="cu-item" :class="index>step?'':'text-red'" v-for="(item,index) in stepList" :key="index">
@@ -8,12 +8,26 @@
 				</view>
 			</view>
 		</view>
+		
+		<nl-success :icon="false" msg="队伍创建成功!"></nl-success>
+		
 		<view class="user-expect-list">
 			<!-- TODO 切换淡入淡出的动画 -->
 			<view v-for="(item,index) in expectList" :key="index" @click="goToUserShowPage">
 				<view>{{item.createUser.nickName}}</view>
 			</view>
-			<van-button type="primary" @click="onChangeClick">换一批</van-button>
+		</view>
+		
+		<view  class="flex-sub text-center">
+			<view class="solid-bottom text-df padding">
+				<text v-if="expectList && expectList.length > 0">他们也在找队伍，试着邀请一下吧</text>
+				<text v-else>好像没有人在寻找队伍呢</text>
+			</view>
+		</view>
+		
+		<view class="padding flex flex-direction">
+			<!-- :disabled="!(expectList && expectList.length > 0)" -->
+			<button  class="cu-btn bg-green margin-tb-sm lg shadow-blur round" @click="onChangeClick">换一批</button>
 		</view>
 	</view>
 </template>
@@ -27,8 +41,8 @@
 		name: 'TeamPublicSuccess',
 		data() {
 			return {
-				// tab激活页
-				active: 2,
+				// 步骤进度
+				step: 2,
 				// 步骤条进度
 				stepList: [{
 					cuIcon: 'usefullfill',
@@ -59,12 +73,10 @@
 		},
 		methods: {
 			loadList() {
-				if (this.hasMoreData) {
-					listExpect(this.queryParams).then(res => {
-						this.hasMoreData = this.hasMore(res.total, this.queryParams.pageNum, this.queryParams.pageSize)
-						this.dataList = this.dataList.concat(res.rows)
-					})
-				}
+				listExpect(this.queryParams).then(res => {
+					this.hasMoreData = this.hasMore(res.total, this.queryParams.pageNum, this.queryParams.pageSize)
+					this.dataList = this.dataList.concat(res.rows)
+				})
 				this.expectList = this.getRandomArrayElements(this.dataList, 5)
 			},
 			onChangeClick() {
