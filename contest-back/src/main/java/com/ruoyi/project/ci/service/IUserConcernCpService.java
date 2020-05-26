@@ -40,7 +40,7 @@ public interface IUserConcernCpService {
      * @param userConcernCp 关注竞赛
      * @return 结果
      */
-    int insertUserConcernCp(UserConcernCp userConcernCp);
+    UserConcernCp insertUserConcernCp(UserConcernCp userConcernCp);
 
     /**
      * 修改关注竞赛

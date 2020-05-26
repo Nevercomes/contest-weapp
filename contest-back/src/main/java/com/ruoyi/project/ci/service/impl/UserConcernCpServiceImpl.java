@@ -2,6 +2,7 @@ package com.ruoyi.project.ci.service.impl;
 
 import java.util.List;
 import java.util.Map;
+
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,9 +60,10 @@ public class UserConcernCpServiceImpl implements IUserConcernCpService {
      * @return 结果
      */
     @Override
-    public int insertUserConcernCp(UserConcernCp userConcernCp) {
+    public UserConcernCp insertUserConcernCp(UserConcernCp userConcernCp) {
         userConcernCp.preInsert();
-        return userConcernCpMapper.insertUserConcernCp(userConcernCp);
+        userConcernCpMapper.insertUserConcernCp(userConcernCp);
+        return userConcernCp;
     }
 
     /**

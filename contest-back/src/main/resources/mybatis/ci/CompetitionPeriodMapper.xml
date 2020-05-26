@@ -120,7 +120,7 @@
 
     <select id="selectCompetitionPeriodById" parameterType="Long" resultMap="CompetitionPeriodResult">
         <include refid="selectCompetitionPeriodDetailsVo"/>
-        where id = #{id}
+        where ci_competition_period.id = #{id}
     </select>
 
     <select id="selectCompetitionPeriodOptions" parameterType="CompetitionPeriod" resultType="Map">

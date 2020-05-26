@@ -69,6 +69,11 @@ public class BaseEntity implements Serializable {
     private String endTime;
 
     /**
+     * 删除标记
+     */
+    private String delFlag;
+
+    /**
      * 请求参数
      */
     private Map<String, Object> params;

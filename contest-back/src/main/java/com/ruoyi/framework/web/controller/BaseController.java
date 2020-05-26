@@ -4,6 +4,11 @@ import java.beans.PropertyEditorSupport;
 import java.util.Date;
 import java.util.List;
 
+import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.spring.SpringUtils;
+import com.ruoyi.framework.web.domain.BaseEntity;
+import com.ruoyi.project.system.domain.SysUser;
+import com.ruoyi.project.system.mapper.SysUserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.WebDataBinder;
@@ -74,5 +79,28 @@ public class BaseController {
      */
     protected AjaxResult toAjax(int rows) {
         return rows > 0 ? AjaxResult.success() : AjaxResult.error();
+    }
+
+    /**
+     * 仅查询个人数据
+     * @param baseEntity
+     */
+    protected void listSelf(BaseEntity baseEntity) {
+        if (!SecurityUtils.isAdmin(SecurityUtils.getUserId())) {
+            baseEntity.setCreateBy(SecurityUtils.getUsername());
+        }
+    }
+
+    /**
+     * 根据userId查询数据
+     * @param baseEntity
+     * @param userId
+     */
+    protected void listByUserId(BaseEntity baseEntity, Long userId) {
+        if (!SecurityUtils.isAdmin(SecurityUtils.getUserId()) && userId != null) {
+            SysUserMapper userMapper = SpringUtils.getBean(SysUserMapper.class);
+            SysUser user = userMapper.selectUserById(userId);
+            baseEntity.setCreateBy(user.getUserName());
+        }
     }
 }

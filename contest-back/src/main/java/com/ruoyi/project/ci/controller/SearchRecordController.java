@@ -2,6 +2,7 @@ package com.ruoyi.project.ci.controller;
 
 import java.util.List;
 
+import com.ruoyi.common.utils.SecurityUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ import com.ruoyi.framework.web.page.TableDataInfo;
 
 /**
  * searchRecordController
+ * 管理搜索记录
  *
  * @author sun
  * @date 2020-05-05
@@ -40,6 +42,7 @@ public class SearchRecordController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(SearchRecord searchRecord) {
         startPage();
+        listSelf(searchRecord);
         List<SearchRecord> list = searchRecordService.selectSearchRecordList(searchRecord);
         return getDataTable(list);
     }
@@ -102,5 +105,20 @@ public class SearchRecordController extends BaseController {
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids) {
         return toAjax(searchRecordService.deleteSearchRecordByIds(ids));
+    }
+
+    /**
+     * 删除个人
+     */
+    @PreAuthorize("@ss.hasPermi('ci:searchRecord:remove')")
+    @Log(title = "searchRecord", businessType = BusinessType.DELETE)
+    @DeleteMapping("/self")
+    public AjaxResult removeSelf() {
+        String username = SecurityUtils.getUsername();
+        SearchRecord q = new SearchRecord();
+        q.setCreateBy(username);
+        q.setDelFlag("0");
+        List<SearchRecord> list = searchRecordService.selectSearchRecordList(q);
+        return toAjax(searchRecordService.deleteSearchRecordByIds(list.stream().map(SearchRecord::getId).toArray(Long[]::new)));
     }
 }

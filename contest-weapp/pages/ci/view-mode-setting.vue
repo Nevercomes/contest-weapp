@@ -1,6 +1,6 @@
 <template>
 	<view class="app-container">
-		展示此竞赛已创建的队伍
+		浏览模式设置
 	</view>
 </template>
 

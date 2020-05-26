@@ -1,20 +1,63 @@
 <template>
 	<view class="app-container">
-		<cu-custom bgColor="bg-gradual-pink" :isBack="true">
-			<block slot="backText">返回</block>
-			<block slot="content">竞赛详情</block>
-		</cu-custom>
 		<!-- 展示信息 -->
-		<view class="info">
-			<!-- 内容展开 -->
+		<view class="cu-card case no-card">
+			<view class="cu-item shadow">
+				<view class="image">
+					<image :src="period.picUrl" mode="aspectFill"></image>
+					<view class="cu-tag bg-blue">{{levelFormat(period.basic.level)}}</view>
+				</view>
+				<view class="cu-list padding">
+					<view v-if="calSignDate(period.signEndTime)" class="padding-tb-sm">
+						<text class="text-green margin-right">正在报名</text><text>离报名截止还有{{calSignDate(period.signEndTime)}}天</text>
+					</view>
+					<view v-else class="padding-tb-sm">
+						<text class="text-grey">报名已结束</text>
+					</view>
+					<view class="text-bold text-lg padding-tb-sm">{{period.name}}</view>
+					<view class="padding-tb-sm"><text class="text-grey margin-right">官网链接</text>
+						<text class="text-blue" style="text-decoration: underline;">{{period.details.offcialLink}}</text></view>
+					<view class="padding-tb-sm"><text class="text-grey margin-right">报名时间</text>
+						{{formatDate(period.signBeginTime)}} —— {{formatDate(period.signEndTime)}}</view>
+					<view class="padding-tb-sm">
+						<view><text class="text-grey margin-right">主办单位</text> {{period.holder}}</view>
+					</view>
+					<view class="text-right">
+						<text class="cuIcon-attentionfill margin-lr-xs text-grey"></text> <text class="text-gray">浏览 {{period.basic.viewNumber}}</text>
+						<text class="cuIcon-favorfill margin-lr-xs text-grey"></text> <text class="text-gray">关注 {{period.basic.concernNumber}}</text>
+					</view>
+				</view>
+				<view class="cu-bar bg-white">
+					<view class="action">
+						<text class="cuIcon-title text-green"></text>
+						<text>竞赛简介</text>
+					</view>
+				</view>
+				<view class="padding">
+					<!-- {{period.details.content}} -->
+					TODO 富文本显示竞赛介绍
+				</view>
+			</view>
 		</view>
 		<!-- 底部操作条 -->
-		<view class="bottom-oper-bar">
-			<van-button v-if="!concerned" type="primary" @click="onConcernClick">关注</van-button>
-			<van-button v-else type="primary" @click="onNotConcernClick">取消关注</van-button>
-			<van-button type="primary" @click="onTeamClick">组队</van-button>
-			<van-button type="primary" @click="onNewsClick">动态</van-button>
-			<van-button type="primary" @click="onCommentClick">评论</van-button>
+		<view class="cu-bar tabbar shadow foot bg-white">
+			<view class="action" :class="concerned?'text-orange':'text-gray'" @click="onConcernClick">
+				<view :class="concerned?'cuIcon-favorfill':'cuIcon-favor'"></view>
+				<text v-if="concerned">已关注</text>
+				<text v-else>关注</text>
+			</view>
+			<view class="action text-gray" @click="onCommentClick">
+				<view class="cuIcon-mark"></view> 评论
+			</view>
+			<view class="action text-gray add-action" @click="onPublicClick">
+				<button class="cu-btn cuIcon-add bg-green shadow"></button> 发布
+			</view>
+			<view class="action text-gray" @click="onTeamClick">
+				<view class="cuIcon-friendfill"></view> 队伍
+			</view>
+			<view class="action text-gray" @click="onNewsClick">
+				<view class="cuIcon-community"></view> 动态
+			</view>
 		</view>
 	</view>
 </template>
@@ -27,11 +70,12 @@
 		listConcernCp,
 		updateConcernCp,
 		getConcernCp,
-		delConcernCp
+		delConcernCp,
+		addConcernCp
 	} from '@/api/ci/concern.js'
 
 	export default {
-		name: '',
+		name: 'CompetitionInfo',
 		data() {
 			return {
 				id: undefined,
@@ -40,13 +84,19 @@
 				// 关注信息
 				concern: {},
 				// 是否关注
-				concerned: false
+				concerned: false,
+				// 竞赛级别字典
+				levelOptions: []
+
 			}
 		},
 		onLoad(options) {
 			this.id = options.id
+			this.getDicts('ci_competition_level').then(res => {
+				this.levelOptions = res.data
+			})
 			if (this.id) {
-				getPeriod(id).then(res => {
+				getPeriod(this.id).then(res => {
 					this.period = res.data
 				})
 				listConcernCp({
@@ -64,21 +114,27 @@
 		methods: {
 			// 设置关注
 			onConcernClick() {
-				addConcernCp({
-					cpId: this.period.id,
-				}).then(res => {
-					this.concerned = true
-					this.concern = res.data
-					this.msgInfo('添加关注成功')
-				})
-			},
-			onNotConcernClick() {
-				delConcernCp(this.concern.id).then(res => {
-					this.msgInfo('取消关注成功')
-					this.concerned = false
-				})
+				if (this.concerned) {
+					delConcernCp(this.concern.id).then(res => {
+						this.msgInfo('取消关注成功')
+						this.concerned = false
+					})
+				} else {
+					addConcernCp({
+						cpId: this.period.id,
+					}).then(res => {
+						this.concerned = true
+						this.concern = res.data
+						this.msgInfo('添加关注成功')
+					})
+				}
 			},
 			// 跳转到关于该竞赛的队伍列表页面
+			onPublicClick() {
+				uni.navigateTo({
+					url: './team-public?cpId=' + this.id + "&cpName=" + this.period.name
+				})
+			},
 			onTeamClick() {
 				uni.navigateTo({
 					url: 'team-list-competition?cpId=' + this.id
@@ -92,14 +148,32 @@
 			},
 			// 跳转到评论页面
 			onCommentClick() {
-				uni.navigateTo({
-					url: 'competition-comment?cpId=' + this.id
-				})
+				this.msgInfo('评论功能已关闭')
+			},
+			calSignDate(date) {
+				try {
+					const today = new Date()
+					date = new Date(date)
+					if (today.getTime() > date.getTime()) {
+						return false
+					}
+					return Math.floor((date.getTime() - today.getTime()) / (24 * 3600 * 1000))
+				} catch (e) {
+					console.log(e)
+					return false
+				}
+			},
+			levelFormat(value, dict) {
+				return this.selectDictLabel(this.levelOptions, value)
 			}
-
 		}
 	}
 </script>
 
-<style>
+<style scoped lang="scss">
+	.cu-card .cu-item .image {
+		margin: 0;
+		height: 240upx;
+		border-radius: 0;
+	}
 </style>

@@ -1,7 +1,7 @@
 <template>
 	<view class="app-container">
 		<!-- 搜索部分 -->
-		<van-search :value="keywords" use-action-slot placeholder="请输入搜索关键词" @focus="goToSearchPage">
+		<van-search :value="keyword" use-action-slot placeholder="请输入搜索关键词" @focus="goToSearchPage">
 			<view style="display: flex; align-items: center;" slot="action" @tap="goToSettingPage">
 				<van-icon size="24" name="setting-o"></van-icon>
 			</view>
@@ -62,7 +62,7 @@
 		data() {
 			return {
 				// 搜索关键词
-				keywords: undefined,
+				keyword: undefined,
 
 				// 轮播参数
 				cardCur: 0,
@@ -115,12 +115,14 @@
 			// 当搜索框聚焦的时候跳转到搜索界面
 			goToSearchPage() {
 				uni.navigateTo({
-					url: 'search-index'
+					url: 'search-index?type=all'
 				})
 			},
 			// 取代搜索事件改为setting设置
 			geToSettingPage() {
-				
+				uni.navigateTo({
+					url: 'view-mode-setting'
+				})
 			},
 			// 主页的发布组队
 			goToTeamPage() {

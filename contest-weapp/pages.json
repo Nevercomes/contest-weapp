@@ -104,10 +104,19 @@
 			"path": "pages/ci/home-index",
 			"style": {}
 		},
+		{
+			"path":"pages/ci/view-mode-setting",
+			"style": {
+				"navigationBarTitleText":"浏览模式"
+			}
+		},
+		
 		// 竞赛相关
 		{
 			"path": "pages/ci/competition-index",
-			"style": {}
+			"style": {
+				"navigationBarTitleText":"竞赛"
+			}
 		},
 		{
 			"path": "pages/ci/competition-select",
@@ -280,16 +289,17 @@
 		// 搜索
 		{
 			"path": "pages/ci/search-index",
-			"style": {}
+			"style": {
+				"navigationBarTitleText":"搜索"
+			}
 		},
 		{
 			"path": "pages/ci/search-result",
-			"style": {}
+			"style": {
+				"navigationBarTitleText":"搜索结果"
+			}
 		},
-		{
-			"path": "pages/ci/search-competition",
-			"style": {}
-		},
+		
 		// 积分
 		{
 			"path": "pages/ci/points-index",
@@ -374,7 +384,7 @@
 			"allowsBounceVertical": "NO"
 		},
 		"navigationBarBackgroundColor": "#FFFFFF",
-		"navigationBarTitleText": "逐鹿",
+		"navigationBarTitleText": "赛舟",
 		"navigationBarTextStyle": "black",
 		// "navigationStyle": "custom",
 		"usingComponents": { //这里为方便，全局引入了所有组件，也可以在某个page下单独引用某个组件
@@ -452,11 +462,6 @@
 				"query": ""
 			},
 			{
-				"name": "userDetail",
-				"path": "pages/ci/user-detail",
-				"query": ""
-			},
-			{
 				"name": "userIdentifyForm",
 				"path": "pages/ci/user-identify-form",
 				"query": ""
@@ -465,20 +470,21 @@
 				"name": "homeIndex",
 				"path": "pages/ci/home-index",
 				"query": ""
-			}, {
-				"name": "teamPublic",
-				"path": "pages/ci/team-public",
-				"query": ""
-			},
-			{
-				"name": "teamPublicSuccess",
-				"path": "pages/ci/team-public-success",
-				"query": "cpId=1"
-			},
+			}, 
 			{
 				"name":"compList",
 				"path":"pages/ci/competition-index",
 				"query":""
+			},
+			{
+				"name":"searchIndex",
+				"path":"pages/ci/search-index",
+				"query":""
+			},
+			{
+				"name":"compInfo",
+				"path":"pages/ci/competition-info",
+				"query":"id=2"
 			}
 		]
 	}

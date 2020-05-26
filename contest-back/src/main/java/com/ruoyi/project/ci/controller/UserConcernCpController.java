@@ -39,6 +39,7 @@ public class UserConcernCpController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(UserConcernCp userConcernCp) {
         startPage();
+        listSelf(userConcernCp);
         List<UserConcernCp> list = userConcernCpService.selectUserConcernCpList(userConcernCp);
         return getDataTable(list);
     }
@@ -80,7 +81,7 @@ public class UserConcernCpController extends BaseController {
     @Log(title = "关注竞赛", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody UserConcernCp userConcernCp) {
-        return toAjax(userConcernCpService.insertUserConcernCp(userConcernCp));
+        return AjaxResult.success(userConcernCpService.insertUserConcernCp(userConcernCp));
     }
 
     /**

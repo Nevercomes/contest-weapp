@@ -1,43 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.project.ci.mapper.SearchRecordMapper">
-    
+
     <resultMap type="SearchRecord" id="SearchRecordResult">
-        <result property="id"    column="id"    />
-        <result property="createBy"    column="create_by"    />
-        <result property="createTime"    column="create_time"    />
-        <result property="keyword"    column="keyword"    />
-        <result property="type"    column="type"    />
+        <result property="id" column="id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="keyword" column="keyword"/>
+        <result property="type" column="type"/>
+        <result property="delFlag" column="del_flag"/>
     </resultMap>
 
     <sql id="selectSearchRecordVo">
-        select id, create_by, create_time, keyword, type from ci_search_record
+        select id, create_by, create_time, keyword, type, del_flag
+        from ci_search_record
     </sql>
 
     <select id="selectSearchRecordList" parameterType="SearchRecord" resultMap="SearchRecordResult">
         <include refid="selectSearchRecordVo"/>
-        <where>  
-            <if test="keyword != null  and keyword != ''"> and keyword like concat('%', #{keyword}, '%')</if>
-            <if test="type != null  and type != ''"> and type = #{type}</if>
+        <where>
+            <if test="keyword != null  and keyword != ''">and keyword like concat('%', #{keyword}, '%')</if>
+            <if test="type != null  and type != ''">and type = #{type}</if>
+            <if test="createBy != null  and createBy != ''">and create_by = #{createBy}</if>
+            <if test="delFlag != null  and delFlag != ''">and del_flag = #{delFlag}</if>
         </where>
     </select>
-    
+
     <select id="selectSearchRecordById" parameterType="Long" resultMap="SearchRecordResult">
         <include refid="selectSearchRecordVo"/>
         where id = #{id}
     </select>
 
     <select id="selectSearchRecordOptions" parameterType="SearchRecord" resultType="Map">
-         select id as "value",
-         `name` as "label"
+        select id as "value",
+        `name` as "label"
         from ci_search_record
         <if test="name != null and name != ''">
             where `name` like concat('%', #{name}, '%')
-         </if>
+        </if>
     </select>
-        
+
     <insert id="insertSearchRecord" parameterType="SearchRecord" useGeneratedKeys="true" keyProperty="id">
         insert into ci_search_record
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -45,13 +49,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null ">create_time,</if>
             <if test="keyword != null  and keyword != ''">keyword,</if>
             <if test="type != null  and type != ''">type,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="createBy != null  and createBy != ''">#{createBy},</if>
             <if test="createTime != null ">#{createTime},</if>
             <if test="keyword != null  and keyword != ''">#{keyword},</if>
             <if test="type != null  and type != ''">#{type},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateSearchRecord" parameterType="SearchRecord">
@@ -66,14 +70,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteSearchRecordById" parameterType="Long">
-        delete from ci_search_record where id = #{id}
+        update ci_search_record
+        set del_flag = '1'
+        where id = #{id}
     </delete>
 
     <delete id="deleteSearchRecordByIds" parameterType="String">
-        delete from ci_search_record where id in 
+        update ci_search_record
+        set del_flag = '1' where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
-    
+
 </mapper>

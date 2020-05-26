@@ -158,7 +158,11 @@
 
 			}
 		},
-		onLoad() {
+		onLoad(options) {
+			if(options.cpId) {
+				this.form.cpId = options.cpId
+				this.form.compName = options.cpName
+			}
 			this.getDicts('team_work_type').then(res => {
 				this.workOptions = res.data
 				this.workOptionsPicker = res.data.map(item => item.dictLabel)
