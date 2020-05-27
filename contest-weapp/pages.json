@@ -224,13 +224,7 @@
 		},
 
 
-		// 队伍相关
-		{
-			"path": "pages/ci/team-info",
-			"style": {
-				"navigationBarTitleText": "队伍信息"
-			}
-		},
+		// 队伍相关-操作部分
 		{
 			"path": "pages/ci/team-public",
 			"style": {
@@ -261,29 +255,36 @@
 				"navigationBarTitleText": "组队期望"
 			}
 		},
+		// 队伍相关-信息部分
 		{
-			"path": "pages/ci/team-list-competition",
-			"style": {}
+			"path": "pages/ci/team-info",
+			"style": {
+				"navigationBarTitleText": "队伍信息"
+			}
 		},
 		{
-			"path": "pages/ci/user-team-index",
-			"style": {}
+			"path": "pages/ci/team-list",
+			"style": {
+				"navigationBarTitleText":"队伍列表"
+			}
 		},
 		{
-			"path": "pages/ci/user-team-list",
-			"style": {}
+			"path": "pages/ci/team-expect",
+			"style": {
+				"navigationBarTitleText":"入队期望"
+			}
 		},
 		{
-			"path": "pages/ci/user-team-expect",
-			"style": {}
+			"path": "pages/ci/team-invite",
+			"style": {
+				"navigationBarTitleText":"入队邀请"
+			}
 		},
 		{
-			"path": "pages/ci/user-team-invite",
-			"style": {}
-		},
-		{
-			"path": "pages/ci/user-team-apply",
-			"style": {}
+			"path": "pages/ci/team-apply",
+			"style": {
+				"navigationBarTitleText":"加入申请"
+			}
 		},
 
 		// 搜索

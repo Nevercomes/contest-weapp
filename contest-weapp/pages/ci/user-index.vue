@@ -35,7 +35,7 @@
 		
 		<!-- 二类 -->
 		<van-cell-group>
-			<van-cell title="我的队伍" is-link></van-cell>
+			<van-cell title="我的队伍" is-link :url="cellUrl.team"></van-cell>
 			<van-cell title="我的动态" is-link></van-cell>
 			<van-cell title="我的关注" is-link></van-cell>
 			<van-cell title="我的收藏" is-link></van-cell>
@@ -78,7 +78,8 @@
 					profile: '/pages/ci/user-profile',
 					detail: '/pages/ci/user-detail',
 					points: '/pages/ci/points-index',
-					message: '/pages/ci/message-index'
+					message: '/pages/ci/message-index',
+					team: '/pages/ci/team-index'
 				}
 			}
 		},

@@ -1,9 +1,5 @@
 <template>
 	<view class="app-container">
-		<cu-custom bgColor="bg-gradual-pink" :isBack="true">
-			<block slot="backText">返回</block>
-			<block slot="content">竞赛经历</block>
-		</cu-custom>
 		
 	</view>
 </template>
@@ -16,7 +12,7 @@
 	} from '@/api/ci/experience.js'
 	
 	export default {
-		name: 'UserDetailExperience',
+		name: 'TeamApply',
 		data() {
 			return {
 				// 加载状态
@@ -52,7 +48,10 @@
 		methods: {
 			loadList() {
 				listExperience().then(res => {
-					this.dataList = res.rows
+					this.loading = false
+					// 计算是否有更多数据
+					this.hasMoreData = this.hasMore(res.total, this.queryParams.pageNum, this.queryParams.pageSize)
+					this.dataList = this.dataList.concat(res.rows)
 				})
 			}
 		}
