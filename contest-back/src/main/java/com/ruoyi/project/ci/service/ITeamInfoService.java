@@ -65,4 +65,12 @@ public interface ITeamInfoService {
      * @return 结果
      */
     int deleteTeamInfoById(Long id);
+
+    /**
+     * 查询该用户加入的队伍
+     * @param teamInfo
+     * @param userId
+     * @return
+     */
+    List<TeamInfo> selectTeamInfoJoinList(TeamInfo teamInfo, Long userId);
 }

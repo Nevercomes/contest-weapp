@@ -36,5 +36,9 @@ public class TeamInfo extends BaseEntity{
     @Excel(name = "状态")
     private String status;
 
+    /**
+     * 添加队伍头像
+     */
+    private String picUrl;
 
 }

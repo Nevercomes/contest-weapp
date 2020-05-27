@@ -98,4 +98,15 @@ public class TeamInfoServiceImpl implements ITeamInfoService {
     public int deleteTeamInfoById(Long id) {
         return teamInfoMapper.deleteTeamInfoById(id);
     }
+
+    /**
+     * 查询加入的队伍
+     * @param teamInfo
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<TeamInfo> selectTeamInfoJoinList(TeamInfo teamInfo, Long userId) {
+        return teamInfoMapper.selectTeamInfoJoinList(teamInfo, userId);
+    }
 }

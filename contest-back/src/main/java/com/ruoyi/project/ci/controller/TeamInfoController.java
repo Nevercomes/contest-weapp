@@ -1,6 +1,12 @@
 package com.ruoyi.project.ci.controller;
 
 import java.util.List;
+
+import com.ruoyi.common.constant.DictConstant;
+import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.project.ci.domain.TeamMember;
+import com.ruoyi.project.ci.service.ITeamMemberService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +37,8 @@ import com.ruoyi.framework.web.page.TableDataInfo;
 public class TeamInfoController extends BaseController {
     @Autowired
     private ITeamInfoService teamInfoService;
+    @Autowired
+    private ITeamMemberService teamMemberService;
 
     /**
      * 查询队伍信息列表
@@ -40,6 +48,29 @@ public class TeamInfoController extends BaseController {
     public TableDataInfo list(TeamInfo teamInfo) {
         startPage();
         List<TeamInfo> list = teamInfoService.selectTeamInfoList(teamInfo);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询队伍信息列表-本人创建
+     */
+    @PreAuthorize("@ss.hasPermi('ci:teamInfo:list')")
+    @GetMapping("/list/create")
+    public TableDataInfo listCreate(TeamInfo teamInfo) {
+        startPage();
+        listSelf(teamInfo);
+        List<TeamInfo> list = teamInfoService.selectTeamInfoList(teamInfo);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询队伍信息列表-加入的队伍
+     */
+    @PreAuthorize("@ss.hasPermi('ci:teamInfo:list')")
+    @GetMapping("/list/join")
+    public TableDataInfo listJoin(TeamInfo teamInfo) {
+        startPage();
+        List<TeamInfo> list = teamInfoService.selectTeamInfoJoinList(teamInfo, SecurityUtils.getUserId());
         return getDataTable(list);
     }
 
@@ -65,6 +96,28 @@ public class TeamInfoController extends BaseController {
     }
 
     /**
+     * 判断是否可以申请加入队伍
+     */
+    @PreAuthorize("@ss.hasPermi('ci:teamInfo:query')")
+    @GetMapping(value = "/canJoin/{teamId}")
+    public AjaxResult canJoin(@PathVariable("teamId") Long teamId) {
+        Long userId = SecurityUtils.getUserId();
+        TeamInfo teamInfo = teamInfoService.selectTeamInfoById(teamId);
+        // 队伍的状态为组队中
+        if (DictConstant.TEAM_STATUS_OPEN.equals(teamInfo.getStatus())) {
+            // 不在队伍中
+            TeamMember member = new TeamMember();
+            member.setTeamId(teamId);
+            member.setUserId(userId);
+            List<TeamMember> list = teamMemberService.selectTeamMemberList(member);
+            if (StringUtils.isEmpty(list)) {
+                return AjaxResult.success("允许加入", "yes");
+            }
+        }
+        return AjaxResult.success("不允许加入", "no");
+    }
+
+    /**
      * 获取队伍信息选项信息
      */
     @PreAuthorize("@ss.hasPermi('ci:teamInfo:options')")
@@ -82,6 +135,7 @@ public class TeamInfoController extends BaseController {
     public AjaxResult add(@RequestBody TeamInfo teamInfo) {
         return AjaxResult.success(teamInfoService.insertTeamInfo(teamInfo));
     }
+
 
     /**
      * 修改队伍信息

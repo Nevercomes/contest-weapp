@@ -43,6 +43,12 @@ public class SysOssRecordServiceImpl implements ISysOssRecordService {
     @Autowired
     private SysOssRecordMapper sysOssRecordMapper;
 
+    /**
+     * 上传用户头像
+     * @param file 头像
+     * @return
+     * @throws IOException
+     */
     @Override
     public String uploadAvatar(MultipartFile file) throws IOException {
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
@@ -55,6 +61,12 @@ public class SysOssRecordServiceImpl implements ISysOssRecordService {
         return url;
     }
 
+    /**
+     * 上传竞赛封面
+     * @param file 封面
+     * @return
+     * @throws IOException
+     */
     @Override
     public String uploadCpCover(MultipartFile file) throws IOException {
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
@@ -64,6 +76,24 @@ public class SysOssRecordServiceImpl implements ISysOssRecordService {
         ossClient.shutdown();
         String url = "https://" + bucketName + "." + endpoint + "/competition/" + fileName;
         insertUploadRecord(uuId, url, OssConstants.BUSINESS_TYPE_COVER, fileName.substring(fileName.lastIndexOf(".")));
+        return url;
+    }
+
+    /**
+     * 上传队伍头像
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    @Override
+    public String uploadTeamAvatar(MultipartFile file) throws IOException {
+        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+        String uuId = IdUtils.fastSimpleUUID();
+        String fileName = FileUtils.getUUIDFileName(uuId, Objects.requireNonNull(file.getOriginalFilename()));
+        ossClient.putObject(bucketName, "team/" + fileName, new ByteArrayInputStream(file.getBytes()));
+        ossClient.shutdown();
+        String url = "https://" + bucketName + "." + endpoint + "/team/" + fileName;
+        insertUploadRecord(uuId, url, OssConstants.BUSINESS_TYPE_TEAM, fileName.substring(fileName.lastIndexOf(".")));
         return url;
     }
 

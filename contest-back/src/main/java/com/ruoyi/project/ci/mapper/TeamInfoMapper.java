@@ -3,6 +3,7 @@ package com.ruoyi.project.ci.mapper;
 import java.util.List;
 import java.util.Map;
 import com.ruoyi.project.ci.domain.TeamInfo;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 队伍信息Mapper接口
@@ -65,4 +66,12 @@ public interface TeamInfoMapper {
      * @return 结果
      */
     int deleteTeamInfoByIds(Long[] ids);
+
+    /**
+     * 查询加入的队伍
+     * @param teamInfo
+     * @param userId
+     * @return
+     */
+    List<TeamInfo> selectTeamInfoJoinList(@Param("teamInfo") TeamInfo teamInfo, @Param("userId") Long userId);
 }

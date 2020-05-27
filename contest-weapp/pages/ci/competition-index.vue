@@ -26,7 +26,7 @@
 					<view class=""><text class="margin-right">报名时间</text>
 						{{formatDate(item.signBeginTime)}} —— {{formatDate(item.signEndTime)}}</view>
 					<view class="flex">
-						<text class="margin-right" style="min-width: 56px;">主办单位</text>
+						<text class="margin-right" style="min-width: 50px;">主办单位</text>
 						<view>
 							<view v-for="(holder, hIndex) in item.holder" :key="hIndex">
 								{{holder}}

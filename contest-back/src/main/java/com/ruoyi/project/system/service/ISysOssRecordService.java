@@ -29,6 +29,14 @@ public interface ISysOssRecordService {
     String uploadCpCover(MultipartFile file) throws IOException;
 
     /**
+     * 上传队伍的头像
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    String uploadTeamAvatar(MultipartFile file) throws IOException;
+
+    /**
      * 查询OSS上传
      *
      * @param id OSS上传ID

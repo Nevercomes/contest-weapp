@@ -13,6 +13,7 @@ import config from '../../config/index.js'
 const user = {
 	state: {
 		token: getToken(),
+		userId: '',
 		name: '',
 		nickName: '',
 		avatar: '',
@@ -23,6 +24,9 @@ const user = {
 	mutations: {
 		SET_TOKEN: (state, token) => {
 			state.token = token
+		},
+		SET_USERID: (state, userId) => {
+			state.userId = userId
 		},
 		SET_NAME: (state, name) => {
 			state.name = name
@@ -81,6 +85,7 @@ const user = {
 						commit('SET_ROLES', ['ROLE_DEFAULT'])
 					}
 					commit('SET_NAME', user.username)
+					commit('SET_USERID', user.userId)
 					commit('SET_NICKNAME', user.nickName)
 					commit('SET_AVATAR', avatar)
 					resolve(res)

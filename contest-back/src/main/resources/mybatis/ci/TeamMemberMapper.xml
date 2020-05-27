@@ -37,6 +37,7 @@
             <if test="status != null  and status != ''">and status = #{status}</if>
             <if test="identity != null  and identity != ''">and identity = #{identity}</if>
             <if test="work != null  and work != ''">and work = #{work}</if>
+            <if test="userId != null">and user_id = #{userId}</if>
         </where>
     </select>
 

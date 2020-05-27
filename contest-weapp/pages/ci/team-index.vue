@@ -1,6 +1,6 @@
 <template>
 	<view class="app-container">
-		<van-cell-group custom-class="margin-top:10px; margin-bottom: 10px">
+		<van-cell-group custom-class="">
 			<van-cell title="创建的队伍" is-link :url="cellUrl.myTeam"></van-cell>
 			<van-cell title="加入的队伍" is-link :url="cellUrl.joinTeam"></van-cell>
 			<van-cell title="组队邀请" is-link :url="cellUrl.invite"></van-cell>

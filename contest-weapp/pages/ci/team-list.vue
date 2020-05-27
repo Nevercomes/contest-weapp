@@ -1,15 +1,30 @@
 <template>
 	<view class="app-container">
-		队伍列表
+		<view class="cu-list menu-avatar">
+			<view class="cu-item" @click="onItemClick(item.id)" v-for="(item,index) in dataList" :key="index">
+				<image :src="item.picUrl ? item.picUrl : dfTeamAvatar" class="cu-avatar round lg bg-white"></image>
+				<view class="content flex-sub flex justify-between align-center">
+					<view class="flex-direction align-start">
+						<view class="text-df">{{item.name}}</view>
+						<view class="text-grey">{{item.cpName}}</view>
+						<view class="text-grey text-cut text-sm">{{item.intro}}</view>
+					</view>
+					<view class="">
+						<view v-if="item.status == '0'" class="cu-tag radius text-green">组队中</view>
+						<view v-else-if="item.status == '1'" class="cu-tag radius text-orange">已完成</view>
+						<view v-else class="cu-tag radius">已解散</view>
+					</view>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
 <script>
-	
 	import {
 		listTeamInfo
 	} from '@/api/ci/team.js'
-	
+
 	export default {
 		name: 'TeamList',
 		data() {
@@ -30,7 +45,9 @@
 					pageSize: 10,
 					cpId: undefined,
 					status: undefined
-				}
+				},
+				//  默认的队伍头像
+				dfTeamAvatar: require('@/static/df_team_avatar.png')
 			}
 		},
 		onLoad(options) {
@@ -52,11 +69,17 @@
 		},
 		methods: {
 			loadList() {
+				this.loading = true
 				listTeamInfo(this.queryParams, this.teamType).then(res => {
 					this.loading = false
 					// 计算是否有更多数据
 					this.hasMoreData = this.hasMore(res.total, this.queryParams.pageNum, this.queryParams.pageSize)
 					this.dataList = this.dataList.concat(res.rows)
+				})
+			},
+			onItemClick(id) {
+				uni.navigateTo({
+					url: 'team-info?id=' + id
 				})
 			}
 		}
@@ -64,4 +87,7 @@
 </script>
 
 <style scoped lang="scss">
+	.align-start {
+		align-items: flex-start !important;
+	}
 </style>
