@@ -2,6 +2,7 @@ package com.ruoyi.project.ci.controller;
 
 import java.util.List;
 
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.framework.aspectj.lang.annotation.DataScope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +66,16 @@ public class PointsActionController extends BaseController {
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id) {
         return AjaxResult.success(pointsActionService.selectPointsActionById(id));
+    }
+
+    /**
+     * 查询用户积分
+     */
+    @PreAuthorize("@ss.hasPermi('ci:points:query')")
+    @GetMapping(value = "/user")
+    public AjaxResult getUserPoints() {
+        Long userId = SecurityUtils.getUserId();
+        return AjaxResult.success(pointsActionService.getUserPoints(userId));
     }
 
     /**

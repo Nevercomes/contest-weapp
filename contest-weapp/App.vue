@@ -27,23 +27,9 @@
 					// #endif
 				}
 			})
-
-			// 进行初次登录
-			// const token = uni.getStorageSync('Zhulu-Token')
-			// if(!token) {
-			// 	this.$store.dispatch('Login').then(res => {
-			// 		if (res.register) {
-			// 			// 上传微信信息
-			// 			console.log('首次登录')
-			// 		} else {
-			// 			console.log('非首次登录')
-			// 		}
-			// 		this.$store.dispatch('GetInfo')
-			// 	})
-			// } else {
-			// 	this.$store.dispatch('GetInfo')
-			// }
 			
+			// 重启的时候清空登录尝试次数
+			uni.removeStorage('try-login-times')
 
 			Vue.prototype.ColorList = [{
 					title: '嫣红',

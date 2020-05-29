@@ -103,6 +103,16 @@ public class PointsActionServiceImpl implements IPointsActionService {
         return pointsActionMapper.deletePointsActionById(id);
     }
 
+    /**
+     * 查询用户积分
+     * @param userId
+     * @return
+     */
+    @Override
+    public PointsAction getUserPoints(Long userId) {
+        return pointsActionMapper.getUserPoints(userId);
+    }
+
     private void setAssociated(PointsAction pointsAction) {
         if(pointsAction == null) return;
         if (pointsAction.getUserId() == null) {

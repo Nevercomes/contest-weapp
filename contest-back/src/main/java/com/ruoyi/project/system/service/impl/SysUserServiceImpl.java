@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ruoyi.project.ci.domain.UserShowSetting;
+import com.ruoyi.project.ci.mapper.UserShowSettingMapper;
 import com.ruoyi.project.ci.service.IUserShowSettingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +56,7 @@ public class SysUserServiceImpl implements ISysUserService {
     @Autowired
     private ISysConfigService configService;
     @Autowired
-    private IUserShowSettingService userShowSettingService;
+    private UserShowSettingMapper userShowSettingMapper;
 
     /**
      * 根据条件分页查询用户列表
@@ -418,19 +419,24 @@ public class SysUserServiceImpl implements ISysUserService {
     @Transactional
     public SysUser createWeappUser(String openId, String pwd) {
         // 1. 创建用户
-        SysUser user = new SysUser();
-        user.setOpenId(openId);
-        user.setUserName(openId);
-        user.setPassword(pwd);
-        userMapper.insertUser(user);
-        Long[] roleIds = {2L};
-        user.setRoleIds(roleIds);
-        insertUserRole(user);
-        // 2. 初始化用户设置
-        UserShowSetting userShowSetting = new UserShowSetting();
-        userShowSetting.setOwnUserId(user.getUserId());
-        userShowSettingService.insertUserShowSetting(userShowSetting);
-        return user;
+        try {
+            SysUser user = new SysUser();
+            user.setOpenId(openId);
+            user.setUserName(openId);
+            user.setPassword(pwd);
+            userMapper.insertUser(user);
+            Long[] roleIds = {2L};
+            user.setRoleIds(roleIds);
+            insertUserRole(user);
+            // 2. 初始化用户设置
+            UserShowSetting userShowSetting = new UserShowSetting();
+            userShowSetting.setOwnUserId(user.getUserId());
+            userShowSettingMapper.insertUserShowSetting(userShowSetting);
+            return user;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**

@@ -54,7 +54,7 @@ public class SysLoginService {
      *
      * @param username 用户名
      * @param password 密码
-     * @param captcha  验证码
+     * @param code  验证码
      * @param uuid     唯一标识
      * @return 结果
      */
@@ -102,7 +102,7 @@ public class SysLoginService {
     public Map<String, Object> wxLogin(String code) {
         String openId = WeAppUtil.getOpenId(code);
         Map<String, Object> res = new HashMap<>();
-        res.put("register", false);
+        res.put("needInfo", false);
         if (StringUtils.isNotEmpty(openId)) {
             // 通过openId查找用户
             SysUser user = userService.selectUserByUserName(openId);
@@ -111,7 +111,9 @@ public class SysLoginService {
             if (user == null) {
                 // 根据openId创建用户
                 userService.createWeappUser(openId, BCPwd);
-                res.put("register", true);
+                res.put("needInfo", true);
+            } else if (StringUtils.isEmpty(user.getNickName())) {
+                res.put("needInfo", true);
             }
             Authentication authentication = null;
             try {

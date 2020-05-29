@@ -65,4 +65,11 @@ public interface IPointsActionService {
      * @return 结果
      */
     int deletePointsActionById(Long id);
+
+    /**
+     * 查询用户积分
+     * @param userId
+     * @return
+     */
+    PointsAction getUserPoints(Long userId);
 }

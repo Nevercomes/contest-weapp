@@ -20,7 +20,7 @@
 							<van-col>
 								<!-- <van-icon name="points" /> -->
 							积分</van-col>
-							<van-col>10</van-col>
+							<van-col>{{points.value}}</van-col>
 						</van-row>
 					</view>
 				</view>
@@ -58,6 +58,9 @@
 	import {
 		mapGetters
 	} from 'vuex'
+	import {
+		getUserPoints
+	} from '@/api/ci/points.js'
 
 	export default {
 		components: {
@@ -80,13 +83,16 @@
 					points: '/pages/ci/points-index',
 					message: '/pages/ci/message-index',
 					team: '/pages/ci/team-index'
-				}
+				},
+				// 用户积分
+				points: {}
 			}
 		},
 		onLoad() {
-			setTimeout(() => {
-				this.loading = false
-			}, 2000)
+			this.$store.dispatch('GetInfo')
+			getUserPoints().then(res => {
+				this.points = res.data
+			})
 		},
 		methods: {
 			onGotUserInfo(res) {

@@ -17,6 +17,14 @@ export function getPoints(id) {
   })
 }
 
+// 查询用户积分
+export function getUserPoints() {
+	return http.request({
+		url: '/ci/points/user',
+		method: 'get'
+	})
+}
+
 export function getPointsOptions(label) {
     return http.request({
         url: '/ci/points/options',

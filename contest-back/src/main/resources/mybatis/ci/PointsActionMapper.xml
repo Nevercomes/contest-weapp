@@ -35,6 +35,14 @@
         where id = #{id}
     </select>
 
+    <select id="getUserPoints" parameterType="Long" resultMap="PointsActionResult">
+        select sum(IFNULL(value, 0)) as "value",
+               user_id
+        from ci_points_action
+        where user_id = #{userId}
+        group by user_id
+    </select>
+
     <select id="selectPointsActionOptions" parameterType="PointsAction" resultType="Map">
         select id as "value",
         `name` as "label"

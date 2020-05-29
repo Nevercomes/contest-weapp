@@ -9,6 +9,7 @@ import {
 	removeToken
 } from '@/utils/auth'
 import config from '../../config/index.js'
+import http from '@/utils/request.js'
 
 const user = {
 	state: {
@@ -54,6 +55,24 @@ const user = {
 				uni.login({
 					provider: 'weixin',
 					success(wxRes) {
+						// uni.request({
+						// 	url: config.REQ_API + '/wxLogin',
+						// 	method: 'GET',
+						// 	data: {
+						// 		code: wxRes.code
+						// 	},
+						// 	success: function(res) {
+						// 		setToken(res.data.token)
+						// 		commit('SET_TOKEN', res.data.token)
+						// 		resolve(res.data)
+						// 	},
+						// 	fail: function() {
+						// 		reject(error)
+						// 	}
+						// })
+						// 登录前清空已有的token
+						removeToken()
+						commit('SET_TOKEN', '')
 						login(wxRes.code).then(res => {
 							setToken(res.data.token)
 							commit('SET_TOKEN', res.data.token)
@@ -66,7 +85,6 @@ const user = {
 						reject(wxError)
 					}
 				})
-
 			})
 		},
 

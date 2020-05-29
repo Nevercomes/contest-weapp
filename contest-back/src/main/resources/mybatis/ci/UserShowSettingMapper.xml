@@ -1,47 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.project.ci.mapper.UserShowSettingMapper">
-    
+
     <resultMap type="UserShowSetting" id="UserShowSettingResult">
-        <result property="ownUserId"    column="own_user_id"    />
-        <result property="showName"    column="show_name"    />
-        <result property="showIntro"    column="show_intro"    />
-        <result property="showExperience"    column="show_experience"    />
-        <result property="showPoints"    column="show_points"    />
-        <result property="showNews"    column="show_news"    />
+        <result property="ownUserId" column="own_user_id"/>
+        <result property="showName" column="show_name"/>
+        <result property="showIntro" column="show_intro"/>
+        <result property="showExperience" column="show_experience"/>
+        <result property="showPoints" column="show_points"/>
+        <result property="showNews" column="show_news"/>
     </resultMap>
 
     <sql id="selectUserShowSettingVo">
-        select own_user_id, show_name, show_intro, show_experience, show_points, show_news from ci_user_show_setting
+        select own_user_id, show_name, show_intro, show_experience, show_points, show_news
+        from ci_user_show_setting
     </sql>
 
     <select id="selectUserShowSettingList" parameterType="UserShowSetting" resultMap="UserShowSettingResult">
         <include refid="selectUserShowSettingVo"/>
-        <where>  
-            <if test="showName != null  and showName != ''"> and show_name = #{showName}</if>
-            <if test="showIntro != null  and showIntro != ''"> and show_intro = #{showIntro}</if>
-            <if test="showExperience != null  and showExperience != ''"> and show_experience = #{showExperience}</if>
-            <if test="showPoints != null  and showPoints != ''"> and show_points = #{showPoints}</if>
-            <if test="showNews != null  and showNews != ''"> and show_news = #{showNews}</if>
+        <where>
+            <if test="showName != null  and showName != ''">and show_name = #{showName}</if>
+            <if test="showIntro != null  and showIntro != ''">and show_intro = #{showIntro}</if>
+            <if test="showExperience != null  and showExperience != ''">and show_experience = #{showExperience}</if>
+            <if test="showPoints != null  and showPoints != ''">and show_points = #{showPoints}</if>
+            <if test="showNews != null  and showNews != ''">and show_news = #{showNews}</if>
         </where>
     </select>
-    
+
     <select id="selectUserShowSettingById" parameterType="Long" resultMap="UserShowSettingResult">
         <include refid="selectUserShowSettingVo"/>
         where own_user_id = #{ownUserId}
     </select>
 
     <select id="selectUserShowSettingOptions" parameterType="UserShowSetting" resultType="Map">
-         select id as "value",
-         `name` as "label"
+        select id as "value",
+        `name` as "label"
         from ci_user_show_setting
         <if test="name != null and name != ''">
             where `name` like concat('%', #{name}, '%')
-         </if>
+        </if>
     </select>
-        
+
     <insert id="insertUserShowSetting" parameterType="UserShowSetting">
         insert into ci_user_show_setting
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -51,7 +52,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="showExperience != null  and showExperience != ''">show_experience,</if>
             <if test="showPoints != null  and showPoints != ''">show_points,</if>
             <if test="showNews != null  and showNews != ''">show_news,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ownUserId != null ">#{ownUserId},</if>
             <if test="showName != null  and showName != ''">#{showName},</if>
@@ -59,7 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="showExperience != null  and showExperience != ''">#{showExperience},</if>
             <if test="showPoints != null  and showPoints != ''">#{showPoints},</if>
             <if test="showNews != null  and showNews != ''">#{showNews},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateUserShowSetting" parameterType="UserShowSetting">
@@ -75,14 +76,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteUserShowSettingById" parameterType="Long">
-        delete from ci_user_show_setting where own_user_id = #{ownUserId}
+        delete
+        from ci_user_show_setting
+        where own_user_id = #{ownUserId}
     </delete>
 
     <delete id="deleteUserShowSettingByIds" parameterType="String">
-        delete from ci_user_show_setting where own_user_id in 
+        delete from ci_user_show_setting where own_user_id in
         <foreach item="ownUserId" collection="array" open="(" separator="," close=")">
             #{ownUserId}
         </foreach>
     </delete>
-    
+
 </mapper>

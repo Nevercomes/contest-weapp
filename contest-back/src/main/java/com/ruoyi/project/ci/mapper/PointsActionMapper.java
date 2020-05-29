@@ -3,6 +3,7 @@ package com.ruoyi.project.ci.mapper;
 import java.util.List;
 import java.util.Map;
 import com.ruoyi.project.ci.domain.PointsAction;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 积分记录Mapper接口
@@ -65,4 +66,11 @@ public interface PointsActionMapper {
      * @return 结果
      */
     int deletePointsActionByIds(Long[] ids);
+
+    /**
+     * 查询用户积分
+     * @param userId
+     * @return
+     */
+    PointsAction getUserPoints(@Param("userId") Long userId);
 }

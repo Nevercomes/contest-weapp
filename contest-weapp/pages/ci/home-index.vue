@@ -104,11 +104,21 @@
 			}
 		},
 		onLoad() {
-			getRecommendComp({
-				pageNum: 1,
-				pageSize: 30
-			}).then(res => {
-				this.compList = res.data
+			// 请求放在登录回调之后
+			this.$store.dispatch('Login').then(loginRes => {
+				// 跳转到欢迎页面去获取微信信息
+				if(loginRes.data.needInfo) {
+					uni.redirectTo({
+						url: './a_welcome'
+					})
+				} else {
+					getRecommendComp({
+						pageNum: 1,
+						pageSize: 30
+					}).then(res => {
+						this.compList = res.data
+					})
+				}
 			})
 		},
 		methods: {
