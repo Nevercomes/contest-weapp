@@ -69,10 +69,10 @@
         <where>
             <!-- 身份为队员 -->
             ctm.identity = '2'
-            <if test="cpId != null ">and ti.cp_id = #{cpId}</if>
-            <if test="name != null  and name != ''">and ti.name like concat('%', #{name}, '%')</if>
-            <if test="intro != null  and intro != ''">and ti.intro = #{intro}</if>
-            <if test="status != null  and status != ''">and ti.status = #{status}</if>
+            <if test="teamInfo.cpId != null ">and ti.cp_id = #{teamInfo.cpId}</if>
+            <if test="teamInfo.name != null  and teamInfo.name != ''">and ti.name like concat('%', #{teamInfo.name}, '%')</if>
+            <if test="teamInfo.intro != null  and teamInfo.intro != ''">and ti.intro = #{teamInfo.intro}</if>
+            <if test="teamInfo.status != null  and teamInfo.status != ''">and ti.status = #{teamInfo.status}</if>
         </where>
         group by ti.id
     </select>

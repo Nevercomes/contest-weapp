@@ -1,12 +1,13 @@
 {
 	"pages": [
 		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		
 		{
-			"path": "pages/ci/a_welcome",
+			"path": "pages/ci/home-index",
 			"style": {}
 		},
 		{
-			"path": "pages/ci/home-index",
+			"path": "pages/ci/a_welcome",
 			"style": {}
 		},
 		
@@ -242,7 +243,13 @@
 		{
 			"path": "pages/ci/team-public",
 			"style": {
-				"navigationBarTitleText": "队伍"
+				"navigationBarTitleText": "创建队伍"
+			}
+		},
+		{
+			"path":"pages/ci/team-public-expect",
+			"style": {
+				"navigationBarTitleText":"发布组队期望"
 			}
 		},
 		{
@@ -283,9 +290,22 @@
 			}
 		},
 		{
+			"path":"pages/ci/team-info-form",
+			"style": {
+				"navigationBarTitleText":"修改队伍"
+			}
+		},
+		{
+			"path":"pages/ci/team-member-form",
+			"style": {
+				"navigationBarTitleText":"队员信息"
+			}
+		},
+		{
 			"path": "pages/ci/team-list",
 			"style": {
-				"navigationBarTitleText":"队伍列表"
+				"navigationBarTitleText":"队伍列表",
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -479,9 +499,9 @@
 		"current": 0, //当前激活的模式(list 的索引项)
 		"list": [
 			{
-				"name": "welcome",
-				"path": "pages/ci/a_welcome",
-				"query": ""
+				"name":"ColorUI",
+				"path":"pages/index/index",
+				"query":""
 			},
 			{
 				"name": "userIndex",
@@ -494,29 +514,29 @@
 				"query": ""
 			},
 			{
-				"name": "homeIndex",
-				"path": "pages/ci/home-index",
-				"query": ""
-			}, 
-			{
-				"name":"compList",
-				"path":"pages/ci/competition-index",
-				"query":""
-			},
-			{
-				"name":"searchIndex",
-				"path":"pages/ci/search-index",
-				"query":""
-			},
-			{
-				"name":"compInfo",
-				"path":"pages/ci/competition-info",
-				"query":"id=2"
-			},
-			{
 				"name":"teamIndex",
 				"path":"pages/ci/team-index",
 				"query":""
+			},
+			{
+				"name":"teamList",
+				"path":"pages/ci/team-list",
+				"query":"type=create"
+			},
+			{
+				"name":"teamPublic",
+				"path":"pages/ci/team-public",
+				"query":""
+			},
+			{
+				"name":"teamPublicMember",
+				"path":"pages/ci/team-public-member",
+				"query":"id=4&recruitNumber=3"
+			},
+			{
+				"name":"teamExpectSuccess",
+				"path":"pages/ci/team-public-expect-success",
+				"query":"cpId=1"
 			}
 		]
 	}

@@ -10,4 +10,9 @@ public final class DictConstant {
      * 队伍状态-组队中
      */
     public static final String TEAM_STATUS_OPEN = "0";
+
+    /**
+     * 队员身份-队长
+     */
+    public static final String TEAM_MEMBER_IDENTITY_CAPTAIN = "1";
 }

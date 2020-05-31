@@ -1,7 +1,7 @@
 <template>
 	<view class="cu-load load-modal" v-if="loading">
 		<!-- <view class="cuIcon-emojifill text-orange"></view> -->
-		<image src="/static/zhulu_logo.png" mode="aspectFit"></image>
+		<image src="/static/rowing_small.png" mode="aspectFit"></image>
 		<view class="gray-text">{{loadingMsg}}</view>
 	</view>
 </template>

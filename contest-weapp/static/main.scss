@@ -1,3 +1,8 @@
+
+.nl-label {
+	min-width: 52px;
+}
+
 .content-container {
 	padding: 20upx 30upx;
 }
@@ -11,4 +16,21 @@
 
 .content-flex .item-2 {
 	width: 315upx;
+}
+
+.form-group-capcity {
+	background-color: #ffffff;
+	padding: 1upx 30upx;
+	display: flex;
+	align-items: center;
+	min-height: 100upx;
+}
+
+.form-group-capcity .title {
+	text-align: justify;
+	padding-right: 30upx;
+	font-size: 30upx;
+	position: relative;
+	height: 60upx;
+	line-height: 60upx;
 }

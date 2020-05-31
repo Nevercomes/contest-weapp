@@ -17,10 +17,19 @@ export function addTeamInfo(data) {
 	})
 }
 
+// 修改队伍信息
+export function updateTeamInfo(data) {
+	return http.request({
+		url: '/ci/teamInfo',
+		method: 'PUT',
+		data: data
+	})
+}
+
 // 查询队伍信息列表
 export function listTeamInfo(query, type) {
 	return http.request({
-		url: type ? '/ci/teamInfo/list/' + type : '/ci/teamInfo/list/',
+		url: type ? '/ci/teamInfo/list/' + type : '/ci/teamInfo/list',
 		method: 'GET',
 		params: query
 	})

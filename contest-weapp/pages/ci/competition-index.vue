@@ -12,7 +12,7 @@
 		<view v-for="(item,index) in dataList" :key="index" @click="onItemClick(item.id)" class="cu-card case no-card margin-bottom">
 			<view class="cu-item shadow">
 				<view class="image">
-					<image :src="item.picUrl" mode="aspectFill"></image>
+					<image :src="item.picUrl" mode="scaleToFill"></image>
 					<view class="cu-tag bg-blue">{{levelFormat(item.basic.level)}}</view>
 				</view>
 				<view class="cu-list padding">
@@ -23,10 +23,10 @@
 						<text class="text-grey">报名已结束</text>
 					</view>
 					<view class="text-bold text-lg padding-tb-xs">{{item.name}}</view>
-					<view class=""><text class="margin-right">报名时间</text>
+					<view class=""><text class="margin-right nl-label">报名时间</text>
 						{{formatDate(item.signBeginTime)}} —— {{formatDate(item.signEndTime)}}</view>
 					<view class="flex">
-						<text class="margin-right" style="min-width: 50px;">主办单位</text>
+						<text class="margin-right nl-label">主办单位</text>
 						<view>
 							<view v-for="(holder, hIndex) in item.holder" :key="hIndex">
 								{{holder}}
@@ -162,8 +162,13 @@
 <style scoped lang="scss">
 	.cu-card .cu-item .image {
 		margin: 0;
-		height: 240upx;
+		// height: 280upx;
+		height: 260upx;
 		border-radius: 0;
+	}
+	
+	.cu-card .cu-item .image image {
+		height: 100%;
 	}
 
 	.van-ellipsis {

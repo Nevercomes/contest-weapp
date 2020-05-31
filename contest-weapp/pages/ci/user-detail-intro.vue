@@ -19,7 +19,7 @@
 	} from '@/api/system/ext.js'
 
 	export default {
-		name: '',
+		name: 'UserDetailIntro',
 		data() {
 			return {
 				form: {}

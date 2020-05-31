@@ -1,6 +1,6 @@
 <template>
 	<view class="app-container">
-		
+		等待完成
 	</view>
 </template>
 

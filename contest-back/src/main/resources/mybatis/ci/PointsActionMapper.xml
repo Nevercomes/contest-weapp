@@ -36,7 +36,7 @@
     </select>
 
     <select id="getUserPoints" parameterType="Long" resultMap="PointsActionResult">
-        select sum(IFNULL(value, 0)) as "value",
+        select IFNULL(sum(IFNULL(value, 0)), 0) as "value",
                user_id
         from ci_points_action
         where user_id = #{userId}

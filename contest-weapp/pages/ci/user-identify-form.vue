@@ -115,16 +115,17 @@
 				this.$forceUpdate()
 			},
 			submitForm() {
-				// if (this.validForm(this.form)) {
+				if (this.validForm(this.form)) {
 					// 调用提交方法
 					this.loading = true
 					identify(this.form).then(res => {
 						this.loading = false
 						this.msgSuccess('实名认证成功')
+						this.back()
 					}).catch(() => {
 						this.loading = false
 					})
-				// }
+				}
 			},
 			validForm(params) {
 				let wxValidate = new WxValidate(this.rules, this.messages)

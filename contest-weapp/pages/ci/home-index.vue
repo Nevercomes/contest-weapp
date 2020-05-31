@@ -7,25 +7,26 @@
 			</view>
 		</van-search>
 		<!-- swipe部分 -->
-		<swiper class="card-swiper" :class="dotStyle?'square-dot':'round-dot'" :indicator-dots="true" :circular="true"
-		 :autoplay="true" interval="5000" duration="500" @change="cardSwiper" indicator-color="#8799a3"
-		 indicator-active-color="#0081ff">
-			<swiper-item v-for="(item,index) in swiperList" :key="index" :class="cardCur==index?'cur':''" @click="goToRecommendPage(item.url)">
-				<view class="swiper-item">
-					<image :src="item.url" mode="aspectFill" v-if="item.type=='image'"></image>
-					<video :src="item.url" autoplay loop muted :show-play-btn="false" :controls="false" objectFit="cover" v-if="item.type=='video'"></video>
-				</view>
+		<swiper class="screen-swiper square-dot" :indicator-dots="true" :circular="true" :autoplay="true" interval="5000"
+		 duration="500">
+			<swiper-item v-for="(item,index) in swiperList" :key="index">
+				<image :src="item.url" mode="aspectFill" v-if="item.type=='image'"></image>
+				<video :src="item.url" autoplay loop muted :show-play-btn="false" :controls="false" objectFit="cover" v-if="item.type=='video'"></video>
 			</swiper-item>
 		</swiper>
 		<!-- 主界面操作组 -->
-		<view class="button-group">
-			<van-button type="primary" @click="goToTeamPage">组队</van-button>
-			<van-button type="primary" @click="goToCompPage">竞赛</van-button>
-			<van-button type="primary" @click="goToCollPage">收藏</van-button>
-			<van-button type="primary" @click="goToBookPage">图书</van-button>
+		<view class="cu-list grid col-4 no-border">
+			<view class="cu-item" v-for="(item,index) in cuIconList" :key="index" v-if="index<4" @click="goToPage(item.url)">
+				<view :class="['cuIcon-' + item.cuIcon,'text-' + item.color]">
+					<view class="cu-tag badge" v-if="item.badge!=0">
+						<block v-if="item.badge!=1">{{item.badge>99?'99+':item.badge}}</block>
+					</view>
+				</view>
+				<text>{{item.name}}</text>
+			</view>
 		</view>
-		
-		<view class="cu-bar bg-white margin-top">
+
+		<view class="cu-bar bg-white">
 			<view class="action">
 				<text class="cuIcon-title text-green"></text>
 				<text class="text-lg text-bold">竞赛推荐</text>
@@ -33,11 +34,11 @@
 		</view>
 		<view class="content-container content-flex">
 			<view v-for="(item, index) in compList" :key="index" class="item-2 margin-bottom" @click="goToCompInfoPage">
-				<image style="width: 100%;  height: 300upx;" :src="item.picUrl" ></image>
+				<image style="width: 100%;  height: 300upx;" :src="item.picUrl"></image>
 				<view class="text-sm">{{item.name}}</view>
 			</view>
 		</view>
-		
+
 		<view class="cu-bar bg-white margin-top">
 			<view class="action">
 				<text class="cuIcon-title text-green"></text>
@@ -45,18 +46,17 @@
 			</view>
 		</view>
 		<view class="content-container content-flex">
-			
+
 		</view>
-		
+
 	</view>
 </template>
 
 <script>
-	
 	import {
 		getRecommendComp
 	} from '@/api/ci/period.js'
-	
+
 	export default {
 		name: "HomeIndex",
 		data() {
@@ -95,19 +95,74 @@
 					type: 'image',
 					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg'
 				}],
+				cuIconList: [{
+					cuIcon: 'discoverfill',
+					color: 'purple',
+					badge: 1,
+					name: '建队',
+					url: 'team-public'
+				}, {
+					cuIcon: 'friendaddfill',
+					color: 'orange',
+					badge: 0,
+					name: '加入',
+					url: 'team-public-expect'
+				}, {
+					cuIcon: 'newshotfill',
+					color: 'yellow',
+					badge: 22,
+					name: '收藏',
+					url: 'user-concern-index'
+				}, {
+					cuIcon: 'presentfill',
+					color: 'olive',
+					badge: 0,
+					name: '图书',
+					url: undefined
+				}, {
+					cuIcon: 'upstagefill',
+					color: 'cyan',
+					badge: 0,
+					name: '排行榜'
+				}, {
+					cuIcon: 'clothesfill',
+					color: 'blue',
+					badge: 0,
+					name: '皮肤'
+				}, {
+					cuIcon: 'discoverfill',
+					color: 'purple',
+					badge: 0,
+					name: '发现'
+				}, {
+					cuIcon: 'questionfill',
+					color: 'mauve',
+					badge: 0,
+					name: '帮助'
+				}, {
+					cuIcon: 'commandfill',
+					color: 'purple',
+					badge: 0,
+					name: '问答'
+				}, {
+					cuIcon: 'brandfill',
+					color: 'mauve',
+					badge: 0,
+					name: '版权'
+				}],
 				dotStyle: false,
 				// 竞赛推荐list
 				compList: [],
 				// 动态推俄舰list
 				newsList: []
-				
+
 			}
 		},
 		onLoad() {
 			// 请求放在登录回调之后
 			this.$store.dispatch('Login').then(loginRes => {
 				// 跳转到欢迎页面去获取微信信息
-				if(loginRes.data.needInfo) {
+				if (loginRes.data.needInfo) {
 					uni.redirectTo({
 						url: './a_welcome'
 					})
@@ -134,32 +189,19 @@
 					url: 'view-mode-setting'
 				})
 			},
-			// 主页的发布组队
-			goToTeamPage() {
-				uni.navigateTo({
-					url: 'team-public'
-				})
-			},
-			// 竞赛页面
-			goToCompPage() {
-				uni.navigateTo({
-					url: 'competition-index'
-				})
+			goToPage(url) {
+				if (url) {
+					uni.navigateTo({
+						url: url
+					})
+				} else {
+					this.msgInfo('即将到来')
+				}
 			},
 			goToCompInfoPage(id) {
 				uni.navigateTo({
 					url: 'competition-info?id=' + id
 				})
-			},
-			// 收藏页面
-			goToCollPage() {
-				uni.navigateTo({
-					url: 'user-collection-index'
-				})
-			},
-			// 图书界面
-			goToBookPage() {
-				this.msgInfo('即将到来')
 			},
 			goToRecommendPage(url) {
 				this.msgInfo('跳转到指定页面')
@@ -171,12 +213,16 @@
 			cardSwiper(e) {
 				this.cardCur = e.detail.current
 			},
-			
+
 		}
 	}
 </script>
 
 <style>
+	page {
+		background-color: #FFFFFF;
+	}
+
 	.button-group {
 		display: flex;
 		justify-content: space-between;

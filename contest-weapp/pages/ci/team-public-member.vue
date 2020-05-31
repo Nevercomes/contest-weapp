@@ -9,8 +9,8 @@
 			</view>
 		</view>
 
-		<view class="cu-card article padding no-card" v-for="(item,index) in recruitList" :key="index">
-			<view class="cu-item shadow">
+		<view class="cu-card article padding no-card bg-white" v-for="(item,index) in recruitList" :key="index">
+			<view class="cu-item shadow solid-bottom">
 				<view class="">队员分工：{{item.workLabel}}</view>
 				<view class="margin-top">能力期望：
 					<view v-for="(cap,capIndex) in item.capabilityList" :key="capIndex" class='cu-tag round'>{{cap}}</view>
@@ -18,8 +18,14 @@
 			</view>
 		</view>
 
-		<view class="cu-bar btn-group margin-top">
-			<button class="cu-btn text-green line-green round shadow-blur" @click="onAddClick">添加队员</button>
+		<view v-if="recruitList == undefined || recruitList.length == 0"  class="flex-sub text-center">
+			<view class="solid-top text-df padding">
+				<text class="text-gray">添加队友招募信息更容易找到心仪队友哦</text>
+			</view>
+		</view>
+
+		<view class="cu-bar btn-group">
+			<button class="cu-btn text-green line-green round shadow-blur" @click="onAddClick">添加招募信息</button>
 		</view>
 
 		<view class="padding flex flex-direction">
@@ -33,7 +39,8 @@
 	import WxValidate from '@/utils/WxValidate.js'
 	import NlMaskLoading from '@/nl_componet/nl-mask-loading.vue'
 	import {
-		addTeamInfo
+		addTeamInfo,
+		getTeamInfo
 	} from '@/api/ci/team.js'
 	import {
 		addRecruit
@@ -81,47 +88,49 @@
 			}
 		},
 		onLoad(options) {
-			this.form.cpId = options.cpId
-			this.form.name = options.name
-			this.form.teamNumber = options.teamNumber
+			this.form.id = options.id
 			this.recruitNumber = options.recruitNumber
+			this.getFormData()
 		},
 		methods: {
 			reset() {
 				this.form = {
-					
+
 				}
 			},
+			getFormData() {
+				getTeamInfo(this.form.id).then(res => {
+					this.form = res.data
+				})
+			},
 			submitForm(e) {
-				if (this.validForm(e)) {
+				if (this.validForm(this.form)) {
 					// 提交队伍信息
 					this.loading = true
 					// 将能力期望转化成,连接
-					addTeamInfo(this.form).then(res => {
-						this.loading = false
-						// 跳转到成功页面,传入对应的竞赛id
-						const teamId = res.data.id
-						this.recruitList.forEach(item => {
-							let recruit = {
-								teamId: teamId,
-								work: item.workId,
-								capacity: item.capabilityList.join(',')
-							}
-							addRecruit(recruit)
-						})
-						uni.navigateTo({
-							url: 'team-public-success?compId=' + this.form.cpId
-						})
+					// addTeamInfo(this.form).then(res => {
+					this.loading = false
+					// 跳转到成功页面,传入对应的竞赛id
+					const teamId = this.form.id
+					this.recruitList.forEach(item => {
+						let recruit = {
+							teamId: teamId,
+							work: item.workId,
+							capacity: item.capabilityList.join(',')
+						}
+						addRecruit(recruit)
 					})
+					uni.navigateTo({
+						url: 'team-public-success?cpId=' + this.form.cpId + '&teamId=' + this.form.id
+					})
+					// })
 				}
 			},
 			validForm(params) {
 				let wxValidate = new WxValidate(this.rules, this.messages)
-				if (!wxValidate.checkForm(this.form)) {
+				if (!wxValidate.checkForm(params)) {
 					const error = wxValidate.errorList[0]
-					uni.showToast({
-						title: error
-					})
+					this.msgInfo(error.msg)
 					return false
 				}
 				return true

@@ -12,7 +12,7 @@
 					</view>
 					<!-- 昵称和积分信息 -->
 					<view class="cell-userinfo__info">
-						<view class="solid-bottom text-xl">
+						<view class="text-xl">
 							<text v-if="nickName" class="text-black text-bold">{{nickName}}</text>
 							<open-data v-else type="userNickName" class="text-black text-bold" ></open-data>
 						</view>
@@ -95,9 +95,7 @@
 			})
 		},
 		methods: {
-			onGotUserInfo(res) {
-				console.log(res)
-			}
+			
 		}
 	}
 </script>

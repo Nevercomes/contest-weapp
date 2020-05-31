@@ -69,10 +69,10 @@
 				if (pages.length >= 2) {
 					const prePage = pages[pages.length - 2]
 					prePage.setData({
-						'form.compName': row.name
+						'form.cpName': row.name
 					})
 					// 这样子form可以绑定上数据，但是页面不会渲染, 所以前面添加一个setData
-					prePage.$vm.form.compName = row.name
+					prePage.$vm.form.cpName = row.name
 					prePage.$vm.form.cpId = row.id
 					console.log(prePage)
 				}

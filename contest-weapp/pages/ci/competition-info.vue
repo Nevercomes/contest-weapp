@@ -4,7 +4,7 @@
 		<view class="cu-card case no-card">
 			<view class="cu-item shadow">
 				<view class="image">
-					<image :src="period.picUrl" mode="aspectFill"></image>
+					<image :src="period.picUrl" mode="scaleToFill"></image>
 					<view class="cu-tag bg-blue">{{levelFormat(period.basic.level)}}</view>
 				</view>
 				<view class="cu-list padding">
@@ -173,7 +173,11 @@
 <style scoped lang="scss">
 	.cu-card .cu-item .image {
 		margin: 0;
-		height: 240upx;
+		height: 280upx;
 		border-radius: 0;
+	}
+	
+	.cu-card .cu-item .image image {
+		height: 100%;
 	}
 </style>

@@ -30,6 +30,12 @@
 			
 			// 重启的时候清空登录尝试次数
 			uni.removeStorage('try-login-times')
+			// 启动时获取用户信息
+			this.$store.dispatch('GetInfo').then(res => {
+				
+			}).catch(res => {
+				this.$store.dispatch('GetInfo')
+			})
 
 			Vue.prototype.ColorList = [{
 					title: '嫣红',

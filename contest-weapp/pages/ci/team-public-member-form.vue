@@ -13,18 +13,18 @@
 					<input v-model="form.workLabel" name="workLabel" disabled placeholder="请选择分工" />
 				</picker>
 			</view>
-			<view class="cu-form-group">
+			<view class="form-group-capcity solid-top">
 				<view class="title">能力期望</view>
-				<view v-for="(item,index) in capabilityList" :key="index" class='cu-tag round' @click="onNotSelectClick(item)">{{item}}</view>
+				<view v-for="(item,index) in capabilityList" :key="index" class='cu-tag radius' @click="onNotSelectClick(item)">{{item}}</view>
 			</view>
 		</form>
 		
 		<!-- 默认的能力选择label -->
-		<view class="box bg-white padding-top-xs" style="height: 130upx;">
-			<view v-for="(item,index) in capabilityLabelOptions" :key="index" class='cu-tag round' @click="onSelectClick(item)">{{item}}</view>
+		<view class="box bg-white padding solid-top">
+			<view v-for="(item,index) in capabilityLabelOptions" :key="index" class='cu-tag round margin-xs' @click="onSelectClick(item)">{{item}}</view>
 		</view>
 		
-		<view class="box">
+		<view class="box margin-top-sm">
 			<view class="cu-bar btn-group">
 				<button class="cu-btn bg-green shadow-blur round lg" @click="onConfirmClick">确定</button>
 				<button class="cu-btn bg-green shadow-blur round lg" @click="onNextClick">继续添加</button>
@@ -72,6 +72,7 @@
 		},
 		onLoad(options) {
 			this.recruitNumber = options.recruitNumber
+			
 			this.index = options.index
 			if(this.index) this.index = Number(this.index)
 			this.getDicts('team_work_type').then(res => {
@@ -100,10 +101,11 @@
 			},
 			onConfirmClick() {
 				// 保存数据，返回页面
-				this.saveRecruit()
-				uni.navigateBack({
-					delta: 1
-				})
+				if(this.saveRecruit()) {
+					uni.navigateBack({
+						delta: 1
+					})
+				}
 			},
 			onNextClick() {
 				// 判断是否可以再添加
@@ -111,9 +113,10 @@
 				if (this.index + 1 > this.recruitNumber) {
 					this.msgInfo('已达到招募人数最大值')
 				} else {
-					this.saveRecruit()
-					this.reset()
-					this.index = this.index + 1
+					if(this.saveRecruit()) {
+						this.reset()
+						this.index = this.index + 1
+					}
 				}
 			},
 			onNotSelectClick(label) {
@@ -135,21 +138,36 @@
 					this.capabilityList.push(label)
 				}
 			},
-			saveRecruit() {
-				this.form.capabilityList = this.capabilityList
-				this.recruitList.push(this.form)
-				const pages = getCurrentPages()
-				if (pages.length >= 2) {
-					const prePage = pages[pages.length - 2]
-					const self = this
-					let allList = prePage.$vm.recruitList
-					allList = allList.concat(this.recruitList)
-					prePage.setData({
-						'recruitList': allList
-					})
-					// 这样子form可以绑定上数据，但是页面不会渲染, 所以前面添加一个setData
-					prePage.$vm.recruitList = allList
+			// 验证加入意愿信息表单
+			validForm(params) {
+				let wxValidate = new WxValidate(this.rules, this.messages)
+				if (!wxValidate.checkForm(params)) {
+					const error = wxValidate.errorList[0]
+					this.msgInfo(error.msg)
+					return false
 				}
+				return true
+			},
+			saveRecruit() {
+				if(this.validForm(this.form)) {
+					this.form.capabilityList = this.capabilityList
+					this.recruitList = []
+					this.recruitList.push(this.form)
+					const pages = getCurrentPages()
+					if (pages.length >= 2) {
+						const prePage = pages[pages.length - 2]
+						const self = this
+						let allList = prePage.$vm.recruitList
+						allList = allList.concat(this.recruitList)
+						prePage.setData({
+							'recruitList': allList
+						})
+						// 这样子form可以绑定上数据，但是页面不会渲染, 所以前面添加一个setData
+						prePage.$vm.recruitList = allList
+					}
+					return true
+				}
+				return false
 			}
 		}
 	}

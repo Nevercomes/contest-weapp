@@ -57,9 +57,7 @@
 				let wxValidate = new WxValidate(this.rules, this.messages)
 				if (!wxValidate.checkForm(params)) {
 					const error = wxValidate.errorList[0]
-					uni.showToast({
-						title: error
-					})
+					this.msgInfo(error.msg)
 					return false
 				}
 				return true

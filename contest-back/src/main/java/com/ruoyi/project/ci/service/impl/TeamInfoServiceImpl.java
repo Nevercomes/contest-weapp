@@ -2,12 +2,18 @@ package com.ruoyi.project.ci.service.impl;
 
 import java.util.List;
 import java.util.Map;
+
+import com.ruoyi.common.constant.DictConstant;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.project.ci.domain.TeamMember;
+import com.ruoyi.project.ci.service.ITeamMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.project.ci.mapper.TeamInfoMapper;
 import com.ruoyi.project.ci.domain.TeamInfo;
 import com.ruoyi.project.ci.service.ITeamInfoService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 队伍信息Service业务层处理
@@ -19,6 +25,8 @@ import com.ruoyi.project.ci.service.ITeamInfoService;
 public class TeamInfoServiceImpl implements ITeamInfoService {
     @Autowired
     private TeamInfoMapper teamInfoMapper;
+    @Autowired
+    private ITeamMemberService teamMemberService;
 
     /**
      * 查询队伍信息
@@ -59,9 +67,17 @@ public class TeamInfoServiceImpl implements ITeamInfoService {
      * @return 结果
      */
     @Override
+    @Transactional
     public TeamInfo insertTeamInfo(TeamInfo teamInfo) {
         teamInfo.preInsert();
+        // 1. 插入队伍信息
         int res =  teamInfoMapper.insertTeamInfo(teamInfo);
+        // 2. 插入队长信息
+        TeamMember captain = new TeamMember();
+        captain.setTeamId(teamInfo.getId());
+        captain.setUserId(SecurityUtils.getUserId());
+        captain.setIdentity(DictConstant.TEAM_MEMBER_IDENTITY_CAPTAIN);
+        teamMemberService.insertTeamMember(captain);
         return teamInfo;
     }
 

@@ -5,18 +5,20 @@
 				<image :src="item.picUrl ? item.picUrl : dfTeamAvatar" class="cu-avatar round lg bg-white"></image>
 				<view class="content flex-sub flex justify-between align-center">
 					<view class="flex-direction align-start">
-						<view class="text-df">{{item.name}}</view>
-						<view class="text-grey">{{item.cpName}}</view>
+						<view class="flex">
+							<view class="text-df margin-right-sm">{{item.name}}</view>
+							<text v-if="item.status == '0'" class="cu-tag radius text-green">组队中</text>
+							<text v-else-if="item.status == '1'" class="cu-tag radius text-orange">已完成</text>
+							<text v-else class="cu-tag radius">已解散</text>
+						</view>
+						<view class="text-grey text-cut">{{item.cpName}}</view>
 						<view class="text-grey text-cut text-sm">{{item.intro}}</view>
-					</view>
-					<view class="">
-						<view v-if="item.status == '0'" class="cu-tag radius text-green">组队中</view>
-						<view v-else-if="item.status == '1'" class="cu-tag radius text-orange">已完成</view>
-						<view v-else class="cu-tag radius">已解散</view>
 					</view>
 				</view>
 			</view>
 		</view>
+		<!-- 不得不说，vue的props有点菜？还是我菜？ -->
+		<nl-empty v-if="dataList == undefined || dataList.length == 0" :show="true"></nl-empty>
 	</view>
 </template>
 
