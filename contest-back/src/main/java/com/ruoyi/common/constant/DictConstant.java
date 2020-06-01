@@ -15,4 +15,19 @@ public final class DictConstant {
      * 队员身份-队长
      */
     public static final String TEAM_MEMBER_IDENTITY_CAPTAIN = "1";
+
+    /**
+     * 搜索类别-全局
+     */
+    public static final String SEARCH_TYPE_ALL = "0";
+
+    /**
+     * 搜索类别-竞赛
+     */
+    public static final String SEARCH_TYPE_COMP = "1";
+
+    /**
+     * 搜索类别-帖子
+     */
+    public static final String SEARCH_TYPE_POST = "2";
 }

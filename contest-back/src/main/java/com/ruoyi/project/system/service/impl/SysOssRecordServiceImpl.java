@@ -98,6 +98,40 @@ public class SysOssRecordServiceImpl implements ISysOssRecordService {
     }
 
     /**
+     * 上传首页Swiper的图片
+     * @param file
+     * @return
+     */
+    @Override
+    public String uploadRecoSwiper(MultipartFile file) throws IOException {
+        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+        String uuId = IdUtils.fastSimpleUUID();
+        String fileName = FileUtils.getUUIDFileName(uuId, Objects.requireNonNull(file.getOriginalFilename()));
+        ossClient.putObject(bucketName, "recoSwiper/" + fileName, new ByteArrayInputStream(file.getBytes()));
+        ossClient.shutdown();
+        String url = "https://" + bucketName + "." + endpoint + "/recoSwiper/" + fileName;
+        insertUploadRecord(uuId, url, OssConstants.BUSINESS_TYPE_TEAM, fileName.substring(fileName.lastIndexOf(".")));
+        return url;
+    }
+
+    /**
+     * 上传首页竞赛推荐图片
+     * @param file
+     * @return
+     */
+    @Override
+    public String uploadRecoComp(MultipartFile file) throws IOException {
+        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+        String uuId = IdUtils.fastSimpleUUID();
+        String fileName = FileUtils.getUUIDFileName(uuId, Objects.requireNonNull(file.getOriginalFilename()));
+        ossClient.putObject(bucketName, "recoComp/" + fileName, new ByteArrayInputStream(file.getBytes()));
+        ossClient.shutdown();
+        String url = "https://" + bucketName + "." + endpoint + "/recoComp/" + fileName;
+        insertUploadRecord(uuId, url, OssConstants.BUSINESS_TYPE_TEAM, fileName.substring(fileName.lastIndexOf(".")));
+        return url;
+    }
+
+    /**
      * 查询OSS上传
      *
      * @param id OSS上传ID

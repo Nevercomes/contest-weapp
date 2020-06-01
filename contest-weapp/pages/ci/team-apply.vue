@@ -12,7 +12,7 @@
 	} from '@/api/ci/experience.js'
 	
 	export default {
-		name: 'TeamApply',
+		name: 'TeamExpect',
 		data() {
 			return {
 				// 加载状态

@@ -9,7 +9,7 @@
 		<view v-for="(item,index) in compList" :key="index" @click="goToCompPage(item.id)" class="cu-card case no-card margin-bottom">
 			<view class="cu-item shadow">
 				<view class="image">
-					<image :src="item.picUrl" mode="aspectFill"></image>
+					<image :src="item.picUrl" mode="scaleToFill"></image>
 					<view class="cu-tag bg-blue">{{levelFormat(item.basic.level)}}</view>
 				</view>
 				<view class="cu-list padding">
@@ -103,7 +103,12 @@
 <style scoped lang="scss">
 	.cu-card .cu-item .image {
 		margin: 0;
-		height: 240upx;
+		// height: 280upx;
+		height: 260upx;
 		border-radius: 0;
+	}
+	
+	.cu-card .cu-item .image image {
+		height: 100%;
 	}
 </style>

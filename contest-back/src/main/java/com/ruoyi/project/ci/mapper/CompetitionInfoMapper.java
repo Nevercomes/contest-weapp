@@ -66,4 +66,18 @@ public interface CompetitionInfoMapper {
      * @return
      */
     List<Map<String,Object>> selectCompetitionInfoOptions(CompetitionInfo competitionInfo);
+
+    /**
+     * 根据id增加访问记录
+     * @param id
+     * @return
+     */
+    int addViewNum(Long id);
+
+    /**
+     * 根据id增加关注数目
+     * @param id
+     * @return
+     */
+    int addConcernNum(Long id);
 }

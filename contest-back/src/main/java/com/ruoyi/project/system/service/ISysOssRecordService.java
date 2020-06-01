@@ -37,6 +37,22 @@ public interface ISysOssRecordService {
     String uploadTeamAvatar(MultipartFile file) throws IOException;
 
     /**
+     * 上传首页Swiper的图片
+     * @param file
+     * @return
+     */
+    String uploadRecoSwiper(MultipartFile file) throws IOException;
+
+    /**
+     * 上传首页竞赛推荐的图片
+     * @param file
+     * @return
+     */
+    String uploadRecoComp(MultipartFile file) throws IOException;
+
+
+
+    /**
      * 查询OSS上传
      *
      * @param id OSS上传ID

@@ -36,9 +36,10 @@
 		<!-- 二类 -->
 		<van-cell-group>
 			<van-cell title="我的队伍" is-link :url="cellUrl.team"></van-cell>
-			<van-cell title="我的动态" is-link></van-cell>
-			<van-cell title="我的关注" is-link></van-cell>
-			<van-cell title="我的收藏" is-link></van-cell>
+			<van-cell title="我的期望" is-link :url="cellUrl.expect"></van-cell>
+			<van-cell title="我的动态" is-link ></van-cell>
+			<van-cell title="我的关注" is-link :url="cellUrl.concern"></van-cell>
+			<van-cell title="我的收藏" is-link :url="cellUrl.collection"></van-cell>
 		</van-cell-group>
 		
 		<!-- 三类 -->
@@ -82,7 +83,10 @@
 					detail: '/pages/ci/user-detail',
 					points: '/pages/ci/points-index',
 					message: '/pages/ci/message-index',
-					team: '/pages/ci/team-index'
+					team: '/pages/ci/team-index',
+					expect: '/pages/ci/team-expect-list',
+					concern: '/pages/ci/user-concern-index',
+					collection: '/pages/ci/user-collection-index'
 				},
 				// 用户积分
 				points: {}

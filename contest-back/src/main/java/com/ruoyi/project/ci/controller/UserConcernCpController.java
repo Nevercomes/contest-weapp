@@ -1,6 +1,9 @@
 package com.ruoyi.project.ci.controller;
 
 import java.util.List;
+
+import com.ruoyi.framework.manager.AsyncManager;
+import com.ruoyi.framework.manager.factory.AsyncFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -81,7 +84,10 @@ public class UserConcernCpController extends BaseController {
     @Log(title = "关注竞赛", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody UserConcernCp userConcernCp) {
-        return AjaxResult.success(userConcernCpService.insertUserConcernCp(userConcernCp));
+        UserConcernCp res = userConcernCpService.insertUserConcernCp(userConcernCp);
+        // 异步增加关注数目
+        AsyncManager.me().execute(AsyncFactory.recordCompConcern(userConcernCp));
+        return AjaxResult.success(res);
     }
 
     /**

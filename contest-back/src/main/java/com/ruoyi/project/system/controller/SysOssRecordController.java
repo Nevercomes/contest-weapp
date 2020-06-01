@@ -66,13 +66,33 @@ public class SysOssRecordController extends BaseController {
     }
 
     /**
-     * 上传竞赛封面
+     * 上传队伍头像
      */
     @PreAuthorize("@ss.hasPermi('oss:upload:team')")
     @Log(title = "OSS记录-队伍头像", businessType = BusinessType.INSERT)
     @RequestMapping("/upload/teamAvatar")
     public AjaxResult uploadTeamAvatar(MultipartFile file) throws IOException {
         return AjaxResult.success("上传成功", sysOssRecordService.uploadTeamAvatar(file));
+    }
+
+    /**
+     * 上传首页Swiper的图片
+     */
+    @PreAuthorize("@ss.hasPermi('oss:upload:reco')")
+    @Log(title = "OSS记录-首页Swiper", businessType = BusinessType.INSERT)
+    @RequestMapping("/upload/recoSwiper")
+    public AjaxResult uploadRecoSwiper(MultipartFile file) throws IOException {
+        return AjaxResult.success("上传成功", sysOssRecordService.uploadRecoSwiper(file));
+    }
+
+    /**
+     * 上传首页竞赛推荐的图片
+     */
+    @PreAuthorize("@ss.hasPermi('oss:upload:reco')")
+    @Log(title = "OSS记录-首页竞赛推荐", businessType = BusinessType.INSERT)
+    @RequestMapping("/upload/recoComp")
+    public AjaxResult uploadRecoComp(MultipartFile file) throws IOException {
+        return AjaxResult.success("上传成功", sysOssRecordService.uploadRecoComp(file));
     }
 
 

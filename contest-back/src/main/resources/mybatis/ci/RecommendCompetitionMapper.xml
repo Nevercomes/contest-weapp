@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.ci.mapper.RecommendCompetitionMapper">
+
+    <resultMap type="RecommendCompetition" id="RecommendCompetitionResult">
+        <result property="id" column="id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="picUrl" column="pic_url"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="cpId" column="cp_id"/>
+        <result property="cpName" column="cp_name"/>
+    </resultMap>
+
+    <sql id="selectRecommendCompetitionVo">
+        select id,
+               create_by,
+               update_by,
+               create_time,
+               update_time,
+               pic_url,
+               order_num,
+               cp_id,
+               (select name
+                from ci_competition_period
+                where cp_id = ci_competition_period.id) as "cp_name"
+        from ci_recommend_competition
+    </sql>
+
+    <select id="selectRecommendCompetitionList" parameterType="RecommendCompetition"
+            resultMap="RecommendCompetitionResult">
+        <include refid="selectRecommendCompetitionVo"/>
+        <where>
+            <if test="cpId != null ">and cp_id = #{cpId}</if>
+        </where>
+    </select>
+
+    <select id="selectRecommendCompetitionById" parameterType="Long" resultMap="RecommendCompetitionResult">
+        <include refid="selectRecommendCompetitionVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectRecommendCompetitionOptions" parameterType="RecommendCompetition" resultType="Map">
+        select id as "value",
+        `name` as "label"
+        from ci_recommend_competition
+        <if test="name != null and name != ''">
+            where `name` like concat('%', #{name}, '%')
+        </if>
+    </select>
+
+    <insert id="insertRecommendCompetition" parameterType="RecommendCompetition" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into ci_recommend_competition
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="picUrl != null  and picUrl != ''">pic_url,</if>
+            <if test="orderNum != null ">order_num,</if>
+            <if test="cpId != null ">cp_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="picUrl != null  and picUrl != ''">#{picUrl},</if>
+            <if test="orderNum != null ">#{orderNum},</if>
+            <if test="cpId != null ">#{cpId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateRecommendCompetition" parameterType="RecommendCompetition">
+        update ci_recommend_competition
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="picUrl != null  and picUrl != ''">pic_url = #{picUrl},</if>
+            <if test="orderNum != null ">order_num = #{orderNum},</if>
+            <if test="cpId != null ">cp_id = #{cpId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRecommendCompetitionById" parameterType="Long">
+        delete
+        from ci_recommend_competition
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteRecommendCompetitionByIds" parameterType="String">
+        delete from ci_recommend_competition where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

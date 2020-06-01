@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.ci.mapper.RecommendPostMapper">
+    
+    <resultMap type="RecommendPost" id="RecommendPostResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="picUrl"    column="pic_url"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="postId"    column="post_id"    />
+    </resultMap>
+
+    <sql id="selectRecommendPostVo">
+        select id, create_by, update_by, create_time, update_time, pic_url, order_num, post_id from ci_recommend_post
+    </sql>
+
+    <select id="selectRecommendPostList" parameterType="RecommendPost" resultMap="RecommendPostResult">
+        <include refid="selectRecommendPostVo"/>
+        <where>  
+            <if test="postId != null "> and post_id = #{postId}</if>
+        </where>
+    </select>
+    
+    <select id="selectRecommendPostById" parameterType="Long" resultMap="RecommendPostResult">
+        <include refid="selectRecommendPostVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectRecommendPostOptions" parameterType="RecommendPost" resultType="Map">
+         select id as "value",
+         `name` as "label"
+        from ci_recommend_post
+        <if test="name != null and name != ''">
+            where `name` like concat('%', #{name}, '%')
+         </if>
+    </select>
+        
+    <insert id="insertRecommendPost" parameterType="RecommendPost" useGeneratedKeys="true" keyProperty="id">
+        insert into ci_recommend_post
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="picUrl != null  and picUrl != ''">pic_url,</if>
+            <if test="orderNum != null ">order_num,</if>
+            <if test="postId != null ">post_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="picUrl != null  and picUrl != ''">#{picUrl},</if>
+            <if test="orderNum != null ">#{orderNum},</if>
+            <if test="postId != null ">#{postId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRecommendPost" parameterType="RecommendPost">
+        update ci_recommend_post
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="picUrl != null  and picUrl != ''">pic_url = #{picUrl},</if>
+            <if test="orderNum != null ">order_num = #{orderNum},</if>
+            <if test="postId != null ">post_id = #{postId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRecommendPostById" parameterType="Long">
+        delete from ci_recommend_post where id = #{id}
+    </delete>
+
+    <delete id="deleteRecommendPostByIds" parameterType="String">
+        delete from ci_recommend_post where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

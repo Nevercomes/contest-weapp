@@ -17,16 +17,15 @@
     </resultMap>
 
     <sql id="selectCompetitionInfoVo">
-        select
-            id,
-            create_by,
-            update_by,
-            create_time,
-            update_time,
-            name,
-            level,
-            view_number,
-            concern_number
+        select id,
+               create_by,
+               update_by,
+               create_time,
+               update_time,
+               name,
+               level,
+               view_number,
+               concern_number
         from ci_competition_info
     </sql>
 
@@ -92,8 +91,21 @@
         where id = #{id}
     </update>
 
+    <update id="addViewNum" parameterType="Long">
+        update ci_competition_info
+        set view_number = view_number + 1
+        where id = #{id}
+    </update>
+
+    <update id="addConcernNum" parameterType="Long">
+        update ci_competition_info
+        set concern_number = concern_number + 1
+        where id = #{id}
+    </update>
+
     <delete id="deleteCompetitionInfoById" parameterType="Long">
-        delete from ci_competition_info
+        delete
+        from ci_competition_info
         where id = #{id}
     </delete>
 

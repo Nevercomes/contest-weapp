@@ -75,27 +75,27 @@
 				recruitNumber: undefined,
 				// 校验规则
 				rules: {
-					cpId: {
+					id: {
 						required: true
 					}
 				},
 				// 错误提示
 				messages: {
-					cpId: {
-						required: '未选择竞赛'
+					id: {
+						required: '无队伍信息'
 					}
 				},
 			}
 		},
 		onLoad(options) {
-			this.form.id = options.id
+			this.form.id = options.teamId
 			this.recruitNumber = options.recruitNumber
 			this.getFormData()
 		},
 		methods: {
 			reset() {
 				this.form = {
-
+					
 				}
 			},
 			getFormData() {

@@ -7,6 +7,8 @@ import java.util.Set;
 
 import com.ruoyi.common.utils.CommonUtil;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.framework.manager.AsyncManager;
+import com.ruoyi.framework.manager.factory.AsyncFactory;
 import com.ruoyi.project.system.domain.EduSchool;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +81,10 @@ public class CompetitionPeriodController extends BaseController {
     @PreAuthorize("@ss.hasPermi('ci:period:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id) {
-        return AjaxResult.success(competitionPeriodService.selectCompetitionPeriodById(id));
+        CompetitionPeriod period = competitionPeriodService.selectCompetitionPeriodById(id);
+        // 异步增加访问数目
+        AsyncManager.me().execute(AsyncFactory.recordCompView(period));
+        return AjaxResult.success(period);
     }
 
     /**

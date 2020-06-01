@@ -1,5 +1,9 @@
 package com.ruoyi.project.ci.controller;
 
+import com.ruoyi.common.constant.DictConstant;
+import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.framework.manager.AsyncManager;
+import com.ruoyi.framework.manager.factory.AsyncFactory;
 import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.project.ci.domain.CompetitionPeriod;
@@ -45,6 +49,8 @@ public class SearchIndexController extends BaseController {
         List<PostInfo> list1 = postInfoService.selectPostInfoList(postInfo);
         result.put("comp", list);
         result.put("post", list1);
+        // 异步保存搜索记录
+        AsyncManager.me().execute(AsyncFactory.recordSearch(keyword, DictConstant.SEARCH_TYPE_ALL, SecurityUtils.getUsername()));
         return result;
     }
 
@@ -59,6 +65,8 @@ public class SearchIndexController extends BaseController {
         period.setName(keyword);
         List<CompetitionPeriod> list = competitionPeriodService.selectCompetitionPeriodList(period);
         result.put("comp", list);
+        // 异步保存搜索记录
+        AsyncManager.me().execute(AsyncFactory.recordSearch(keyword, DictConstant.SEARCH_TYPE_COMP, SecurityUtils.getUsername()));
         return result;
     }
 
@@ -73,6 +81,8 @@ public class SearchIndexController extends BaseController {
         postInfo.setName(keyword);
         List<PostInfo> list1 = postInfoService.selectPostInfoList(postInfo);
         result.put("post", list1);
+        // 异步保存搜索记录
+        AsyncManager.me().execute(AsyncFactory.recordSearch(keyword, DictConstant.SEARCH_TYPE_POST, SecurityUtils.getUsername()));
         return result;
     }
 

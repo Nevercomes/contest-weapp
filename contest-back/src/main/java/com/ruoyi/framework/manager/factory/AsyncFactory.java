@@ -1,7 +1,18 @@
 package com.ruoyi.framework.manager.factory;
 
+import java.util.Date;
 import java.util.TimerTask;
 
+import com.ruoyi.framework.security.LoginUser;
+import com.ruoyi.project.ci.domain.CompetitionInfo;
+import com.ruoyi.project.ci.domain.CompetitionPeriod;
+import com.ruoyi.project.ci.domain.SearchRecord;
+import com.ruoyi.project.ci.domain.UserConcernCp;
+import com.ruoyi.project.ci.mapper.CompetitionInfoMapper;
+import com.ruoyi.project.ci.mapper.CompetitionPeriodMapper;
+import com.ruoyi.project.ci.mapper.SearchRecordMapper;
+import com.ruoyi.project.ci.service.ISearchRecordService;
+import com.ruoyi.project.system.domain.SysUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ruoyi.common.constant.Constants;
@@ -86,6 +97,61 @@ public class AsyncFactory {
                 // 远程查询操作地点
                 operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
                 SpringUtils.getBean(ISysOperLogService.class).insertOperlog(operLog);
+            }
+        };
+    }
+
+    /**
+     * 搜索历史记录
+     *
+     * @param keyword
+     * @param type
+     * @param createBy
+     * @return
+     */
+    public static TimerTask recordSearch(String keyword, String type, String createBy) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                SearchRecordMapper searchRecordMapper = SpringUtils.getBean(SearchRecordMapper.class);
+                SearchRecord searchRecord = new SearchRecord();
+                searchRecord.setKeyword(keyword);
+                searchRecord.setType(type);
+                searchRecord.setCreateBy(createBy);
+                searchRecord.setCreateTime(new Date());
+                searchRecordMapper.insertSearchRecord(searchRecord);
+            }
+        };
+    }
+
+    /**
+     * 根据竞赛-具体增加模板的访问数目
+     * @param period
+     * @return
+     */
+    public static TimerTask recordCompView(CompetitionPeriod period) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                CompetitionInfoMapper infoMapper = SpringUtils.getBean(CompetitionInfoMapper.class);
+                infoMapper.addViewNum(period.getCpInfoId());
+            }
+        };
+    }
+
+    /**
+     * 根据关注记录增加关注数目
+     * @param userConcernCp
+     * @return
+     */
+    public static TimerTask recordCompConcern(UserConcernCp userConcernCp) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                CompetitionInfoMapper infoMapper = SpringUtils.getBean(CompetitionInfoMapper.class);
+                CompetitionPeriodMapper periodMapper = SpringUtils.getBean(CompetitionPeriodMapper.class);
+                CompetitionPeriod period = periodMapper.selectCompetitionPeriodById(userConcernCp.getCpId());
+                infoMapper.addConcernNum(period.getCpInfoId());
             }
         };
     }

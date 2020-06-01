@@ -116,7 +116,7 @@
 		{
 			"path":"pages/ci/view-mode-setting",
 			"style": {
-				"navigationBarTitleText":"浏览模式"
+				"navigationBarTitleText":"浏览模式设置"
 			}
 		},
 		
@@ -227,11 +227,15 @@
 		},
 		{
 			"path": "pages/ci/user-concern-index",
-			"style": {}
+			"style": {
+				"navigationBarTitleText":"我的关注"
+			}
 		},
 		{
 			"path": "pages/ci/user-collection-index",
-			"style": {}
+			"style": {
+				"navigationBarTitleText":"我的收藏"
+			}
 		},
 		{
 			"path": "pages/ci/user-collection-list",
@@ -286,7 +290,8 @@
 		{
 			"path": "pages/ci/team-info",
 			"style": {
-				"navigationBarTitleText": "队伍信息"
+				"navigationBarTitleText": "队伍信息",
+				"backgroundColor": "#FFFFFF"
 			}
 		},
 		{
@@ -309,9 +314,10 @@
 			}
 		},
 		{
-			"path": "pages/ci/team-expect",
+			"path": "pages/ci/team-expect-list",
 			"style": {
-				"navigationBarTitleText":"入队期望"
+				"navigationBarTitleText":"我的入队期望",
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -524,14 +530,9 @@
 				"query":"type=create"
 			},
 			{
-				"name":"teamPublic",
-				"path":"pages/ci/team-public",
-				"query":""
-			},
-			{
-				"name":"teamPublicMember",
-				"path":"pages/ci/team-public-member",
-				"query":"id=4&recruitNumber=3"
+				"name":"teamInfo",
+				"path":"pages/ci/team-info",
+				"query":"id=3"
 			},
 			{
 				"name":"teamExpectSuccess",

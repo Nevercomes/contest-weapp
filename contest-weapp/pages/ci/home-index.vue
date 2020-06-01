@@ -2,7 +2,7 @@
 	<view class="app-container">
 		<!-- 搜索部分 -->
 		<van-search :value="keyword" use-action-slot placeholder="请输入搜索关键词" @focus="goToSearchPage">
-			<view style="display: flex; align-items: center;" slot="action" @tap="goToSettingPage">
+			<view style="display: flex; align-items: center;" slot="action" @click="goToSettingPage">
 				<van-icon size="24" name="setting-o"></van-icon>
 			</view>
 		</van-search>
@@ -112,7 +112,7 @@
 					color: 'yellow',
 					badge: 22,
 					name: '收藏',
-					url: 'user-concern-index'
+					url: 'user-collection-index'
 				}, {
 					cuIcon: 'presentfill',
 					color: 'olive',
@@ -184,7 +184,7 @@
 				})
 			},
 			// 取代搜索事件改为setting设置
-			geToSettingPage() {
+			goToSettingPage() {
 				uni.navigateTo({
 					url: 'view-mode-setting'
 				})

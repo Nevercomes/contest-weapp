@@ -1,6 +1,10 @@
 <template>
 	<view class="app-container">
+		<view class="cu-list">
+			<view class="cu-item" @click="onItemClick(item.id)" v-for="(item,index) in dataList" key="index">
 		
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -12,7 +16,7 @@
 	} from '@/api/ci/experience.js'
 	
 	export default {
-		name: 'TeamExpect',
+		name: 'UserDetailExperience',
 		data() {
 			return {
 				// 加载状态
@@ -47,7 +51,8 @@
 		},
 		methods: {
 			loadList() {
-				listExperience().then(res => {
+				this.loading = true
+				listExperience(this.queryParams).then(res => {
 					this.loading = false
 					// 计算是否有更多数据
 					this.hasMoreData = this.hasMore(res.total, this.queryParams.pageNum, this.queryParams.pageSize)

@@ -48,7 +48,6 @@ http.interceptor.response((res) => {
 				return Promise.reject(res.data)
 			} else {
 				addTryLogin()
-				console.log(getTryLogin())
 				// 再重新请求接口
 				// sun 20200528 如果登录请求也失败了话它将会一直调用这是很危险的
 				// 至于一直fail的情况值得深究,请求是必须请求的,但是必须要对此进行计数
@@ -71,7 +70,7 @@ http.interceptor.response((res) => {
 				showCancel: false,
 				success: function() {
 					uni.navigateTo({
-						url: '/pages/ci/user-identify-form.vue'
+						url: '/pages/ci/user-identify-form'
 					})
 				}
 			})

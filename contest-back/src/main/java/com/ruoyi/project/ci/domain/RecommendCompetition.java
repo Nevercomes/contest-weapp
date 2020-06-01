@@ -6,14 +6,14 @@ import com.ruoyi.framework.aspectj.lang.annotation.Excel;
 import com.ruoyi.framework.web.domain.BaseEntity;
 
 /**
- * searchRecord对象 ci_search_record
+ * 竞赛推荐对象 ci_recommend_competition
  *
  * @author sun
- * @date 2020-05-05
+ * @date 2020-05-31
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class SearchRecord extends BaseEntity {
+public class RecommendCompetition extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -22,16 +22,23 @@ public class SearchRecord extends BaseEntity {
     private Long id;
 
     /**
-     * 关键词
+     * 图片Url
      */
-    @Excel(name = "关键词")
-    private String keyword;
+    @Excel(name = "图片Url")
+    private String picUrl;
 
     /**
-     * 类别
+     * 排序
      */
-    @Excel(name = "类别")
-    private String type;
+    @Excel(name = "排序")
+    private Integer orderNum;
+
+    /**
+     * 竞赛
+     */
+    private Long cpId;
+    @Excel(name = "竞赛")
+    private String cpName;
 
 
 }

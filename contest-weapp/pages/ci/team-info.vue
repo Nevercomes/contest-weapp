@@ -3,7 +3,8 @@
 		<!-- 弹出action-sheet和分享 -->
 		<view class="info-top-right">
 			<text class="cuIcon-more margin-bottom text-lg" @click="onMoreClick"></text>
-			<text class="cuIcon-share text-lg" @click="onShareClick"></text>
+			<!-- <text class="cuIcon-share text-lg" @click="onShareClick"></text> -->
+			<button open-type='share' class="cuIcon-share text-lg icon-btn"></button>
 		</view>
 		<!-- 基本信息 -->
 		<view class="flex justify-center padding-tb-xl bg-white">
@@ -175,8 +176,23 @@
 				this.show = true
 			},
 			// TODO 弹出分享选项
-			onShareClick() {
-				this.msgInfo('TODO 分享')
+			onShareAppMessage() {
+				uni.showShareMenu({
+					withShareTicket: true
+				});
+				let self = this
+				let shareMsg = {
+					title: self.item.cpName + '团队：' + self.item.name,
+					path: '/pages/ci/team-info?id=' + self.item.id,
+					// imageUrl: self.item.picUrl || self.dfTeamAvatar,
+					// desc: self.item.cpName,
+					// 因为微信的调整，将无法判断用户是否真的分享
+					success: function(res) {
+						console.log('分享成功', JSON.stringify(res))
+						self.msgSuccess('分享成功')
+					},
+				}
+				return shareMsg
 			},
 			// action-sheet操作
 			onActionSelect(e) {
@@ -339,6 +355,7 @@
 </script>
 
 <style>
+	
 	.info-top-right {
 		position: absolute;
 		right: 20px;
@@ -352,4 +369,16 @@
 		height: 160upx;
 		border-radius: 50%;
 	}
+	
+	.icon-btn {
+		margin: 0 !important;
+		padding: 0 !important;
+		line-height: normal;
+	}
+	
+	.icon-btn::after {
+		content: '';
+		border: none;
+	}
+		
 </style>

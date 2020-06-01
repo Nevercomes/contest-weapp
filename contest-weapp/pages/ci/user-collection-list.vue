@@ -1,10 +1,6 @@
 <template>
 	<view class="app-container">
-		<cu-custom bgColor="bg-gradual-pink" :isBack="true">
-			<block slot="backText">返回</block>
-			<block slot="content">竞赛经历</block>
-		</cu-custom>
-		
+		关注内容列表
 	</view>
 </template>
 

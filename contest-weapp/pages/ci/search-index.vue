@@ -1,5 +1,5 @@
 <template>
-	<view class="app-container">
+	<view class="app-container bg-white">
 		<!-- 搜索框 -->
 		<van-search :value="queryParams.keyword" placeholder="请输入搜索关键词" show-action @search="onSearch" />
 		<!-- 热门搜索 -->
@@ -27,7 +27,7 @@
 			</view>
 		</view>
 		<view class="padding-lr">
-			<view v-for="(item,index) in searchRecord" :key="index" class='cu-tag radius' @click="onRecordClick(item.keyword)">{{item.keyword}}</view>
+			<view v-for="(item,index) in recordList" :key="index" class='cu-tag round margin-xs' @click="onRecordClick(item.keyword)">{{item.keyword}}</view>
 			<!-- 清空历史记录 -->
 			<view class="padding flex flex-direction text-center margin-top">
 				<view class="text-grey" @click="onClearClick">清空历史记录</view>
@@ -77,6 +77,8 @@
 			}
 			// 获取热门搜索
 			this.loadPopular()
+		},
+		onShow() {
 			// 获取历史搜索
 			this.loadRecord()
 		},
@@ -116,6 +118,7 @@
 							delAllSearchRecord().then(res => {
 								if (res.code == 200) {
 									self.msgInfo('清除搜索历史成功')
+									self.loadRecord()
 								}
 							})
 						}

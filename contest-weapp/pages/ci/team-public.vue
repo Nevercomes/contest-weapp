@@ -19,7 +19,7 @@
 			</view>
 			<view class="cu-form-group">
 				<view class="title">名称</view>
-				<input v-model="form.name" name="name" type="number" placeholder="请输入队伍名称" confirm-type="next">
+				<input v-model="form.name" name="name" placeholder="请输入队伍名称" confirm-type="next">
 			</view>
 			<view class="cu-form-group ">
 				<view class="title">介绍</view>
@@ -60,6 +60,7 @@
 					cuIcon: 'roundcheckfill',
 					name: '创建完成'
 				}],
+				form: {},
 				rules1: {
 					cpName: {
 						required: true
@@ -125,7 +126,7 @@
 					addTeamInfo(this.form).then(res => {
 						this.msgInfo('队伍信息已添加')
 						uni.navigateTo({
-							url: 'team-public-member?teamId=' + this.form.teamId + '&recruitNumber=' +
+							url: 'team-public-member?teamId=' + res.data.id + '&recruitNumber=' +
 								this.form.recruitNumber
 						})
 					})

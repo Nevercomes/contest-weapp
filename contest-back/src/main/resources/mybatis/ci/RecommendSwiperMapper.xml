@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.ci.mapper.RecommendSwiperMapper">
+
+    <resultMap type="RecommendSwiper" id="RecommendSwiperResult">
+        <result property="id" column="id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="picUrl" column="pic_url"/>
+        <result property="link" column="link"/>
+        <result property="type" column="type"/>
+        <result property="orderNum" column="order_num"/>
+    </resultMap>
+
+    <sql id="selectRecommendSwiperVo">
+        select id,
+               create_by,
+               update_by,
+               create_time,
+               update_time,
+               pic_url,
+               link,
+               type,
+               order_num
+        from ci_recommend_swiper
+    </sql>
+
+    <select id="selectRecommendSwiperList" parameterType="RecommendSwiper" resultMap="RecommendSwiperResult">
+        <include refid="selectRecommendSwiperVo"/>
+        <where>
+            <if test="type != null  and type != ''">and type = #{type}</if>
+        </where>
+        order by order_num asc
+    </select>
+
+    <select id="selectRecommendSwiperById" parameterType="Long" resultMap="RecommendSwiperResult">
+        <include refid="selectRecommendSwiperVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectRecommendSwiperOptions" parameterType="RecommendSwiper" resultType="Map">
+        select id as "value",
+        `name` as "label"
+        from ci_recommend_swiper
+        <if test="name != null and name != ''">
+            where `name` like concat('%', #{name}, '%')
+        </if>
+    </select>
+
+    <insert id="insertRecommendSwiper" parameterType="RecommendSwiper" useGeneratedKeys="true" keyProperty="id">
+        insert into ci_recommend_swiper
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="picUrl != null  and picUrl != ''">pic_url,</if>
+            <if test="link != null  and link != ''">link,</if>
+            <if test="type != null  and type != ''">type,</if>
+            <if test="orderNum != null ">order_num,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="picUrl != null  and picUrl != ''">#{picUrl},</if>
+            <if test="link != null  and link != ''">#{link},</if>
+            <if test="type != null  and type != ''">#{type},</if>
+            <if test="orderNum != null ">#{orderNum},</if>
+        </trim>
+    </insert>
+
+    <update id="updateRecommendSwiper" parameterType="RecommendSwiper">
+        update ci_recommend_swiper
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="picUrl != null  and picUrl != ''">pic_url = #{picUrl},</if>
+            <if test="link != null  and link != ''">link = #{link},</if>
+            <if test="type != null  and type != ''">type = #{type},</if>
+            <if test="orderNum != null ">order_num = #{orderNum},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRecommendSwiperById" parameterType="Long">
+        delete
+        from ci_recommend_swiper
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteRecommendSwiperByIds" parameterType="String">
+        delete from ci_recommend_swiper where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

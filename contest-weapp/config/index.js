@@ -6,7 +6,7 @@ const param = {
 	TEST_API: 'http://haitun158.natapp1.cc',
 
 	// 生产环境api地址
-	PROD_API: 'https://zhulu.nevercome.net'
+	PROD_API: 'https://rowing.nevercome.net'
 }
 
 const config = {
