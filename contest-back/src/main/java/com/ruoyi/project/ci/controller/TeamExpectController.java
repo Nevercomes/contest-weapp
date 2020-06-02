@@ -39,6 +39,7 @@ public class TeamExpectController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(TeamExpect teamExpect) {
         startPage();
+        listSelf(teamExpect);
         List<TeamExpect> list = teamExpectService.selectTeamExpectList(teamExpect);
         return getDataTable(list);
     }

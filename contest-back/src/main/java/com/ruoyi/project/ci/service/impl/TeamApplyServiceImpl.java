@@ -110,6 +110,16 @@ public class TeamApplyServiceImpl implements ITeamApplyService {
     }
 
     /**
+     * 查询所有收到的申请
+     * @param teamApply
+     * @return
+     */
+    @Override
+    public List<TeamApply> selectTeamApplyReceive(TeamApply teamApply) {
+        return teamApplyMapper.selectTeamApplyReceive(teamApply);
+    }
+
+    /**
      * 注入创建的用户
      * @param teamApply
      */

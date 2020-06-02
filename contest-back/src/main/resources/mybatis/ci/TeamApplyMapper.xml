@@ -13,18 +13,19 @@
         <result property="teamId" column="team_id"/>
         <result property="teamName" column="team_name"/>
         <result property="status" column="status"/>
+        <result property="" column="status"/>
+        <result property="status" column="status"/>
     </resultMap>
 
     <sql id="selectTeamApplyVo">
-        select
-            id,
-            create_by,
-            update_by,
-            create_time,
-            update_time,
-            team_id,
-            (select name from ci_team_info where team_id = ci_team_info.id) as "team_name",
-            status
+        select id,
+               create_by,
+               update_by,
+               create_time,
+               update_time,
+               team_id,
+               (select name from ci_team_info where team_id = ci_team_info.id) as "team_name",
+               status
         from ci_team_apply
     </sql>
 
@@ -34,6 +35,20 @@
             <if test="teamId != null ">and team_id = #{teamId}</if>
             <if test="status != null  and status != ''">and status = #{status}</if>
         </where>
+        order by id desc
+    </select>
+
+    <select id="selectTeamApplyReceive" parameterType="TeamApply" resultMap="TeamApplyResult">
+        select a.id,
+               a.create_by,
+               a.update_by,
+               a.create_time,
+               a.update_time,
+               a.team_id,
+               ti.name as "team_name",
+               a.status
+        from ci_team_apply a
+                 left join ci_team_info ti on a.team_id = ti.id and ti.create_by = #{createUser.username}
     </select>
 
     <select id="selectTeamApplyById" parameterType="Long" resultMap="TeamApplyResult">
@@ -84,7 +99,8 @@
     </update>
 
     <delete id="deleteTeamApplyById" parameterType="Long">
-        delete from ci_team_apply
+        delete
+        from ci_team_apply
         where id = #{id}
     </delete>
 

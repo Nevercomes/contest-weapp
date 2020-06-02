@@ -16,17 +16,16 @@
     </resultMap>
 
     <sql id="selectTeamExpectVo">
-        select
-            id,
-            create_by,
-            create_time,
-            cp_id,
-            work,
-            capability,
-            (select name
-             from ci_competition_period
-             where cp_id = ci_competition_period.id) as "cp_name",
-            status
+        select id,
+               create_by,
+               create_time,
+               cp_id,
+               work,
+               capability,
+               (select name
+                from ci_competition_period
+                where cp_id = ci_competition_period.id) as "cp_name",
+               status
         from ci_team_expect
     </sql>
 
@@ -38,6 +37,7 @@
             <if test="capability != null  and capability != ''">and capability like concat('%', #{capability}, '%')</if>
             <if test="status != null  and status != ''">and status = #{status}</if>
         </where>
+        order by id desc
     </select>
 
     <select id="selectTeamExpectById" parameterType="Long" resultMap="TeamExpectResult">
@@ -88,7 +88,8 @@
     </update>
 
     <delete id="deleteTeamExpectById" parameterType="Long">
-        delete from ci_team_expect
+        delete
+        from ci_team_expect
         where id = #{id}
     </delete>
 

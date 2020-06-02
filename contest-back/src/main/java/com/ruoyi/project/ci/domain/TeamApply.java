@@ -29,6 +29,10 @@ public class TeamApply extends BaseEntity {
     @Excel(name = "队伍")
     private String teamName;
 
+    private String work;
+
+    private String capability;
+
     /**
      * 状态
      */

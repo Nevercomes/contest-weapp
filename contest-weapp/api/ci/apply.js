@@ -9,6 +9,24 @@ export function listApply(query) {
   })
 }
 
+// 查询自己发出的申请
+export function listApplySend(query) {
+	return http.request({
+	  url: '/ci/apply/list/send',
+	  method: 'get',
+	  params: query
+	})
+}
+
+// 查询收到的申请
+export function listApplyReceive(query) {
+	return http.request({
+	  url: '/ci/apply/list/receive',
+	  method: 'get',
+	  params: query
+	})
+}
+
 // 查询入队申请详细
 export function getApply(id) {
   return http.request({
@@ -43,6 +61,22 @@ export function updateApply(data) {
     method: 'put',
     data: data
   })
+}
+
+// 通过申请
+export function passApply(id) {
+	return http.request({
+	  url: '/ci/apply/pass/' +  id,
+	  method: 'put'
+	})
+}
+
+// 拒绝申请
+export function rejectApply(id) {
+	return http.request({
+	  url: '/ci/apply/reject/' +  id,
+	  method: 'put'
+	})
 }
 
 // 删除入队申请

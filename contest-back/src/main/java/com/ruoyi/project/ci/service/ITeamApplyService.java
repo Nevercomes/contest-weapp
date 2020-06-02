@@ -65,4 +65,11 @@ public interface ITeamApplyService {
      * @return 结果
      */
     int deleteTeamApplyById(Long id);
+
+    /**
+     * 查询收到的申请
+     * @param teamApply
+     * @return
+     */
+    List<TeamApply> selectTeamApplyReceive(TeamApply teamApply);
 }

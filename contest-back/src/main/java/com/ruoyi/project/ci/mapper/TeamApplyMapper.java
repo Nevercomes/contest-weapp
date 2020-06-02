@@ -65,4 +65,11 @@ public interface TeamApplyMapper {
      * @return 结果
      */
     int deleteTeamApplyByIds(Long[] ids);
+
+    /**
+     * 查询收到的申请
+     * @param teamApply
+     * @return
+     */
+    List<TeamApply> selectTeamApplyReceive(TeamApply teamApply);
 }

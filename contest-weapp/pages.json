@@ -525,20 +525,16 @@
 				"query":""
 			},
 			{
-				"name":"teamList",
-				"path":"pages/ci/team-list",
-				"query":"type=create"
-			},
-			{
 				"name":"teamInfo",
 				"path":"pages/ci/team-info",
 				"query":"id=3"
 			},
 			{
-				"name":"teamExpectSuccess",
-				"path":"pages/ci/team-public-expect-success",
-				"query":"cpId=1"
+				"name":"userShowIndex",
+				"path":"pages/ci/user-show-index",
+				"query":"userId=103"
 			}
+			
 		]
 	}
 

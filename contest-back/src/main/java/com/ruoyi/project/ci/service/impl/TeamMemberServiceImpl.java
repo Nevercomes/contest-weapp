@@ -71,7 +71,15 @@ public class TeamMemberServiceImpl implements ITeamMemberService {
     @Override
     public int insertTeamMember(TeamMember teamMember) {
         teamMember.preInsert();
-        return teamMemberMapper.insertTeamMember(teamMember);
+        // 在插入前判断是否已经存在队员
+        TeamMember query = new TeamMember();
+        query.setTeamId(teamMember.getTeamId());
+        query.setUserId(teamMember.getUserId());
+        List<TeamMember> memberList = this.selectTeamMemberList(query);
+        if (StringUtils.isEmpty(memberList)) {
+            return teamMemberMapper.insertTeamMember(teamMember);
+        }
+        return 0;
     }
 
     /**

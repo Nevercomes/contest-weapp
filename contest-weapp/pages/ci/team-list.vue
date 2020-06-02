@@ -17,7 +17,6 @@
 				</view>
 			</view>
 		</view>
-		<!-- 不得不说，vue的props有点菜？还是我菜？ -->
 		<nl-empty v-if="dataList == undefined || dataList.length == 0" :show="true"></nl-empty>
 	</view>
 </template>

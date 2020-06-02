@@ -9,9 +9,9 @@ export function identify(data) {
 }
 
 // 查询用户个人信息
-export function getUserProfile() {
+export function getUserProfile(userId) {
   return http.request({
-    url: '/system/user/profile',
+    url: userId ? '/system/user/profile/' + userId : '/system/user/profile',
     method: 'GET'
   })
 }

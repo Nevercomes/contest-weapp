@@ -8,6 +8,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.StringUtils;
 import lombok.Data;
 
 /**
@@ -89,7 +90,9 @@ public class BaseEntity implements Serializable {
      * 插入前设置通用值
      */
     public void preInsert() {
-        this.setCreateBy(SecurityUtils.getUsername());
+        if (StringUtils.isEmpty(this.getCreateBy())) {
+            this.setCreateBy(SecurityUtils.getUsername());
+        }
         this.setCreateTime(new Date());
         this.setUpdateBy(SecurityUtils.getUsername());
         this.setUpdateTime(new Date());

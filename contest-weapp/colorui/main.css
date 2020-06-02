@@ -1970,9 +1970,9 @@ button.cuIcon.lg {
 }
 
 .cu-timeline .cu-time {
-	width: 200upx;
-	text-align: center;
-	padding: 20upx 0;
+	width: 240upx;
+	text-align: start;
+	padding: 20upx;
 	font-size: 26upx;
 	color: #888;
 	display: block;

@@ -25,7 +25,7 @@ export function undoExpect(id) {
 		method: 'put',
 		data: {
 			id: id,
-			status: '2'
+			status: '3'
 		}
 	})
 }
