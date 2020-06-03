@@ -38,7 +38,7 @@ public class SysProfileController extends BaseController {
     /**
      * 个人信息
      */
-    @GetMapping(value = {"{/userId}", ""})
+    @GetMapping(value = {"/{userId}", ""})
     public AjaxResult profile(@PathVariable(value = "userId", required = false) Long userId) {
         if (userId != null) {
             return AjaxResult.success(userService.selectUserById(userId));

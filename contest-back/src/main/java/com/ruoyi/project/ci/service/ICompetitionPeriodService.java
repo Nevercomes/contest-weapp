@@ -61,4 +61,11 @@ public interface ICompetitionPeriodService {
     int deleteCompetitionPeriodById(Long id);
 
     List<Map<String, Object>> selectCompetitionPeriodOptions(CompetitionPeriod competitionPeriod);
+
+    /**
+     * 查询关注的竞赛
+     * @param competitionPeriod
+     * @return
+     */
+    List<CompetitionPeriod> selectConcernedCompetitionPeriodList(CompetitionPeriod competitionPeriod);
 }

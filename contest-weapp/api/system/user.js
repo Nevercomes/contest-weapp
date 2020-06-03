@@ -8,6 +8,14 @@ export function identify(data) {
 	})
 }
 
+export function listConcernUser(query) {
+	return http.request({
+		url: '/system/user/list/concern',
+		method: 'get',
+		params: query
+	})
+}
+
 // 查询用户个人信息
 export function getUserProfile(userId) {
   return http.request({

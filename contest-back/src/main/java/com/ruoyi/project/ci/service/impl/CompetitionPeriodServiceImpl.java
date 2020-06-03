@@ -116,4 +116,9 @@ public class CompetitionPeriodServiceImpl implements ICompetitionPeriodService {
     public List<Map<String, Object>> selectCompetitionPeriodOptions(CompetitionPeriod competitionPeriod) {
         return competitionPeriodMapper.selectCompetitionPeriodOptions(competitionPeriod);
     }
+
+    @Override
+    public List<CompetitionPeriod> selectConcernedCompetitionPeriodList(CompetitionPeriod competitionPeriod) {
+        return competitionPeriodMapper.selectConcernedCompetitionPeriodList(competitionPeriod);
+    }
 }

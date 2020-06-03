@@ -458,4 +458,9 @@ public class SysUserServiceImpl implements ISysUserService {
         return rows;
     }
 
+    @Override
+    public List<SysUser> selectConcernedUserList(SysUser user) {
+        return userMapper.selectConcernedUserList(user);
+    }
+
 }

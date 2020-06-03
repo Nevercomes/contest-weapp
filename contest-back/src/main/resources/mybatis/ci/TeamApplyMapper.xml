@@ -13,8 +13,8 @@
         <result property="teamId" column="team_id"/>
         <result property="teamName" column="team_name"/>
         <result property="status" column="status"/>
-        <result property="" column="status"/>
-        <result property="status" column="status"/>
+        <result property="capability" column="capability"/>
+        <result property="work" column="work"/>
     </resultMap>
 
     <sql id="selectTeamApplyVo">
@@ -25,7 +25,9 @@
                update_time,
                team_id,
                (select name from ci_team_info where team_id = ci_team_info.id) as "team_name",
-               status
+               status,
+               work,
+               capability
         from ci_team_apply
     </sql>
 
@@ -46,9 +48,11 @@
                a.update_time,
                a.team_id,
                ti.name as "team_name",
-               a.status
+               a.status,
+               a.work,
+               a.capability
         from ci_team_apply a
-                 left join ci_team_info ti on a.team_id = ti.id and ti.create_by = #{createUser.username}
+                 inner join ci_team_info ti on a.team_id = ti.id and ti.create_by = #{createUser.userName}
     </select>
 
     <select id="selectTeamApplyById" parameterType="Long" resultMap="TeamApplyResult">
@@ -74,6 +78,8 @@
             <if test="updateTime != null ">update_time,</if>
             <if test="teamId != null ">team_id,</if>
             <if test="status != null  and status != ''">status,</if>
+            <if test="work != null  and work != ''">`work`,</if>
+            <if test="capability != null  and capability != ''">capability,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="createBy != null  and createBy != ''">#{createBy},</if>
@@ -82,6 +88,8 @@
             <if test="updateTime != null ">#{updateTime},</if>
             <if test="teamId != null ">#{teamId},</if>
             <if test="status != null  and status != ''">#{status},</if>
+            <if test="work != null  and work != ''">#{work},</if>
+            <if test="capability != null  and capability != ''">#{capability},</if>
         </trim>
     </insert>
 
@@ -94,6 +102,8 @@
             <if test="updateTime != null ">update_time = #{updateTime},</if>
             <if test="teamId != null ">team_id = #{teamId},</if>
             <if test="status != null  and status != ''">status = #{status},</if>
+            <if test="work != null  and work != ''">work = #{work},</if>
+            <if test="capability != null  and capability != ''">capability = #{capability},</if>
         </trim>
         where id = #{id}
     </update>

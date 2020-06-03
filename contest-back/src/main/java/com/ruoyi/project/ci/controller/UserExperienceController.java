@@ -35,11 +35,13 @@ public class UserExperienceController extends BaseController {
      * 查询竞赛经历列表
      */
     @PreAuthorize("@ss.hasPermi('ci:experience:list')")
-    @GetMapping("/list")
-    public TableDataInfo list(UserExperience userExperience, @RequestParam(value = "userId", required = false) Long userId) {
+    @GetMapping(value = {"/list", "/list/{userId}"})
+    public TableDataInfo list(UserExperience userExperience, @PathVariable(value = "userId", required = false) Long userId) {
         if (userId != null) {
             SysUser user = userService.selectUserById(userId);
-            userExperience.setCreateBy(user.getCreateBy());
+            userExperience.setCreateBy(user.getUserName());
+        } else {
+            listSelf(userExperience);
         }
         startPage();
         List<UserExperience> list = userExperienceService.selectUserExperienceList(userExperience);

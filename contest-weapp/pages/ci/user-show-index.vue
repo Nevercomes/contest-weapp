@@ -6,16 +6,16 @@
 			<button open-type='share' class="cuIcon-share text-lg icon-btn"></button>
 		</view>
 
-		<view class="flex flex-direction padding justify-center align-center">
-			<image :src="user.avatar" class="cu-avatar radius xl margin-sm"></image>
+		<view class="flex flex-direction padding justify-center align-center bg-white">
+			<image :src="user.avatar" class="cu-avatar round xl"></image>
 			<view class="text-gray margin-sm">{{user.nickName}}</view>
 			<view class="text-gray text-sm">
-				<text>{{user.trueName}}</text>
-				<text>{{user.schoolName}}</text>
+				<text>{{user.trueName ? user.trueName : ''}}</text>
+				<text>{{user.schoolName ? user.schoolName : ''}}</text>
 			</view>
 			<!-- 个人介绍 -->
 			<view v-if="showSetting.showIntro == '1'" class="text-center text-gray" style="max-width: 300upx;">
-				{{userExt.intro}}
+				{{userExt.intro ? userExt.intro : ''}}
 			</view>
 		</view>
 		<!-- 竞赛经历 -->
@@ -100,7 +100,7 @@
 		name: 'UserShowIndex',
 		computed: {
 			...mapGetters([
-				'...userId'
+				'userId'
 			])
 		},
 		data() {
@@ -146,9 +146,7 @@
 					}
 					// 显示竞赛经历
 					if (showSetting.showExperience == '1') {
-						listExperience({
-							parUserId: this.parUserId
-						}).then(res => {
+						listExperience({}, this.parUserId).then(res => {
 							this.expList = res.rows
 						})
 					}
@@ -165,9 +163,11 @@
 				this.teamId = this.teamList[this.radioIndex].id
 				addInvite({
 					teamId: this.teamId,
-					invitedparUserId: this.parUserId
+					invitedUserId: this.parUserId
 				}).then(res => {
-					this.msgSuccess('邀请成功')
+					uni.navigateTo({
+						url: 'team-invite'
+					})
 				})
 			},
 			setActions(showNews) {
@@ -194,9 +194,11 @@
 						if (this.teamId) {
 							addInvite({
 								teamId: this.teamId,
-								invitedparUserId: this.parUserId
+								invitedUserId: this.parUserId
 							}).then(res => {
-								this.msgSuccess('邀请成功')
+								uni.navigateTo({
+									url: 'team-invite'
+								})
 							})
 						} else {
 							// 展示队伍列表
@@ -218,7 +220,7 @@
 				let self = this
 				let shareMsg = {
 					title: '推荐用户：' + self.user.nickName,
-					path: '/pages/ci/user-show-index?parUserId=' + self.parUserId,
+					path: '/pages/ci/user-show-index?userId=' + self.parUserId,
 					success: function(res) {
 						console.log('分享成功', JSON.stringify(res))
 						self.msgSuccess('分享成功')

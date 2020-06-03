@@ -69,4 +69,11 @@ public interface CompetitionPeriodMapper {
     void updateCover(@Param("id") Long cpId, @Param("url") String s);
 
     List<Map<String,Object>> selectCompetitionPeriodOptions(CompetitionPeriod competitionPeriod);
+
+    /**
+     * 查询关注的竞赛
+     * @param competitionPeriod
+     * @return
+     */
+    List<CompetitionPeriod> selectConcernedCompetitionPeriodList(CompetitionPeriod competitionPeriod);
 }

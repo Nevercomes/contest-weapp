@@ -245,15 +245,8 @@
 			},
 			// 申请加入队伍
 			onApplyClick() {
-				addApply({
-					teamId: this.item.id
-				}).then(res => {
-					if (res.code == 200) {
-						// 跳转到申请界面
-						this.msgSuccess('申请加入成功')
-					} else {
-						this.msgInfo(res.msg)
-					}
+				uni.navigateTo({
+					url: 'team-apply-form?teamId=' + this.item.id + '&teamName=' + this.item.name
 				})
 			},
 			// 更换头像

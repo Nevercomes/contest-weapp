@@ -1,9 +1,9 @@
 import http from '@/utils/request'
 
 // 查询竞赛经历列表
-export function listExperience(query) {
+export function listExperience(query, userId) {
   return http.request({
-    url: '/ci/experience/list',
+    url: userId ? '/ci/experience/list/' + userId : '/ci/experience/lis',
     method: 'GET',
     params: query
   })

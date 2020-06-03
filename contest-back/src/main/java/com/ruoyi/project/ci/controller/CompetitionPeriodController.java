@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.ruoyi.common.utils.CommonUtil;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.manager.AsyncManager;
 import com.ruoyi.framework.manager.factory.AsyncFactory;
@@ -49,6 +50,19 @@ public class CompetitionPeriodController extends BaseController {
     public TableDataInfo list(CompetitionPeriod competitionPeriod) {
         startPage();
         List<CompetitionPeriod> list = competitionPeriodService.selectCompetitionPeriodList(competitionPeriod);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询关注的竞赛
+     * @param competitionPeriod
+     * @return
+     */
+    @GetMapping("/list/concern")
+    public TableDataInfo listConcern(CompetitionPeriod competitionPeriod) {
+        startPage();
+        competitionPeriod.setCreateBy(SecurityUtils.getUsername());
+        List<CompetitionPeriod> list = competitionPeriodService.selectConcernedCompetitionPeriodList(competitionPeriod);
         return getDataTable(list);
     }
 

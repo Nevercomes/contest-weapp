@@ -132,4 +132,11 @@ public interface SysUserMapper {
      * @return
      */
     int createUserIdentify(SysUser user);
+
+    /**
+     * 查询关注的用户
+     * @param user
+     * @return
+     */
+    List<SysUser> selectConcernedUserList(SysUser user);
 }

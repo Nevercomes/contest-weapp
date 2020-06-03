@@ -118,6 +118,11 @@
         </where>
     </select>
 
+    <select id="selectConcernedCompetitionPeriodList" parameterType="CompetitionPeriod" resultMap="CompetitionPeriodResult">
+        <include refid="selectCompetitionPeriodVo" />
+        where ci_competition_period.id in (select cpId from ci_user_concern_cp where create_by = #{createBy})
+    </select>
+
     <select id="selectCompetitionPeriodById" parameterType="Long" resultMap="CompetitionPeriodResult">
         <include refid="selectCompetitionPeriodDetailsVo"/>
         where ci_competition_period.id = #{id}

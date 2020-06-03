@@ -1,16 +1,11 @@
 package com.ruoyi.project.ci.controller;
 
 import java.util.List;
+
+import com.ruoyi.common.utils.SecurityUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
 import com.ruoyi.project.ci.domain.UserConcernUser;
@@ -102,4 +97,19 @@ public class UserConcernUserController extends BaseController {
     public AjaxResult remove(@PathVariable Long[] ids) {
         return toAjax(userConcernUserService.deleteUserConcernUserByIds(ids));
     }
+
+    /**
+     * 删除关注用户
+     */
+    @PreAuthorize("@ss.hasPermi('ci:concernUser:remove')")
+    @Log(title = "关注用户", businessType = BusinessType.DELETE)
+    @DeleteMapping()
+    public AjaxResult removeByUserId(@RequestParam("userId") Long userId)  {
+        UserConcernUser query = new UserConcernUser();
+        query.setUserId(userId);
+        query.setCreateBy(SecurityUtils.getUsername());
+        List<UserConcernUser> list = userConcernUserService.selectUserConcernUserList(query);
+        return toAjax(userConcernUserService.deleteUserConcernUserByIds(list.stream().map(UserConcernUser::getId).toArray(Long[]::new)));
+    }
+
 }

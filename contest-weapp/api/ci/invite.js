@@ -9,6 +9,24 @@ export function listInvite(query) {
   })
 }
 
+// 查询自己发出的邀请
+export function listInviteSend(query) {
+	return http.request({
+	  url: '/ci/invite/list/send',
+	  method: 'get',
+	  params: query
+	})
+}
+
+// 查询收到的邀请
+export function listInviteReceive(query) {
+	return http.request({
+	  url: '/ci/invite/list/receive',
+	  method: 'get',
+	  params: query
+	})
+}
+
 // 查询入队邀请详细
 export function getInvite(id) {
   return http.request({
@@ -43,6 +61,22 @@ export function updateInvite(data) {
     method: 'put',
     data: data
   })
+}
+
+// 通过邀请
+export function passApply(id) {
+	return http.request({
+	  url: '/ci/invite/pass/' +  id,
+	  method: 'put'
+	})
+}
+
+// 拒绝邀请
+export function rejectApply(id) {
+	return http.request({
+	  url: '/ci/invite/reject/' +  id,
+	  method: 'put'
+	})
 }
 
 // 删除入队邀请

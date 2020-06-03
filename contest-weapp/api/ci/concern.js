@@ -42,3 +42,51 @@ export function delConcernCp(id) {
     method: 'DELETE'
   })
 }
+
+
+// 查询关注用户详细
+export function getConcernUser(id) {
+  return http.request({
+    url: '/ci/concernUser/' + id,
+    method: 'get'
+  })
+}
+
+export function getConcernUserOptions(label) {
+    return http.request({
+        url: '/ci/concernUser/options',
+        method: 'get',
+        params: {
+          name: label || ''
+        }
+    })
+}
+
+// 新增关注用户
+export function addConcernUser(data) {
+  return http.request({
+    url: '/ci/concernUser',
+    method: 'post',
+    data: data
+  })
+}
+
+// 修改关注用户
+export function updateConcernUser(data) {
+  return http.request({
+    url: '/ci/concernUser',
+    method: 'put',
+    data: data
+  })
+}
+
+// 删除关注用户
+export function delConcernUser(userId) {
+  return http.request({
+    url: '/ci/concernUser',
+    method: 'delete',
+	params: {
+		userId: userId
+	}
+  })
+}

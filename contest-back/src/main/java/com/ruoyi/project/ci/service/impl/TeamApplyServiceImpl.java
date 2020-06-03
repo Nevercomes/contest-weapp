@@ -116,7 +116,11 @@ public class TeamApplyServiceImpl implements ITeamApplyService {
      */
     @Override
     public List<TeamApply> selectTeamApplyReceive(TeamApply teamApply) {
-        return teamApplyMapper.selectTeamApplyReceive(teamApply);
+        List<TeamApply> list = teamApplyMapper.selectTeamApplyReceive(teamApply);
+        for (TeamApply apply : list) {
+            setCreateUserBy(apply);
+        }
+        return list;
     }
 
     /**

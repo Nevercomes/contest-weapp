@@ -172,10 +172,24 @@
         where u.user_id = #{userId}
     </select>
 
+    <select id="selectConcernedUserList" parameterType="SysUser" resultMap="SysUserResult">
+        select nick_name,
+               avatar,
+               school_id,
+               user_id,
+               true_name,
+               (select school_name
+                from edu_school
+                where sys_user.school_id = edu_school.school_id) as "school_name"
+        from sys_user
+        where user_id in (select user_id from ci_user_concern_user where ci_user_concern_user.create_by = #{createBy})
+    </select>
+
     <select id="selectCreateUser" parameterType="String" resultMap="SysUserResult">
         select nick_name,
                avatar,
                school_id,
+               user_id,
                (select school_name
                 from edu_school
                 where sys_user.school_id = edu_school.school_id) as "school_name"

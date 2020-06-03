@@ -43,12 +43,6 @@
 				</view>
 			</view>
 		</view>
-
-		<view class="list">
-			<view>
-				<view>{{item.name}}</view>
-			</view>
-		</view>
 	</view>
 </template>
 
@@ -169,28 +163,6 @@
 	
 	.cu-card .cu-item .image image {
 		height: 100%;
-	}
-
-	.van-ellipsis {
-		overflow: hidden;
-		white-space: nowrap;
-		text-overflow: ellipsis
-	}
-
-	.van-multi-ellipsis--l2 {
-		-webkit-line-clamp: 2
-	}
-
-	.van-multi-ellipsis--l2,
-	.van-multi-ellipsis--l3 {
-		display: -webkit-box;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		-webkit-box-orient: vertical
-	}
-
-	.van-multi-ellipsis--l3 {
-		-webkit-line-clamp: 3
 	}
 
 	.fixed {

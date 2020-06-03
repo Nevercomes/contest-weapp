@@ -9,6 +9,15 @@ export function listPeriod(query) {
   })
 }
 
+// 查询用户关注的竞赛
+export function listConcernPeriod() {
+  return http.request({
+    url: '/ci/period/list/concern',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询竞赛信息
 export function getPeriod(id) {
   return http.request({

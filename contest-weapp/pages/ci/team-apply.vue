@@ -49,7 +49,7 @@
 	} from '@/api/ci/apply.js'
 
 	export default {
-		name: 'TeamExpect',
+		name: 'TeamApply',
 		data() {
 			return {
 				// 加载状态
@@ -120,7 +120,7 @@
 					'name': '查看队伍'
 				})
 				if (type == 'send') {
-					if (item.status = '0') {
+					if (item.status == '0') {
 						actions.push({
 							'name': '撤回申请',
 							'color': '#e54d42'
@@ -130,7 +130,7 @@
 					actions.push({
 						'name': '查看申请人'
 					})
-					if (item.status = '0') {
+					if (item.status == '0') {
 						actions.push({
 							'name': '通过申请',
 							'color': '#39b54a'
@@ -164,7 +164,7 @@
 						break;
 					case '查看申请人':
 						uni.navigateTo({
-							url: 'user-show-index?userId=' + this.item.createUser.userId
+							url: 'user-show-index?userId=' + this.item.createUser.userId + '&teamId=' + this.item.teamId
 						})
 						break;
 					case '通过申请':
@@ -185,7 +185,8 @@
 			},
 			reload() {
 				this.queryParams.pageNum = 1
-				this.dataList = []
+				this.sendList = []
+				this.receiveList = []
 				this.loadList()
 			},
 			statusFormat(value, dict) {

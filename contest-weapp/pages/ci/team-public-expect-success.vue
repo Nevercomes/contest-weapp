@@ -5,7 +5,7 @@
 		<!-- 该竞赛的队伍 -->
 		<view class="cu-list grid col-2 no-border margin">
 			<view class="cu-item" v-for="(item,index) in teamList" :key="index" @click="goToTeamShowPage(item.id)">
-				<image class="cu-avatar radius xl bg-white " :src="item.picUrl ? item.picUrl : dfTeamAvatar"></image>
+				<image class="cu-avatar round xl bg-white " :src="item.picUrl ? item.picUrl : dfTeamAvatar"></image>
 				<text class="text-gray padding-tb-xs">{{item.name}}</text>
 			</view>
 		</view>
