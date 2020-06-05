@@ -6,7 +6,7 @@
 		</van-search>
 		
 		<!-- 竞赛结果 -->
-		<view v-for="(item,index) in compList" :key="index" @click="goToCompPage(item.id)" class="cu-card case no-card margin-bottom">
+		<view v-for="(item,index) in compList" :key="index" @click="goToCompPage(item.id)" class="cu-card case no-card margin-top-100">
 			<view class="cu-item shadow">
 				<view class="image">
 					<image :src="item.picUrl" mode="scaleToFill"></image>
@@ -74,7 +74,7 @@
 				this.keyword = e.detail
 				this.loadList()
 			},
-			goToCompPage() {
+			goToCompPage(id) {
 				uni.navigateTo({
 					url: 'competition-info?id=' + id
 				})
@@ -101,6 +101,11 @@
 </script>
 
 <style scoped lang="scss">
+	
+	.margin-top-100 {
+		margin-top: 100upx;
+	}
+	
 	.cu-card .cu-item .image {
 		margin: 0;
 		// height: 280upx;

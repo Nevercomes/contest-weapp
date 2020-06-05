@@ -40,7 +40,7 @@ public interface IMsgLetterService {
      * @param msgLetter 私信管理
      * @return 结果
      */
-    int insertMsgLetter(MsgLetter msgLetter);
+    MsgLetter insertMsgLetter(MsgLetter msgLetter);
 
     /**
      * 修改私信管理
@@ -65,4 +65,25 @@ public interface IMsgLetterService {
      * @return 结果
      */
     int deleteMsgLetterById(Long id);
+
+    /**
+     * 查询消息列表摘要
+     * @param msgLetter
+     * @return
+     */
+    List<MsgLetter> selectLetterDigest(MsgLetter msgLetter);
+
+    /**
+     * 查询聊天内容
+     * @param msgLetter
+     * @return
+     */
+    List<MsgLetter> selectLetterContent(MsgLetter msgLetter);
+
+    /**
+     * 设置已读
+     * @param msgLetter
+     * @return
+     */
+    int readMsgLetter(MsgLetter msgLetter);
 }

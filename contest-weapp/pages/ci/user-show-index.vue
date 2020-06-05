@@ -8,13 +8,14 @@
 
 		<view class="flex flex-direction padding justify-center align-center bg-white">
 			<image :src="user.avatar" class="cu-avatar round xl"></image>
-			<view class="text-gray margin-sm">{{user.nickName}}</view>
+			<view class="text-gray margin-tb-xs">{{user.nickName}}</view>
 			<view class="text-gray text-sm">
-				<text>{{user.trueName ? user.trueName : ''}}</text>
-				<text>{{user.schoolName ? user.schoolName : ''}}</text>
+				<text class="margin-right-xs">{{user.schoolName ? user.schoolName : ''}}</text>
+				<text>{{user.major ? user.major : ''}}</text>
+				<text v-if="showSetting.showName == '1'" class="margin-left-xs">{{user.trueName ? user.trueName : ''}}</text>
 			</view>
 			<!-- 个人介绍 -->
-			<view v-if="showSetting.showIntro == '1'" class="text-center text-gray" style="max-width: 300upx;">
+			<view v-if="showSetting.showIntro == '1'" class="text-center text-gray margin-tb-sm text-sm" style="max-width: 300upx;">
 				{{userExt.intro ? userExt.intro : ''}}
 			</view>
 		</view>
@@ -172,6 +173,11 @@
 			},
 			setActions(showNews) {
 				let actions = []
+				if(this.parUserId != this.userId) {
+					actions.push({
+						'name': '发送消息'
+					})
+				}
 				actions.push({
 					'name': '查看动态',
 					'disabled': showNews == '0',
@@ -187,6 +193,11 @@
 			onActionSelect(e) {
 				const name = e.detail.name
 				switch (name) {
+					case '发送消息':
+						uni.navigateTo({
+							url: 'message-window?userId=' + this.parUserId
+						})
+						break;
 					case '查看动态':
 						// TODO 跳转到动态界面
 						break;

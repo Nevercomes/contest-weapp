@@ -44,7 +44,7 @@
 		
 		<!-- 三类 -->
 		<van-cell-group custom-class="margin-top:10px; margin-bottom: 10px">
-			<van-cell title="帮助与反馈" is-link></van-cell>
+			<van-cell title="帮助与反馈" is-link :url="cellUrl.manual"></van-cell>
 		</van-cell-group>
 
 		<!-- <open-data type="userNickName"></open-data>
@@ -86,7 +86,8 @@
 					team: '/pages/ci/team-index',
 					expect: '/pages/ci/team-expect-list',
 					concern: '/pages/ci/user-concern-index',
-					collection: '/pages/ci/user-collection-index'
+					collection: '/pages/ci/user-collection-index',
+					manual: '/pages/ci/user-manual-index'
 				},
 				// 用户积分
 				points: {}

@@ -1,9 +1,13 @@
 package com.ruoyi.project.ci.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.project.system.domain.SysUser;
 import com.ruoyi.project.system.mapper.SysUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,9 +67,12 @@ public class MsgLetterServiceImpl implements IMsgLetterService {
      * @return 结果
      */
     @Override
-    public int insertMsgLetter(MsgLetter msgLetter) {
+    public MsgLetter insertMsgLetter(MsgLetter msgLetter) {
         msgLetter.preInsert();
-        return msgLetterMapper.insertMsgLetter(msgLetter);
+        int res = msgLetterMapper.insertMsgLetter(msgLetter);
+        msgLetter.setSendUserAvatar(SecurityUtils.getLoginUser().getUser().getAvatar());
+        msgLetter.setSendUserNickName(SecurityUtils.getLoginUser().getUser().getNickName());
+        return msgLetter;
     }
 
     /**
@@ -100,6 +107,64 @@ public class MsgLetterServiceImpl implements IMsgLetterService {
     @Override
     public int deleteMsgLetterById(Long id) {
         return msgLetterMapper.deleteMsgLetterById(id);
+    }
+
+    /**
+     * 查询消息摘要列表
+     * @param msgLetter
+     * @return
+     */
+    @Override
+    public List<MsgLetter> selectLetterDigest(MsgLetter msgLetter) {
+        Long userId = SecurityUtils.getUserId();
+        List<MsgLetter> msgList = msgLetterMapper.selectLetterDigestUser(msgLetter);
+        // 获取到所有有消息的用户
+        List<Long> userIdList = new ArrayList<>();
+        for (MsgLetter msg : msgList) {
+            if (userId.equals(msg.getSendUserId())) {
+                if (!userIdList.contains(msg.getReceiveUserId())) {
+                    userIdList.add(msg.getReceiveUserId());
+                }
+            } else if (userId.equals(msg.getReceiveUserId())) {
+                if (!userIdList.contains(msg.getSendUserId())) {
+                    userIdList.add(msg.getSendUserId());
+                }
+            }
+        }
+        // 根据用户单独查询最新的一条消息和未读数目
+        List<MsgLetter> list = new ArrayList<>();
+        for (Long rId : userIdList) {
+            // 用户信息展示在receive处,选出的receiveId不是真实的交流的用户，有可能是自己
+            MsgLetter last = msgLetterMapper.selectLastMsg(userId, rId);
+            SysUser user = userMapper.selectUserById(rId);
+            last.setReceiveUserId(rId);
+            last.setReceiveUserAvatar(user.getAvatar());
+            last.setReceiveUserNickName(user.getNickName());
+            MsgLetter notRead = msgLetterMapper.selectNotReadNum(rId, userId);
+            last.setNotReadNum(notRead == null ? 0 : notRead.getNotReadNum());
+            list.add(last);
+        }
+        return list;
+    }
+
+    /**
+     * 查询消息内容
+     * @param msgLetter
+     * @return
+     */
+    @Override
+    public List<MsgLetter> selectLetterContent(MsgLetter msgLetter) {
+        return msgLetterMapper.selectLetterContent(msgLetter);
+    }
+
+    /**
+     * 设置已读
+     * @param msgLetter
+     * @return
+     */
+    @Override
+    public int readMsgLetter(MsgLetter msgLetter) {
+        return msgLetterMapper.readMsgLetter(msgLetter);
     }
 
     /**

@@ -30,7 +30,9 @@ import {
 import {
 	selectDictLabel,
 	formatDate,
-	formatTime
+	formatTime,
+	formatMsgTime,
+	formatMsgIndexTime
 } from './utils/index.js'
 
 // 全局方法挂载
@@ -38,6 +40,8 @@ Vue.prototype.getDicts = getDicts
 Vue.prototype.selectDictLabel = selectDictLabel
 Vue.prototype.formatDate = formatDate
 Vue.prototype.formatTime = formatTime
+Vue.prototype.formatMsgTime = formatMsgTime
+Vue.prototype.formatMsgIndexTime = formatMsgIndexTime
 
 // 使用toast进行消息反馈
 Vue.prototype.msgInfo = (msg) => {

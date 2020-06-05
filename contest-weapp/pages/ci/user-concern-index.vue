@@ -125,7 +125,10 @@
 				})
 			},
 			cancelConcern(userId) {
-				
+				delConcernUser(userId).then(res => {
+					this.msgSuccess('取关成功')
+					this.reload()
+				})
 			},
 			goToCompInfo(id) {
 				uni.navigateTo({

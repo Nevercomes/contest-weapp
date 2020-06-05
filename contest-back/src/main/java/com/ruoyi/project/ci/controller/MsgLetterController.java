@@ -1,6 +1,9 @@
 package com.ruoyi.project.ci.controller;
 
 import java.util.List;
+
+import com.ruoyi.common.utils.SecurityUtils;
+import org.apache.catalina.security.SecurityUtil;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +47,31 @@ public class MsgLetterController extends BaseController {
     }
 
     /**
+     * 查询私信管理列表
+     */
+    @PreAuthorize("@ss.hasPermi('ci:letter:list')")
+    @GetMapping("/list/digest")
+    public TableDataInfo listDigest(MsgLetter msgLetter) {
+        msgLetter.setSendUserId(SecurityUtils.getUserId());
+        startPage();
+        List<MsgLetter> list = msgLetterService.selectLetterDigest(msgLetter);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询聊天内容
+     * @return
+     */
+    @PreAuthorize("@ss.hasPermi('ci:letter:list')")
+    @GetMapping("/list/content")
+    public TableDataInfo listContent(MsgLetter msgLetter) {
+        startPage();
+        msgLetter.setSendUserId(SecurityUtils.getUserId());
+        List<MsgLetter> list = msgLetterService.selectLetterContent(msgLetter);
+        return getDataTable(list);
+    }
+
+    /**
      * 导出私信管理列表
      */
     @PreAuthorize("@ss.hasPermi('ci:letter:export')")
@@ -80,7 +108,8 @@ public class MsgLetterController extends BaseController {
     @Log(title = "私信管理", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody MsgLetter msgLetter) {
-        return toAjax(msgLetterService.insertMsgLetter(msgLetter));
+        msgLetter.setSendUserId(SecurityUtils.getUserId());
+        return AjaxResult.success(msgLetterService.insertMsgLetter(msgLetter));
     }
 
     /**
@@ -94,11 +123,23 @@ public class MsgLetterController extends BaseController {
     }
 
     /**
+     * 设置已读
+     */
+    @PreAuthorize("@ss.hasPermi('ci:letter:edit')")
+    @Log(title = "私信管理", businessType = BusinessType.UPDATE)
+    @PutMapping("/read")
+    public AjaxResult read(@RequestBody MsgLetter msgLetter) {
+        msgLetter.setReceiveUserId(SecurityUtils.getUserId());
+        msgLetterService.readMsgLetter(msgLetter);
+        return AjaxResult.success();
+    }
+
+    /**
      * 删除私信管理
      */
     @PreAuthorize("@ss.hasPermi('ci:letter:remove')")
     @Log(title = "私信管理", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
+    @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids) {
         return toAjax(msgLetterService.deleteMsgLetterByIds(ids));
     }

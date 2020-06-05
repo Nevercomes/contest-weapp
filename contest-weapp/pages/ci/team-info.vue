@@ -154,7 +154,7 @@
 			// 跳转到用户展示界面
 			goToUserShowPage(userId) {
 				uni.navigateTo({
-					url: 'user-show-index'
+					url: 'user-show-index?userId=' + userId
 				})
 			},
 			// 跳转到member表单

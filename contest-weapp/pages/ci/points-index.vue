@@ -1,7 +1,7 @@
 <template>
 	<van-cell-group>
 		<van-cell title="积分账单" center is-link :url="cellUrl.actionList"></van-cell>
-		<van-cell title="积分商城" center is-link :url="cellUrl.shop"></van-cell>
+		<van-cell title="积分商城" center is-link @click="onShopClick"></van-cell>
 		<van-cell title="积分获取" center is-link :url="cellUrl.manual"></van-cell>
 	</van-cell-group>
 </template>
@@ -22,7 +22,9 @@
 	
 		},
 		methods: {
-	
+			onShopClick() {
+				this.msgInfo('即将到来')
+			}
 		}
 	}
 </script>

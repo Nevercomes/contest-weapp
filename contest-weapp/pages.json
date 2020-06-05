@@ -139,13 +139,25 @@
 		},
 		{
 			"path": "pages/ci/competition-comment",
-			"style": {}
+			"style": {
+				"navigationBarTitleText":"消息列表"
+			}
 		},
+		
 
 		// 消息相关
 		{
 			"path": "pages/ci/message-index",
-			"style": {}
+			"style": {
+				"navigationBarTitleText":"我的消息",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path":"pages/ci/message-window",
+			"style": {
+				"navigationBarTitleText":"消息"
+			}
 		},
 
 		// 动态相关
@@ -332,6 +344,12 @@
 				"navigationBarTitleText":"加入申请"
 			}
 		},
+		{
+			"path": "pages/ci/team-apply-form",
+			"style": {
+				"navigationBarTitleText":"加入申请"
+			}
+		},
 
 		// 搜索
 		{
@@ -383,8 +401,10 @@
 			}
 		},
 		{
-			"path": "pages/ci/sys-help-feedback",
-			"style": {}
+			"path": "pages/ci/user-manual-index",
+			"style": {
+				"navigationBarTitleText":"帮助文档"
+			}
 		}
 
 	],
@@ -533,6 +553,16 @@
 				"name":"userShowIndex",
 				"path":"pages/ci/user-show-index",
 				"query":"userId=103"
+			},
+			{
+				"name":"messageWindow",
+				"path":"pages/ci/message-window",
+				"query":"userId=109"
+			},
+			{
+				"name":"messageIndex",
+				"path":"pages/ci/message-index",
+				"query":""
 			}
 			
 		]

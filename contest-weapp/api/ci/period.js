@@ -10,7 +10,7 @@ export function listPeriod(query) {
 }
 
 // 查询用户关注的竞赛
-export function listConcernPeriod() {
+export function listConcernPeriod(query) {
   return http.request({
     url: '/ci/period/list/concern',
     method: 'get',

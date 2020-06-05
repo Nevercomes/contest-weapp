@@ -3,6 +3,7 @@ package com.ruoyi.project.ci.mapper;
 import java.util.List;
 import java.util.Map;
 import com.ruoyi.project.ci.domain.MsgLetter;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 私信管理Mapper接口
@@ -65,4 +66,41 @@ public interface MsgLetterMapper {
      * @return 结果
      */
     int deleteMsgLetterByIds(Long[] ids);
+
+    /**
+     * 查询消息摘要列表用户
+     * @param msgLetter
+     * @return
+     */
+    List<MsgLetter> selectLetterDigestUser(MsgLetter msgLetter);
+
+    /**
+     * 查询最新的消息
+     * @param sendUserId
+     * @param receiveUserId
+     * @return
+     */
+    MsgLetter selectLastMsg(@Param("sendUserId") Long sendUserId, @Param("receiveUserId") Long receiveUserId);
+
+    /**
+     * 查询用户的未读消息
+     * @param sendUserId
+     * @param receiveUserId
+     * @return
+     */
+    MsgLetter selectNotReadNum(@Param("sendUserId") Long sendUserId, @Param("receiveUserId") Long receiveUserId);
+
+    /**
+     * 查询消息内容
+     * @param msgLetter
+     * @return
+     */
+    List<MsgLetter> selectLetterContent(MsgLetter msgLetter);
+
+    /**
+     * 设置已读
+     * @param msgLetter
+     * @return
+     */
+    int readMsgLetter(MsgLetter msgLetter);
 }

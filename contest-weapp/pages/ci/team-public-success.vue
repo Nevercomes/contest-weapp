@@ -12,7 +12,7 @@
 		<nl-success :icon="false" msg="队伍创建成功!"></nl-success>
 		
 		<view class="cu-list grid col-2 no-border margin">
-			<view class="cu-item" v-for="(item,index) in expectList" :key="index" @click="goToUserShowPage(item.userId)">
+			<view class="cu-item" v-for="(item,index) in expectList" :key="index" @click="goToUserShowPage(item.createUser.userId)">
 				<image class="cu-avatar round xl bg-white " :src="item.createUser.avatar ? item.createUser.avatar : dfUserAvatar"></image>
 				<text class="text-gray padding-tb-xs">{{item.createUser.nickName}}</text>
 				<text class="text-gray text-sm">{{item.capability}}</text>

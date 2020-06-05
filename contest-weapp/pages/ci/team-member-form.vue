@@ -13,15 +13,15 @@
 					<input v-model="form.workLabel" name="workLabel" disabled placeholder="请选择分工" />
 				</picker>
 			</view>
-			<view class="cu-form-group">
+			<view class="form-group-capcity solid-top">
 				<view class="title">能力期望</view>
-				<view v-for="(item,index) in capabilityList" :key="index" class='cu-tag round' @click="onNotSelectClick(item)">{{item}}</view>
+				<view v-for="(item,index) in capabilityList" :key="index" class='cu-tag radius' @click="onNotSelectClick(item)">{{item}}</view>
 			</view>
 		</form>
 
 		<!-- 默认的能力选择label -->
-		<view class="box bg-white padding-top-xs" style="height: 130upx;">
-			<view v-for="(item,index) in capabilityLabelOptions" :key="index" class='cu-tag round' @click="onSelectClick(item)">{{item}}</view>
+		<view class="box bg-white padding solid-top">
+			<view v-for="(item,index) in capabilityLabelOptions" :key="index" class='cu-tag round margin-xs' @click="onSelectClick(item)">{{item}}</view>
 		</view>
 
 		<view class="padding flex flex-direction">

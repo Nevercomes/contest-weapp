@@ -33,7 +33,7 @@
 </template>
 
 <script>
-	import avatar from '@/components/yq-avatar/yq-avatar.vue'
+	// import avatar from '@/components/yq-avatar/yq-avatar.vue'
 	import kpsImageCutter from '@/components/ksp-image-cutter/ksp-image-cutter.vue'
 	import {
 		getUserProfile,
@@ -44,7 +44,7 @@
 	export default {
 		name: 'UserProfile',
 		components: {
-			avatar,
+			// avatar,
 			kpsImageCutter
 		},
 		data() {

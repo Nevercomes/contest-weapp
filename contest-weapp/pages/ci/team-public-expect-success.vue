@@ -58,7 +58,6 @@
 						this.hasMoreData = this.hasMore(res.total, this.queryParams.pageNum, this.queryParams.pageSize)
 						this.dataList = this.dataList.concat(res.rows)
 						this.teamList = this.getRandomArrayElements(this.dataList, 4)
-						console.log(this.teamList)
 					})
 				}
 			},

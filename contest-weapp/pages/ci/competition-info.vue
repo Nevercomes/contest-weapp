@@ -16,7 +16,7 @@
 					</view>
 					<view class="text-bold text-lg padding-tb-sm">{{period.name}}</view>
 					<view class="padding-tb-sm"><text class="text-grey margin-right">官网链接</text>
-						<text class="text-blue" style="text-decoration: underline;">{{period.details.offcialLink}}</text></view>
+						<text class="text-blue" style="text-decoration: underline; word-break: break-all;">{{period.details.officialLink}}</text></view>
 					<view class="padding-tb-sm"><text class="text-grey margin-right">报名时间</text>
 						{{formatDate(period.signBeginTime)}} —— {{formatDate(period.signEndTime)}}</view>
 					<view class="padding-tb-sm">
@@ -33,9 +33,10 @@
 						<text>竞赛简介</text>
 					</view>
 				</view>
-				<view class="padding">
+				<view class="padding margin-bottom-xxl">
+					<rich-text :nodes="period.details.content"></rich-text>
 					<!-- {{period.details.content}} -->
-					TODO 富文本显示竞赛介绍
+					<!-- TODO 富文本显示竞赛介绍 -->
 				</view>
 			</view>
 		</view>
@@ -137,7 +138,7 @@
 			},
 			onTeamClick() {
 				uni.navigateTo({
-					url: 'team-list-competition?cpId=' + this.id
+					url: './team-list?cpId=' + this.id
 				})
 			},
 			// 跳转到关于该竞赛的动态页面
@@ -180,4 +181,9 @@
 	.cu-card .cu-item .image image {
 		height: 100%;
 	}
+	
+	.margin-bottom-xxl {
+		margin-bottom: 70upx;
+	}
+	
 </style>
