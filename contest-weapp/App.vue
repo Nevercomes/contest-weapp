@@ -32,7 +32,7 @@
 			uni.removeStorage('try-login-times')
 			// 启动时获取用户信息
 			this.$store.dispatch('GetInfo').then(res => {
-				
+				console.log('我是为了软件配置管理的实验才被打印出来的')
 			}).catch(res => {
 				this.$store.dispatch('GetInfo')
 			})
