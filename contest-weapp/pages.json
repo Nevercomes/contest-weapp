@@ -169,6 +169,12 @@
 			"path": "pages/ci/news-competition",
 			"style": {}
 		},
+		{
+			"path":"pages/ci/news-public-form",
+			"style": {
+				"navigationBarTitleText":"发布动态"
+			}
+		},
 
 		// 用户相关
 		{
@@ -562,6 +568,11 @@
 			{
 				"name":"messageIndex",
 				"path":"pages/ci/message-index",
+				"query":""
+			},
+			{
+				"name":"PostPublic",
+				"path":"pages/ci/news-public-form",
 				"query":""
 			}
 			

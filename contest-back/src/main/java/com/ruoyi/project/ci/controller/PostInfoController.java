@@ -80,7 +80,8 @@ public class PostInfoController extends BaseController {
     @Log(title = "帖子信息", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody PostInfo postInfo) {
-        return toAjax(postInfoService.insertPostInfo(postInfo));
+        postInfo = postInfoService.insertPostInfo(postInfo);
+        return AjaxResult.success(postInfo);
     }
 
     /**
@@ -90,7 +91,8 @@ public class PostInfoController extends BaseController {
     @Log(title = "帖子信息", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody PostInfo postInfo) {
-        return toAjax(postInfoService.updatePostInfo(postInfo));
+        postInfo = postInfoService.updatePostInfo(postInfo);
+        return AjaxResult.success(postInfo);
     }
 
     /**

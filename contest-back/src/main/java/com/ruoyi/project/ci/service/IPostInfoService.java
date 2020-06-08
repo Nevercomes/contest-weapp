@@ -40,7 +40,7 @@ public interface IPostInfoService {
      * @param postInfo 帖子信息
      * @return 结果
      */
-    int insertPostInfo(PostInfo postInfo);
+    PostInfo insertPostInfo(PostInfo postInfo);
 
     /**
      * 修改帖子信息
@@ -48,7 +48,7 @@ public interface IPostInfoService {
      * @param postInfo 帖子信息
      * @return 结果
      */
-    int updatePostInfo(PostInfo postInfo);
+    PostInfo updatePostInfo(PostInfo postInfo);
 
     /**
      * 批量删除帖子信息

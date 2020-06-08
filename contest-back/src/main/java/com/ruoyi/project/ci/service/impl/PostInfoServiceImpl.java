@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.project.ci.domain.PostContent;
+import com.ruoyi.project.ci.mapper.PostContentMapper;
 import com.ruoyi.project.system.mapper.SysUserMapper;
 import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ public class PostInfoServiceImpl implements IPostInfoService {
     private PostInfoMapper postInfoMapper;
     @Autowired
     private SysUserMapper userMapper;
+    @Autowired
+    private PostContentMapper postContentMapper;
 
     /**
      * 查询帖子信息
@@ -71,9 +75,15 @@ public class PostInfoServiceImpl implements IPostInfoService {
      * @return 结果
      */
     @Override
-    public int insertPostInfo(PostInfo postInfo) {
+    public PostInfo insertPostInfo(PostInfo postInfo) {
         postInfo.preInsert();
-        return postInfoMapper.insertPostInfo(postInfo);
+        int res =  postInfoMapper.insertPostInfo(postInfo);
+        // 同时插入内容
+        PostContent postContent = new PostContent();
+        postContent.setPostId(postInfo.getId());
+        postContent.setContent(postInfo.getContent());
+        postContentMapper.insertPostContent(postContent);
+        return postInfo;
     }
 
     /**
@@ -83,9 +93,14 @@ public class PostInfoServiceImpl implements IPostInfoService {
      * @return 结果
      */
     @Override
-    public int updatePostInfo(PostInfo postInfo) {
+    public PostInfo updatePostInfo(PostInfo postInfo) {
         postInfo.preUpdate();
-        return postInfoMapper.updatePostInfo(postInfo);
+        int res =  postInfoMapper.updatePostInfo(postInfo);
+        PostContent postContent = new PostContent();
+        postContent.setPostId(postInfo.getId());
+        postContent.setContent(postInfo.getContent());
+        postContentMapper.updatePostContent(postContent);
+        return postInfo;
     }
 
     /**
