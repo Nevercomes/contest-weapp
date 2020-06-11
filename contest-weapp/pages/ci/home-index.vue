@@ -9,9 +9,9 @@
 		<!-- swipe部分 -->
 		<swiper class="screen-swiper square-dot" :indicator-dots="true" :circular="true" :autoplay="true" interval="5000"
 		 duration="500">
-			<swiper-item v-for="(item,index) in swiperList" :key="index">
-				<image :src="item.url" mode="aspectFill" v-if="item.type=='image'"></image>
-				<video :src="item.url" autoplay loop muted :show-play-btn="false" :controls="false" objectFit="cover" v-if="item.type=='video'"></video>
+			<swiper-item v-for="(item,index) in swiperList" :key="index" @click="onSwiperClick(item)">
+				<image :src="item.picUrl" mode="aspectFill"></image>
+				<!-- <video :src="item.picUrl" autoplay loop muted :show-play-btn="false" :controls="false" objectFit="cover" v-if="item.type=='video'"></video> -->
 			</swiper-item>
 		</swiper>
 		<!-- 主界面操作组 -->
@@ -33,22 +33,45 @@
 			</view>
 		</view>
 		<view class="content-container content-flex">
-			<view v-for="(item, index) in compList" :key="index" class="item-2 margin-bottom" @click="goToCompInfoPage">
+			<view v-for="(item, index) in compList" :key="index" class="item-2 margin-bottom" @click="goToCompInfoPage(item.cpId)">
 				<image style="width: 100%;  height: 300upx;" :src="item.picUrl"></image>
-				<view class="text-sm">{{item.name}}</view>
+				<view class="text-sm">{{item.cpName}}</view>
 			</view>
 		</view>
 
-		<view class="cu-bar bg-white margin-top">
+		<view class="cu-bar bg-white">
 			<view class="action">
 				<text class="cuIcon-title text-green"></text>
 				<text class="text-lg text-bold">动态推荐</text>
 			</view>
 		</view>
-		<view class="content-container content-flex">
-
+		<view class="cu-list">
+			<view class="cu-item post-card padding-sm bg-white shadow-blur margin-bottom-sm" @click="goToPostPage(item.id)" v-for="(item,index) in newsList"
+			 :key="index">
+				<view class="text-bold text-df padding-tb-xs">{{item.name}}</view>
+				<!-- 作者信息 -->
+				<view class="flex align-center">
+					<image class="cu-avatar round sm margin-right" :src="item.createUser.avatar"></image>
+					<text class="text-gray text-sm text-bold margin-right">{{item.createUser.nickName}}</text>
+					<text class="text-grey text-sm">{{item.createUser.schoolName}}</text>
+				</view>
+				<!-- 竞赛 -->
+				<view class="text-grey text-sm padding-tb-xs">{{item.cpName}}</view>
+				<!-- 内容摘要 -->
+				<view class="flex padding-tb-xs" style="height: 4.5em; position: relative;">
+					<view style="line-height: 1.5em; position: relative;" class="flex-sub text-cut-3 text-sm">{{item.summary}}</view>
+					<view v-if="item.coverUrl">
+						<image style="height: 4em; max-width: 170upx; margin-left: 10upx; border-radius: 5px" :src="item.coverUrl" mode="aspectFit"></image>
+					</view>
+				</view>
+				<!-- 浏览信息 -->
+				<view class="padding-tb-xs">
+					<text class="text-gray text-sm margin-right-xs">浏览 {{item.viewNum}}</text>
+					<text class="text-gray text-sm margin-right-xs">点赞 {{item.likeNum}}</text>
+					<text class="text-gray text-sm">收藏 {{item.collectNum}}</text>
+				</view>
+			</view>
 		</view>
-
 	</view>
 </template>
 
@@ -56,6 +79,15 @@
 	import {
 		getRecommendComp
 	} from '@/api/ci/period.js'
+	import {
+		listSwiper
+	} from '@/api/ci/swiper.js'
+	import {
+		listRecoComp
+	} from '@/api/ci/recoComp.js'
+	import {
+		listPostInfo
+	} from '@/api/ci/postInfo.js'
 
 	export default {
 		name: "HomeIndex",
@@ -66,35 +98,7 @@
 
 				// 轮播参数
 				cardCur: 0,
-				swiperList: [{
-					id: 0,
-					type: 'image',
-					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big84000.jpg'
-				}, {
-					id: 1,
-					type: 'image',
-					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big37006.jpg',
-				}, {
-					id: 2,
-					type: 'image',
-					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big39000.jpg'
-				}, {
-					id: 3,
-					type: 'image',
-					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg'
-				}, {
-					id: 4,
-					type: 'image',
-					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg'
-				}, {
-					id: 5,
-					type: 'image',
-					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big21016.jpg'
-				}, {
-					id: 6,
-					type: 'image',
-					url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg'
-				}],
+				swiperList: [],
 				cuIconList: [{
 					cuIcon: 'discoverfill',
 					color: 'purple',
@@ -119,41 +123,11 @@
 					badge: 0,
 					name: '图书',
 					url: undefined
-				}, {
-					cuIcon: 'upstagefill',
-					color: 'cyan',
-					badge: 0,
-					name: '排行榜'
-				}, {
-					cuIcon: 'clothesfill',
-					color: 'blue',
-					badge: 0,
-					name: '皮肤'
-				}, {
-					cuIcon: 'discoverfill',
-					color: 'purple',
-					badge: 0,
-					name: '发现'
-				}, {
-					cuIcon: 'questionfill',
-					color: 'mauve',
-					badge: 0,
-					name: '帮助'
-				}, {
-					cuIcon: 'commandfill',
-					color: 'purple',
-					badge: 0,
-					name: '问答'
-				}, {
-					cuIcon: 'brandfill',
-					color: 'mauve',
-					badge: 0,
-					name: '版权'
 				}],
 				dotStyle: false,
 				// 竞赛推荐list
 				compList: [],
-				// 动态推俄舰list
+				// 动态推荐list
 				newsList: []
 
 			}
@@ -167,16 +141,48 @@
 						url: './a_welcome'
 					})
 				} else {
-					getRecommendComp({
+					listRecoComp({
+						pageNum: 1,
+						pageSize: 10
+					}).then(res => {
+						this.compList = this.getRandomArrayElements(res.rows, 4)
+					})
+					// 加载首页推荐
+					listSwiper().then(res => {
+						this.swiperList = res.rows
+					})
+					listPostInfo({
 						pageNum: 1,
 						pageSize: 30
 					}).then(res => {
-						this.compList = res.data
+						this.newsList = this.getRandomArrayElements(res.rows, 4)
 					})
 				}
 			})
 		},
 		methods: {
+			onSwiperClick(item) {
+				const type = item.type
+				switch (type) {
+					// 竞赛类型
+					case '1':
+						uni.navigateTo({
+							url: 'competition-info?id=' + item.cpId
+						})
+						break;
+						// 帖子类型
+					case '2':
+						uni.navigateTo({
+							url: 'news-info?id=' + item.postId
+						})
+						break;
+					case '3':
+						// 外部连接
+						break;
+					default:
+						break;
+				}
+			},
 			// 当搜索框聚焦的时候跳转到搜索界面
 			goToSearchPage() {
 				uni.navigateTo({
@@ -203,16 +209,28 @@
 					url: 'competition-info?id=' + id
 				})
 			},
-			goToRecommendPage(url) {
-				this.msgInfo('跳转到指定页面')
-				// uni.navigateTo({
-				// 	url: url
-				// })
+			goToPostPage(id) {
+				uni.navigateTo({
+					url: 'news-info?id=' + id
+				})
 			},
 			// 样式相关
 			cardSwiper(e) {
 				this.cardCur = e.detail.current
 			},
+			getRandomArrayElements(arr, count) {
+				var shuffled = arr.slice(0),
+					i = arr.length,
+					min = i >= count ? i - count : 0,
+					temp, index;
+				while (i-- > min) {
+					index = Math.floor((i + 1) * Math.random());
+					temp = shuffled[index];
+					shuffled[index] = shuffled[i];
+					shuffled[i] = temp;
+				}
+				return shuffled.slice(min);
+			}
 
 		}
 	}

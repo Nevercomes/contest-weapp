@@ -32,7 +32,7 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="编号" align="center" prop="id" />
       <el-table-column label="图片Url" align="center" prop="picUrl" show-overflow-tooltip />
-      <el-table-column label="跳转地址" align="center" prop="link" show-overflow-tooltip />
+      <el-table-column label="外部链接" align="center" prop="link" show-overflow-tooltip />
       <el-table-column label="推荐类型" align="center" prop="type" :formatter="typeFormat" />
       <el-table-column label="排序" align="center" prop="orderNum" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -62,8 +62,18 @@
             <el-option v-for="dict in typeOptions" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="跳转地址" prop="link">
-          <el-input v-model="form.link" placeholder="请输入跳转地址" />
+        <el-form-item label="竞赛" prop="cpId">
+          <el-select v-model="form.cpId" placeholder="请选择竞赛" filterable clearable size="small">
+            <el-option v-for="item in cpOptions" :label="item.label" :value="item.value" :key="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="帖子" prop="postId">
+          <el-select v-model="form.postId" placeholder="请选择帖子" filterable clearable size="small">
+            <el-option v-for="item in postOptions" :label="item.label" :value="item.value" :key="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="外部链接" prop="link">
+          <el-input v-model="form.link" placeholder="请输入外部链接" />
         </el-form-item>
         <el-form-item label="显示排序" prop="orderNum">
           <el-input-number v-model="form.orderNum" controls-position="right" :min="0" />
@@ -89,6 +99,12 @@
   import {
     getToken
   } from "@/utils/auth";
+  import {
+    getPeriodOptions
+  } from '@/api/ci/period.js'
+  import {
+    getPostInfoOptions
+  } from '@/api/ci/postInfo.js'
 
   export default {
     name: "Swiper",
@@ -135,6 +151,10 @@
             Authorization: "Bearer " + getToken()
           },
         },
+        // 竞赛选项
+        cpOptions: [],
+        // 帖子选项
+        postOptions: []
       };
     },
     created() {
@@ -142,6 +162,13 @@
       this.getDicts("ci_recommend_type").then(response => {
         this.typeOptions = response.data;
       });
+      getPostInfoOptions().then(res => {
+        this.postOptions = res.data
+      })
+      getPeriodOptions().then(res => {
+        this.cpOptions = res.data
+      })
+
     },
     methods: {
       /** 查询首页推荐列表 */
@@ -173,7 +200,9 @@
           picUrl: undefined,
           link: undefined,
           type: undefined,
-          orderNum: undefined
+          orderNum: undefined,
+          cpId: undefined,
+          postId: undefined
         };
         this.resetForm("form");
       },
@@ -283,5 +312,5 @@
 </script>
 
 <style scoped="scoped" lang="scss">
-  
+
 </style>

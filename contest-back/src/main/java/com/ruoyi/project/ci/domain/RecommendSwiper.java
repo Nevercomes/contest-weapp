@@ -27,6 +27,16 @@ public class RecommendSwiper extends BaseEntity {
     @Excel(name = "跳转地址")
     private String link;
 
+    /**
+     * 关联竞赛
+     */
+    private Long cpId;
+
+    /**
+     * 关联帖子
+     */
+    private Long postId;
+
     /** 推荐类型 */
     @Excel(name = "推荐类型")
     private String type;

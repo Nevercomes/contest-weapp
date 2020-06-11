@@ -149,7 +149,7 @@ public class PostInfoServiceImpl implements IPostInfoService {
 
     @Override
     public List<PostInfo> selectPostInfoCollection(PostInfo postInfo) {
-        List<PostInfo> list = postInfoMapper.selectPostInfoCollection(postInfo)
+        List<PostInfo> list = postInfoMapper.selectPostInfoCollection(postInfo);
         for (PostInfo info : list) {
             setCreated(info);
         }

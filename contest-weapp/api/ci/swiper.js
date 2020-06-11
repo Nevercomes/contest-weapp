@@ -1,8 +1,8 @@
-import request from '@/utils/request'
+import http from '@/utils/request'
 
 // 查询首页推荐列表
 export function listSwiper(query) {
-  return request({
+  return http.request({
     url: '/ci/swiper/list',
     method: 'get',
     params: query
@@ -11,14 +11,14 @@ export function listSwiper(query) {
 
 // 查询首页推荐详细
 export function getSwiper(id) {
-  return request({
+  return http.request({
     url: '/ci/swiper/' + id,
     method: 'get'
   })
 }
 
 export function getSwiperOptions(label) {
-    return request({
+    return http.request({
         url: '/ci/swiper/options',
         method: 'get',
         params: {
@@ -29,7 +29,7 @@ export function getSwiperOptions(label) {
 
 // 新增首页推荐
 export function addSwiper(data) {
-  return request({
+  return http.request({
     url: '/ci/swiper',
     method: 'post',
     data: data
@@ -38,7 +38,7 @@ export function addSwiper(data) {
 
 // 修改首页推荐
 export function updateSwiper(data) {
-  return request({
+  return http.request({
     url: '/ci/swiper',
     method: 'put',
     data: data
@@ -47,7 +47,7 @@ export function updateSwiper(data) {
 
 // 删除首页推荐
 export function delSwiper(id) {
-  return request({
+  return http.request({
     url: '/ci/swiper/' + id,
     method: 'delete'
   })
@@ -55,7 +55,7 @@ export function delSwiper(id) {
 
 // 导出首页推荐
 export function exportSwiper(query) {
-  return request({
+  return http.request({
     url: '/ci/swiper/export',
     method: 'get',
     params: query

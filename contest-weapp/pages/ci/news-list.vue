@@ -99,8 +99,5 @@
 </script>
 
 <style scoped lang="scss">
-	.cu-avatar.xxs {
-		width: 32upx;
-		height: 32upx;
-	}
+
 </style>

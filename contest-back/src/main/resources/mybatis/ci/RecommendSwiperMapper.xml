@@ -13,6 +13,8 @@
         <result property="picUrl" column="pic_url"/>
         <result property="link" column="link"/>
         <result property="type" column="type"/>
+        <result property="cpId" column="cp_id"/>
+        <result property="postId" column="post_id"/>
         <result property="orderNum" column="order_num"/>
     </resultMap>
 
@@ -25,6 +27,8 @@
                pic_url,
                link,
                type,
+               cp_id,
+               post_id,
                order_num
         from ci_recommend_swiper
     </sql>
@@ -62,6 +66,8 @@
             <if test="link != null  and link != ''">link,</if>
             <if test="type != null  and type != ''">type,</if>
             <if test="orderNum != null ">order_num,</if>
+            <if test="postId != null ">post_id,</if>
+            <if test="cpId != null ">cp_id,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="createBy != null  and createBy != ''">#{createBy},</if>
@@ -72,6 +78,8 @@
             <if test="link != null  and link != ''">#{link},</if>
             <if test="type != null  and type != ''">#{type},</if>
             <if test="orderNum != null ">#{orderNum},</if>
+            <if test="postId != null ">#{postId},</if>
+            <if test="cpId != null ">#{cpId},</if>
         </trim>
     </insert>
 
@@ -86,6 +94,8 @@
             <if test="link != null  and link != ''">link = #{link},</if>
             <if test="type != null  and type != ''">type = #{type},</if>
             <if test="orderNum != null ">order_num = #{orderNum},</if>
+            <if test="postId != null ">post_id = #{postId},</if>
+            <if test="cpId != null ">cp_id = #{cpId},</if>
         </trim>
         where id = #{id}
     </update>

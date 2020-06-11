@@ -46,6 +46,7 @@ public class SearchIndexController extends BaseController {
         List<CompetitionPeriod> list = competitionPeriodService.selectCompetitionPeriodList(period);
         PostInfo postInfo = new PostInfo();
         postInfo.setName(keyword);
+        postInfo.setStatus(DictConstant.POST_STATUS_PUBLIC);
         List<PostInfo> list1 = postInfoService.selectPostInfoList(postInfo);
         result.put("comp", list);
         result.put("post", list1);
