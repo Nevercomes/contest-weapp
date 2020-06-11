@@ -175,6 +175,13 @@
 				"navigationBarTitleText":"发布动态"
 			}
 		},
+		{
+			"path":"pages/ci/news-info",
+			"style": {
+				"navigationBarTitleText":"文章详情",
+				"backgroundColor":"#FFFFFF"
+			}
+		},
 
 		// 用户相关
 		{
@@ -258,6 +265,19 @@
 		{
 			"path": "pages/ci/user-collection-list",
 			"style": {}
+		},
+		{
+			"path":"pages/ci/user-news-index",
+			"style": {
+				"navigationBarTitleText":"我的动态"
+			}
+		},
+		{
+			"path":"pages/ci/news-list",
+			"style": {
+				"navigationBarTitleText":"我的动态",
+				"enablePullDownRefresh": true
+			}
 		},
 
 
@@ -541,11 +561,6 @@
 				"query": ""
 			},
 			{
-				"name": "userIdentifyForm",
-				"path": "pages/ci/user-identify-form",
-				"query": ""
-			},
-			{
 				"name":"teamIndex",
 				"path":"pages/ci/team-index",
 				"query":""
@@ -561,19 +576,19 @@
 				"query":"userId=103"
 			},
 			{
-				"name":"messageWindow",
-				"path":"pages/ci/message-window",
-				"query":"userId=109"
+				"name":"draftList",
+				"path":"pages/ci/news-list",
+				"query":"type=draft"
 			},
 			{
-				"name":"messageIndex",
-				"path":"pages/ci/message-index",
-				"query":""
-			},
-			{
-				"name":"PostPublic",
+				"name":"postPublic",
 				"path":"pages/ci/news-public-form",
 				"query":""
+			},
+			{
+				"name":"postInfo",
+				"path":"pages/ci/news-info",
+				"query":"id=1"
 			}
 			
 		]

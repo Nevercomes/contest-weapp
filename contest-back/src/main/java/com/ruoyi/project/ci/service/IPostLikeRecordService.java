@@ -40,7 +40,7 @@ public interface IPostLikeRecordService {
      * @param postLikeRecord 帖子点赞记录
      * @return 结果
      */
-    int insertPostLikeRecord(PostLikeRecord postLikeRecord);
+    PostLikeRecord insertPostLikeRecord(PostLikeRecord postLikeRecord);
 
     /**
      * 修改帖子点赞记录

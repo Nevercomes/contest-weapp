@@ -2,6 +2,8 @@ package com.ruoyi.project.system.controller;
 
 import java.io.IOException;
 import java.util.List;
+
+import com.ruoyi.common.constant.OssConstants;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -93,6 +95,26 @@ public class SysOssRecordController extends BaseController {
     @RequestMapping("/upload/recoComp")
     public AjaxResult uploadRecoComp(MultipartFile file) throws IOException {
         return AjaxResult.success("上传成功", sysOssRecordService.uploadRecoComp(file));
+    }
+
+    /**
+     * 上传帖子的封面图片
+     */
+    @PreAuthorize("@ss.hasPermi('oss:upload:post')")
+    @Log(title = "OSS记录-帖子封面", businessType = BusinessType.INSERT)
+    @RequestMapping("/upload/postCover")
+    public AjaxResult uploadPostCover(MultipartFile file) throws IOException {
+        return AjaxResult.success("上传成功", sysOssRecordService.uploadFile(file, "postCover", OssConstants.BUSINESS_TYPE_POST_COVER));
+    }
+
+    /**
+     * 上传帖子的封面图片
+     */
+    @PreAuthorize("@ss.hasPermi('oss:upload:post')")
+    @Log(title = "OSS记录-帖子附件", businessType = BusinessType.INSERT)
+    @RequestMapping("/upload/appendix")
+    public AjaxResult uploadAppendix(MultipartFile file) throws IOException {
+        return AjaxResult.success("上传成功", sysOssRecordService.uploadFile(file, "postAppendix", OssConstants.BUSINESS_TYPE_POST_APPENDIX));
     }
 
 

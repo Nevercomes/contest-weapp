@@ -1,6 +1,9 @@
 package com.ruoyi.project.ci.controller;
 
 import java.util.List;
+
+import com.ruoyi.framework.manager.AsyncManager;
+import com.ruoyi.framework.manager.factory.AsyncFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +42,7 @@ public class PostLikeRecordController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(PostLikeRecord postLikeRecord) {
         startPage();
+        listSelf(postLikeRecord);
         List<PostLikeRecord> list = postLikeRecordService.selectPostLikeRecordList(postLikeRecord);
         return getDataTable(list);
     }
@@ -80,7 +84,10 @@ public class PostLikeRecordController extends BaseController {
     @Log(title = "帖子点赞记录", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody PostLikeRecord postLikeRecord) {
-        return toAjax(postLikeRecordService.insertPostLikeRecord(postLikeRecord));
+        PostLikeRecord res = postLikeRecordService.insertPostLikeRecord(postLikeRecord);
+        // 异步增加点赞数
+        AsyncManager.me().execute(AsyncFactory.recordPostLike(postLikeRecord));
+        return AjaxResult.success(res);
     }
 
     /**

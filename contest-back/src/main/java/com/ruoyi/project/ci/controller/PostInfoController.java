@@ -1,6 +1,11 @@
 package com.ruoyi.project.ci.controller;
 
 import java.util.List;
+
+import com.ruoyi.common.constant.DictConstant;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.framework.manager.AsyncManager;
+import com.ruoyi.framework.manager.factory.AsyncFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +44,48 @@ public class PostInfoController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(PostInfo postInfo) {
         startPage();
+        if (StringUtils.isEmpty(postInfo.getStatus())) {
+            postInfo.setStatus(DictConstant.POST_STATUS_PUBLIC);
+        }
         List<PostInfo> list = postInfoService.selectPostInfoList(postInfo);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询自己的草稿
+     */
+    @PreAuthorize("@ss.hasPermi('ci:postInfo:list')")
+    @GetMapping("/list/draft")
+    public TableDataInfo listDraft(PostInfo postInfo) {
+        startPage();
+        listSelf(postInfo);
+        postInfo.setStatus(DictConstant.POST_STATUS_DRAFT);
+        List<PostInfo> list = postInfoService.selectPostInfoList(postInfo);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询自己发布的内容
+     */
+    @PreAuthorize("@ss.hasPermi('ci:postInfo:list')")
+    @GetMapping("/list/public")
+    public TableDataInfo listPublic(PostInfo postInfo) {
+        startPage();
+        listSelf(postInfo);
+        postInfo.setStatus(DictConstant.POST_STATUS_PUBLIC);
+        List<PostInfo> list = postInfoService.selectPostInfoList(postInfo);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询自己发布的内容
+     */
+    @PreAuthorize("@ss.hasPermi('ci:postInfo:list')")
+    @GetMapping("/list/collection")
+    public TableDataInfo listCollection(PostInfo postInfo) {
+        startPage();
+        listSelf(postInfo);
+        List<PostInfo> list = postInfoService.selectPostInfoCollection(postInfo);
         return getDataTable(list);
     }
 
@@ -61,7 +107,11 @@ public class PostInfoController extends BaseController {
     @PreAuthorize("@ss.hasPermi('ci:postInfo:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id) {
-        return AjaxResult.success(postInfoService.selectPostInfoById(id));
+        PostInfo postInfo = postInfoService.selectPostInfoById(id);
+        if (DictConstant.POST_STATUS_PUBLIC.equals(postInfo.getStatus())) {
+            AsyncManager.me().execute(AsyncFactory.recordPostView(postInfo));
+        }
+        return AjaxResult.success(postInfo);
     }
 
     /**
@@ -82,6 +132,16 @@ public class PostInfoController extends BaseController {
     public AjaxResult add(@RequestBody PostInfo postInfo) {
         postInfo = postInfoService.insertPostInfo(postInfo);
         return AjaxResult.success(postInfo);
+    }
+
+    /**
+     * 发布帖子
+     */
+    @PreAuthorize("@ss.hasPermi('ci:postInfo:add')")
+    @Log(title = "帖子信息", businessType = BusinessType.INSERT)
+    @PutMapping("/public/{postId}")
+    public AjaxResult publicPost(@PathVariable("postId") Long postId) {
+        return toAjax(postInfoService.publicPost(postId));
     }
 
     /**

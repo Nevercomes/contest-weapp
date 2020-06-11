@@ -65,4 +65,46 @@ public interface PostInfoMapper {
      * @return 结果
      */
     int deletePostInfoByIds(Long[] ids);
+
+    /**
+     * 发布帖子
+     * @param postId
+     * @return
+     */
+    int publicPost(Long postId);
+
+    /**
+     * 增加收藏数目
+     * @param postId
+     * @return
+     */
+    int addCollectNum(Long postId);
+
+    /**
+     * 增加点赞数目
+     * @param postId
+     * @return
+     */
+    int addLikeNum(Long postId);
+
+    /**
+     * 增加浏览数目
+     * @param id
+     * @return
+     */
+    int addViewNum(Long id);
+
+    /**
+     * 增加评论数目
+     * @param id
+     * @return
+     */
+    int addCommentNum(Long id);
+
+    /**
+     * 查询收藏的帖子
+     * @param postInfo
+     * @return
+     */
+    List<PostInfo> selectPostInfoCollection(PostInfo postInfo);
 }

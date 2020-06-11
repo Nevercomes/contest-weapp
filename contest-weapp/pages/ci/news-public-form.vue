@@ -12,55 +12,58 @@
 				<input v-model="form.name" name="name" placeholder="请输入标题" confirm-type="next">
 			</view>
 
-			<textarea class="post-content" v-model="form.content" maxlength="-1" placeholder="写下你想说的..." show-confirm-bar></textarea>
+
+			<view class="cu-form-group">
+				<textarea v-model="form.content" maxlength="-1" placeholder="写下你想说的..." show-confirm-bar></textarea>
+			</view>
 
 			<!-- 封面图片 -->
-			<view class="cu-bar bg-white margin-top">
+			<view class="cu-bar bg-white solid-top">
 				<view class="action">
 					文章封面
 				</view>
 			</view>
 			<view class="cu-form-group">
 				<view class="grid col-4 grid-square flex-sub">
-					<view class="bg-img" @tap="ViewImage" :data-url="coverUrl">
-					 <image :src="coverUrl" mode="aspectFill"></image>
+					<view v-if="coverUrl" class="bg-img" @tap="ViewImage" :data-url="coverUrl">
+						<image :src="coverUrl" mode="aspectFill"></image>
 						<view class="cu-tag bg-red" @tap.stop="DelImg" :data-index="index">
 							<text class='cuIcon-close'></text>
 						</view>
 					</view>
-					<view class="solids" @tap="ChooseImage" v-if="!coverUrl">
+					<view v-else class="solids" @tap="ChooseImage">
 						<text class='cuIcon-cameraadd'></text>
 					</view>
 				</view>
 			</view>
-			
-			<view class="cu-bar bg-white margin-top">
+
+			<!-- <view class="cu-bar bg-white ">
 				<view class="action">
 					上传附件（无附件则不上传）
 				</view>
 				<view class="action">
 					{{appendixList.length}}/4
 				</view>
-			</view>
-			<view class="cu-form-group">
-				<!-- <view class="grid col-4 grid-square flex-sub">
+			</view> -->
+			<!-- <view class="cu-form-group">
+				<view class="grid col-4 grid-square flex-sub">
 					<view class="bg-img" v-for="(item,index) in appendixList" :key="index" @tap="ViewImage" :data-url="appendixList[index]">
 					 <image :src="appendixList[index]" mode="aspectFill"></image>
 						<view class="cu-tag bg-red" @tap.stop="DelImg" :data-index="index">
 							<text class='cuIcon-close'></text>
 						</view>
 					</view>
-					<view class="solids" @tap="ChooseImage" v-if="appendixList.length<4">
-						<text class='cuIcon-cameraadd'></text>
+					<view class="solids" @tap="chooseFile" v-if="appendixList.length<4">
+						<text class='cuIcon-upload'></text>
 					</view>
-				</view> -->
-			</view>
+				</view>
+			</view> -->
 
-			<view class="padding flex flex-direction">
-				<button class="cu-btn bg-green margin-tb-sm lg shadow-blur round" @click="onPublicClick">发 布</button>
-			</view>
-			<view class="padding flex flex-direction">
-				<button class="cu-btn bg-green margin-tb-sm lg shadow-blur round" @click="submitForm">保存为草稿</button>
+			<view class="box margin-tb-sm">
+				<view class="cu-bar btn-group">
+					<button class="cu-btn bg-green shadow-blur round lg" @click="onPublicClick">发 布</button>
+					<button class="cu-btn bg-green shadow-blur round lg" @click="submitForm">保存为草稿</button>
+				</view>
 			</view>
 		</form>
 
@@ -75,7 +78,8 @@
 		addPostInfo,
 		updatePostInfo,
 		publicPost,
-		uploadPostCover
+		uploadPostCover,
+		getPostInfo
 	} from '@/api/ci/postInfo.js'
 	import {
 		uploadAppendix
@@ -89,6 +93,10 @@
 				form: {},
 				// 封面图片
 				coverUrl: '',
+				// 附件列表
+				appendixList: [],
+				// 是否需要保存
+				needSave: false,
 				// 校验规则
 				rules: {
 					cpName: {
@@ -117,10 +125,37 @@
 				}
 			}
 		},
+		// watch: {
+		// 	// 监听form的变化
+		// 	form: {
+		// 		handler(newVal, oldVal) {
+		// 			this.needSave = true
+		// 			console.log(newVal)
+		// 		},
+		// 		deep: true,
+		// 		immediate: true
+		// 	}
+		// },
 		onLoad(options) {
 			this.form.id = options.id
 			if (this.form.id)
 				this.getFormData()
+		},
+		onBackPress() {
+			if (this.form.content) {
+				updatePostInfo(self.form).then(res => {
+					self.msgSuccess('已保存为草稿')
+					self.back()
+				}).catch(res => {
+					self.back()
+				})
+			} else {
+				addPostInfo(self.form).then(res => {
+					self.msgSuccess('已保存为草稿')
+				}).catch(res => {
+					self.back()
+				})
+			}
 		},
 		methods: {
 			reset() {
@@ -130,59 +165,64 @@
 					content: undefined
 				}
 			},
+			chooseFile() {
+				let fsm = wx.getFileSystemManager()
+				console.log(fsm)
+
+			},
 			getFormData() {
-				getFunc(this.form.id).then(res => {
+				getPostInfo(this.form.id).then(res => {
 					this.form = res.data
 					this.coverUrl = this.form.coverUrl
 				})
 			},
 			onPublicClick() {
-				if(this.form.id) {
-					publicPost(this.form.id).then(res => {
-						// 跳转到帖子界面
-						this.msgSuccess('发布成功')
-					})
-				} else {
-					addPostInfo(this.form).then(res => {
-						this.loading = false
+				if (this.validForm(this.form)) {
+					if (this.form.id) {
 						publicPost(this.form.id).then(res => {
 							// 跳转到帖子界面
 							this.msgSuccess('发布成功')
 						})
-					}).catch(res => {
-						this.loading = false
-					})
-				}
-			},
-			submitForm(e) {
-				if (this.validForm(this.form)) {
-					// 调用提交方法
-					this.loading = true
-					if (this.form.id) {
-						updatePostInfo(this.form).then(res => {
-							this.loading = false
-							this.msgSuccess('修改成功')
-							this.back()
-						}).catch(res => {
-							this.loading = false
-						})
 					} else {
 						addPostInfo(this.form).then(res => {
 							this.loading = false
-							this.msgSuccess('已保存为草稿')
+							publicPost(this.form.id).then(res => {
+								// 跳转到帖子界面
+								this.msgSuccess('发布成功')
+							})
 						}).catch(res => {
 							this.loading = false
 						})
 					}
 				}
 			},
+			submitForm(e) {
+				// 调用提交方法
+				this.loading = true
+				if (this.form.id) {
+					updatePostInfo(this.form).then(res => {
+						this.loading = false
+						this.needSave = false
+						this.msgSuccess('修改成功')
+						this.back()
+					}).catch(res => {
+						this.loading = false
+					})
+				} else {
+					addPostInfo(this.form).then(res => {
+						this.loading = false
+						this.needSave = false
+						this.msgSuccess('已保存为草稿')
+					}).catch(res => {
+						this.loading = false
+					})
+				}
+			},
 			validForm(params) {
 				let wxValidate = new WxValidate(this.rules, this.messages)
 				if (!wxValidate.checkForm(params)) {
 					const error = wxValidate.errorList[0]
-					uni.showToast({
-						title: error.msg
-					})
+					this.msgInfo(error.msg)
 					return false
 				}
 				return true
@@ -206,7 +246,7 @@
 				let imgList = []
 				imgList.push(this.coverUrl)
 				uni.previewImage({
-					urls: this.imgList,
+					urls: imgList,
 					current: e.currentTarget.dataset.url
 				});
 			},
@@ -214,12 +254,17 @@
 				this.coverUrl = ''
 				this.form.coverUrl = ''
 			},
+			goToCompSelectPage() {
+				uni.navigateTo({
+					url: 'competition-select'
+				})
+			}
 		}
 	}
 </script>
 
 <style>
-	.post-content {
-		height: 400upx;
+	.cu-form-group textarea {
+		height: 600upx;
 	}
 </style>

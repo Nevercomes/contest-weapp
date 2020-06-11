@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.ci.mapper.CollectionContentMapper">
+    
+    <resultMap type="CollectionContent" id="CollectionContentResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="postId"    column="post_id"    />
+        <result property="directoryId"    column="directory_id"    />
+    </resultMap>
+
+    <sql id="selectCollectionContentVo">
+        select id, create_by, create_time, post_id, directory_id from ci_collection_content
+    </sql>
+
+    <select id="selectCollectionContentList" parameterType="CollectionContent" resultMap="CollectionContentResult">
+        <include refid="selectCollectionContentVo"/>
+        <where>  
+            <if test="postId != null "> and post_id = #{postId}</if>
+            <if test="directoryId != null "> and directory_id = #{directoryId}</if>
+            <if test="createBy != null and createBy != ''">and create_by = #{createBy}</if>
+        </where>
+    </select>
+    
+    <select id="selectCollectionContentById" parameterType="Long" resultMap="CollectionContentResult">
+        <include refid="selectCollectionContentVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectCollectionContentOptions" parameterType="CollectionContent" resultType="Map">
+         select id as "value",
+         `name` as "label"
+        from ci_collection_content
+        <if test="name != null and name != ''">
+            where `name` like concat('%', #{name}, '%')
+         </if>
+    </select>
+        
+    <insert id="insertCollectionContent" parameterType="CollectionContent" useGeneratedKeys="true" keyProperty="id">
+        insert into ci_collection_content
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="postId != null ">post_id,</if>
+            <if test="directoryId != null ">directory_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="postId != null ">#{postId},</if>
+            <if test="directoryId != null ">#{directoryId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCollectionContent" parameterType="CollectionContent">
+        update ci_collection_content
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="postId != null ">post_id = #{postId},</if>
+            <if test="directoryId != null ">directory_id = #{directoryId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCollectionContentById" parameterType="Long">
+        delete from ci_collection_content where id = #{id}
+    </delete>
+
+    <delete id="deleteCollectionContentByIds" parameterType="String">
+        delete from ci_collection_content where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

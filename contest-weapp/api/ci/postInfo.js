@@ -1,24 +1,33 @@
-import request from '@/utils/request'
+import http from '@/utils/request'
 
 // 查询帖子信息列表
-export function listPostInfo(query) {
-  return request({
-    url: '/ci/postInfo/list',
+export function listPostInfo(query, type) {
+  return http.request({
+    url: type ? '/ci/postInfo/list/' + type : '/ci/postInfo/list',
     method: 'get',
     params: query
   })
 }
 
+// 查询草稿
+export function listDraft(query) {
+	return http.request({
+		url: '/ci/postInfo/list/draft',
+		method: 'get',
+		params: query
+	})
+}
+
 // 查询帖子信息详细
 export function getPostInfo(id) {
-  return request({
+  return http.request({
     url: '/ci/postInfo/' + id,
     method: 'get'
   })
 }
 
 export function getPostInfoOptions(label) {
-    return request({
+    return http.request({
         url: '/ci/postInfo/options',
         method: 'get',
         params: {
@@ -29,7 +38,7 @@ export function getPostInfoOptions(label) {
 
 // 新增帖子信息
 export function addPostInfo(data) {
-  return request({
+  return http.request({
     url: '/ci/postInfo',
     method: 'post',
     data: data
@@ -38,7 +47,7 @@ export function addPostInfo(data) {
 
 // 修改帖子信息
 export function updatePostInfo(data) {
-  return request({
+  return http.request({
     url: '/ci/postInfo',
     method: 'put',
     data: data
@@ -47,7 +56,7 @@ export function updatePostInfo(data) {
 
 // 发布帖子
 export function publicPost(postId) {
-	return request({
+	return http.request({
 		url: '/ci/postInfo/public/' + postId,
 		method: 'put',
 	})
@@ -55,7 +64,7 @@ export function publicPost(postId) {
 
 // 删除帖子信息
 export function delPostInfo(id) {
-  return request({
+  return http.request({
     url: '/ci/postInfo/' + id,
     method: 'delete'
   })
@@ -63,7 +72,7 @@ export function delPostInfo(id) {
 
 // 导出帖子信息
 export function exportPostInfo(query) {
-  return request({
+  return http.request({
     url: '/ci/postInfo/export',
     method: 'get',
     params: query

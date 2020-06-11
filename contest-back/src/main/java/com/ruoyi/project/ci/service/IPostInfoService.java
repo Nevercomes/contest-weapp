@@ -65,4 +65,18 @@ public interface IPostInfoService {
      * @return 结果
      */
     int deletePostInfoById(Long id);
+
+    /**
+     * 发布帖子
+     * @param postId
+     * @return
+     */
+    int publicPost(Long postId);
+
+    /**
+     * 查询收藏的帖子
+     * @param postInfo
+     * @return
+     */
+    List<PostInfo> selectPostInfoCollection(PostInfo postInfo);
 }

@@ -44,6 +44,25 @@ public class SysOssRecordServiceImpl implements ISysOssRecordService {
     private SysOssRecordMapper sysOssRecordMapper;
 
     /**
+     * 上传文件
+     * @param file 文件
+     * @param filePath 路径
+     * @param businessType 业务类型
+     * @return
+     */
+    @Override
+    public String uploadFile(MultipartFile file, String filePath, String businessType) throws IOException {
+        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+        String uuId = IdUtils.fastSimpleUUID();
+        String fileName = FileUtils.getUUIDFileName(uuId, Objects.requireNonNull(file.getOriginalFilename()));
+        ossClient.putObject(bucketName, filePath + "/" + fileName, new ByteArrayInputStream(file.getBytes()));
+        ossClient.shutdown();
+        String url = "https://" + bucketName + "." + endpoint + "/" + filePath + "/" + fileName;
+        insertUploadRecord(uuId, url, businessType, fileName.substring(fileName.lastIndexOf(".")));
+        return url;
+    }
+
+    /**
      * 上传用户头像
      * @param file 头像
      * @return
@@ -110,7 +129,7 @@ public class SysOssRecordServiceImpl implements ISysOssRecordService {
         ossClient.putObject(bucketName, "recoSwiper/" + fileName, new ByteArrayInputStream(file.getBytes()));
         ossClient.shutdown();
         String url = "https://" + bucketName + "." + endpoint + "/recoSwiper/" + fileName;
-        insertUploadRecord(uuId, url, OssConstants.BUSINESS_TYPE_TEAM, fileName.substring(fileName.lastIndexOf(".")));
+        insertUploadRecord(uuId, url, OssConstants.BUSINESS_TYPE_SWIPER, fileName.substring(fileName.lastIndexOf(".")));
         return url;
     }
 
@@ -127,7 +146,24 @@ public class SysOssRecordServiceImpl implements ISysOssRecordService {
         ossClient.putObject(bucketName, "recoComp/" + fileName, new ByteArrayInputStream(file.getBytes()));
         ossClient.shutdown();
         String url = "https://" + bucketName + "." + endpoint + "/recoComp/" + fileName;
-        insertUploadRecord(uuId, url, OssConstants.BUSINESS_TYPE_TEAM, fileName.substring(fileName.lastIndexOf(".")));
+        insertUploadRecord(uuId, url, OssConstants.BUSINESS_TYPE_RECO_COMP, fileName.substring(fileName.lastIndexOf(".")));
+        return url;
+    }
+
+    /**
+     * 上传帖子封面
+     * @param file
+     * @return
+     */
+    @Override
+    public String uploadPostCover(MultipartFile file) throws IOException {
+        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+        String uuId = IdUtils.fastSimpleUUID();
+        String fileName = FileUtils.getUUIDFileName(uuId, Objects.requireNonNull(file.getOriginalFilename()));
+        ossClient.putObject(bucketName, "postCover/" + fileName, new ByteArrayInputStream(file.getBytes()));
+        ossClient.shutdown();
+        String url = "https://" + bucketName + "." + endpoint + "/postCover/" + fileName;
+        insertUploadRecord(uuId, url, OssConstants.BUSINESS_TYPE_POST_COVER, fileName.substring(fileName.lastIndexOf(".")));
         return url;
     }
 

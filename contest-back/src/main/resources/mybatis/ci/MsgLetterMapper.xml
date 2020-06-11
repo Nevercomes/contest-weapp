@@ -61,7 +61,7 @@
         select id, send_user_id, receive_user_id
         from ci_msg_letter
         where send_user_id = #{sendUserId}
-           or receive_user_id = #{sendUserId}、
+           or receive_user_id = #{sendUserId}
         order by id desc
     </select>
 

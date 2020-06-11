@@ -1,15 +1,15 @@
 package com.ruoyi.framework.manager.factory;
 
+import java.sql.Time;
 import java.util.Date;
+import java.util.Timer;
 import java.util.TimerTask;
 
 import com.ruoyi.framework.security.LoginUser;
-import com.ruoyi.project.ci.domain.CompetitionInfo;
-import com.ruoyi.project.ci.domain.CompetitionPeriod;
-import com.ruoyi.project.ci.domain.SearchRecord;
-import com.ruoyi.project.ci.domain.UserConcernCp;
+import com.ruoyi.project.ci.domain.*;
 import com.ruoyi.project.ci.mapper.CompetitionInfoMapper;
 import com.ruoyi.project.ci.mapper.CompetitionPeriodMapper;
+import com.ruoyi.project.ci.mapper.PostInfoMapper;
 import com.ruoyi.project.ci.mapper.SearchRecordMapper;
 import com.ruoyi.project.ci.service.ISearchRecordService;
 import com.ruoyi.project.system.domain.SysUser;
@@ -26,6 +26,7 @@ import com.ruoyi.project.monitor.domain.SysOperLog;
 import com.ruoyi.project.monitor.service.ISysLogininforService;
 import com.ruoyi.project.monitor.service.ISysOperLogService;
 import eu.bitwalker.useragentutils.UserAgent;
+import org.springframework.data.redis.core.TimeToLive;
 
 /**
  * 异步工厂（产生任务用）
@@ -155,4 +156,65 @@ public class AsyncFactory {
             }
         };
     }
+
+    /**
+     * 记录帖子收藏
+     * @param collectionContent
+     * @return
+     */
+    public static TimerTask recordPostCollect(CollectionContent collectionContent) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                PostInfoMapper infoMapper = SpringUtils.getBean(PostInfoMapper.class);
+                infoMapper.addCollectNum(collectionContent.getPostId());
+            }
+        };
+    }
+
+    /**
+     * 增加帖子点赞
+     * @param postLikeRecord
+     * @return
+     */
+    public static TimerTask recordPostLike(PostLikeRecord postLikeRecord) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                PostInfoMapper infoMapper = SpringUtils.getBean(PostInfoMapper.class);
+                infoMapper.addLikeNum(postLikeRecord.getPostId());
+            }
+        };
+    }
+
+    /**
+     * 记录浏览
+     * @param postInfo
+     * @return
+     */
+    public static TimerTask recordPostView(PostInfo postInfo) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                PostInfoMapper infoMapper = SpringUtils.getBean(PostInfoMapper.class);
+                infoMapper.addViewNum(postInfo.getId());
+            }
+        };
+    }
+
+    /**
+     * 记录评论
+     * @param postComment
+     * @return
+     */
+    public static TimerTask recordPostComment(PostComment postComment) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                PostInfoMapper infoMapper = SpringUtils.getBean(PostInfoMapper.class);
+                infoMapper.addCommentNum(postComment.getPostId());
+            }
+        };
+    }
+
 }

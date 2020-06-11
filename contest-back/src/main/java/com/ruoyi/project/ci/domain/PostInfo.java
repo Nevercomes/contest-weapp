@@ -94,5 +94,15 @@ public class PostInfo extends BaseEntity {
      */
     private String content;
 
+    /**
+     * 当前状态
+     */
+    private String status;
+
+    /**
+     * 帖子封面图片
+     */
+    private String coverUrl;
+
     private SysUser createUser;
 }

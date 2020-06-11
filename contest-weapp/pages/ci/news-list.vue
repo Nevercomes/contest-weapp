@@ -1,13 +1,5 @@
 <template>
-	<div class="app-container">
-		<!-- 搜索部分 -->
-		<van-search :value="keyword" use-action-slot placeholder="请输入搜索关键词" @focus="goToSearchPage">
-			<view style="display: flex; align-items: center;" slot="action" @click="goToPublicPost">
-				<van-icon size="24" name="add"></van-icon>
-			</view>
-		</van-search>
-		
-		<!-- 这里是主要内容 -->
+	<view class="app-container">
 		<view class="cu-list">
 			<view class="cu-item post-card padding-sm bg-white shadow-blur margin-tb-sm" @click="onItemClick(item.id)" v-for="(item,index) in dataList"
 			 :key="index">
@@ -28,43 +20,45 @@
 					</view>
 				</view>
 				<!-- 浏览信息 -->
-				<view class="padding-tb-xs">
+				<view v-if="['collection', 'public'].indexOf(listType) != -1" class="padding-tb-xs">
 					<text class="text-gray text-sm margin-right-xs">浏览 {{item.viewNum}}</text>
 					<text class="text-gray text-sm margin-right-xs">点赞 {{item.likeNum}}</text>
 					<text class="text-gray text-sm">收藏 {{item.collectNum}}</text>
 				</view>
 			</view>
 		</view>
-		
-	</div>
+		<nl-empty v-if="dataList == undefined || dataList.length == 0" :show="true"></nl-empty>
+	</view>
 </template>
 
 <script>
-	
 	import {
 		listPostInfo
 	} from '@/api/ci/postInfo.js'
-	
+
 	export default {
-		name: 'NewsIndex',
+		name: 'UserNewsDraftList',
 		data() {
 			return {
 				// 加载状态
 				loading: false,
 				// 是否有更多数据
 				hasMoreData: false,
-				// 搜索关键词
-				keyword: undefined,
-				// 查询参数				
+				// 数据
+				dataList: [],
+				// 展示的类型
+				listType: [],
+				// 当前添加数据
+				form: {},
+				// 查询
 				queryParams: {
 					pageNum: 1,
 					pageSize: 10
-				},
-				// 数据
-				dataList: []
+				}
 			}
 		},
-		onLoad() {
+		onLoad(options) {
+			this.listType = options.type
 			this.loadList()
 		},
 		// 列表数据刷新
@@ -82,32 +76,31 @@
 		methods: {
 			loadList() {
 				this.loading = true
-				listPostInfo(this.queryParams).then(res => {
+				listPostInfo(this.queryParams, this.listType).then(res => {
 					this.loading = false
 					// 计算是否有更多数据
 					this.hasMoreData = this.hasMore(res.total, this.queryParams.pageNum, this.queryParams.pageSize)
 					this.dataList = this.dataList.concat(res.rows)
 				})
 			},
-			goToSearchPage() {
-				uni.navigateTo({
-					url: 'search-index?type=all'
-				})
-			},
-			// 取代搜索事件改为setting设置
-			goToPublicPost() {
-				uni.navigateTo({
-					url: 'news-public-form'
-				})
-			},
 			onItemClick(id) {
-				uni.navigateTo({
-					url: 'news-info?id=' + id
-				})
+				if(this.listType == 'draft') {
+					uni.navigateTo({
+						url: 'news-public-form?id=' + id
+					})
+				} else {
+					uni.navigateTo({
+						url: 'news-info?id=' + id
+					})
+				}
 			}
 		}
 	}
 </script>
 
-<style>
+<style scoped lang="scss">
+	.cu-avatar.xxs {
+		width: 32upx;
+		height: 32upx;
+	}
 </style>

@@ -49,6 +49,30 @@
         from ci_post_info
     </sql>
 
+    <sql id="selectPostInfoContentVo">
+        select id,
+               create_by,
+               update_by,
+               create_time,
+               update_time,
+               del_flag,
+               cp_id,
+               (select `name` from ci_competition_period where cp_id = ci_competition_period.id) as "cp_name",
+               name,
+               associated,
+               type,
+               summary,
+               status,
+               cover_url,
+               like_num,
+               collect_num,
+               view_num,
+               comment_num,
+               download_num,
+               (select content from ci_post_content where post_id = id)                          as "content"
+        from ci_post_info
+    </sql>
+
     <select id="selectPostInfoList" parameterType="PostInfo" resultMap="PostInfoResult">
         <include refid="selectPostInfoVo"/>
         <where>
@@ -56,12 +80,18 @@
             <if test="cpId != null ">and cp_id = #{cpId}</if>
             <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
             <if test="type != null  and type != ''">and type = #{type}</if>
+            <if test="status != null  and status != ''">and status = #{status}</if>
             <if test="summary != null  and summary != ''">and summary like concat('%', #{summary}, '%')</if>
         </where>
     </select>
 
-    <select id="selectPostInfoById" parameterType="Long" resultMap="PostInfoResult">
+    <select id="selectPostInfoCollection" parameterType="PostInfo" resultMap="PostInfoResult">
         <include refid="selectPostInfoVo"/>
+        where id in (select post_id from ci_collection_content where create_by = #{createBy})
+    </select>
+
+    <select id="selectPostInfoById" parameterType="Long" resultMap="PostInfoResult">
+        <include refid="selectPostInfoContentVo"/>
         where id = #{id}
     </select>
 
@@ -122,6 +152,36 @@
             <if test="status != null  and status != ''">status = #{status},</if>
             <if test="coverUrl != null  and coverUrl != ''">cover_url = #{coverUrl},</if>
         </trim>
+        where id = #{id}
+    </update>
+
+    <update id="publicPost" parameterType="Long">
+        update ci_post_info
+        set status = '1'
+        where id = #{id}
+    </update>
+
+    <update id="addCollectNum" parameterType="Long">
+        update ci_post_info
+        set collect_num = collect_num + 1
+        where id = #{id}
+    </update>
+
+    <update id="addViewNum" parameterType="Long">
+        update ci_post_info
+        set view_num = view_num + 1
+        where id = #{id}
+    </update>
+
+    <update id="addCommentNum" parameterType="Long">
+        update ci_post_info
+        set comment_num = comment_num + 1
+        where id = #{id}
+    </update>
+
+    <update id="addLikeNum" parameterType="Long">
+        update ci_post_info
+        set like_num = like_num + 1
         where id = #{id}
     </update>
 

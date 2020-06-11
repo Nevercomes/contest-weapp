@@ -77,6 +77,12 @@ public class PostInfoServiceImpl implements IPostInfoService {
     @Override
     public PostInfo insertPostInfo(PostInfo postInfo) {
         postInfo.preInsert();
+        // 截取摘要
+        if (StringUtils.isNotEmpty(postInfo.getContent()) && postInfo.getContent().length() >= 100) {
+            postInfo.setSummary(postInfo.getContent().substring(0, 100));
+        } else {
+            postInfo.setSummary(postInfo.getContent());
+        }
         int res =  postInfoMapper.insertPostInfo(postInfo);
         // 同时插入内容
         PostContent postContent = new PostContent();
@@ -95,6 +101,12 @@ public class PostInfoServiceImpl implements IPostInfoService {
     @Override
     public PostInfo updatePostInfo(PostInfo postInfo) {
         postInfo.preUpdate();
+        // 截取摘要
+        if (StringUtils.isNotEmpty(postInfo.getContent()) && postInfo.getContent().length() >= 100) {
+            postInfo.setSummary(postInfo.getContent().substring(0, 100));
+        } else {
+            postInfo.setSummary(postInfo.getContent());
+        }
         int res =  postInfoMapper.updatePostInfo(postInfo);
         PostContent postContent = new PostContent();
         postContent.setPostId(postInfo.getId());
@@ -123,6 +135,25 @@ public class PostInfoServiceImpl implements IPostInfoService {
     @Override
     public int deletePostInfoById(Long id) {
         return postInfoMapper.deletePostInfoById(id);
+    }
+
+    /**
+     * 发布帖子
+     * @param postId
+     * @return
+     */
+    @Override
+    public int publicPost(Long postId) {
+        return postInfoMapper.publicPost(postId);
+    }
+
+    @Override
+    public List<PostInfo> selectPostInfoCollection(PostInfo postInfo) {
+        List<PostInfo> list = postInfoMapper.selectPostInfoCollection(postInfo)
+        for (PostInfo info : list) {
+            setCreated(info);
+        }
+        return list;
     }
 
     private void setCreated(PostInfo postInfo) {

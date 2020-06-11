@@ -892,6 +892,12 @@ button.cuIcon.lg {
 	font-size: 1.5em;
 }
 
+.cu-avatar.xs {
+	width: 32upx;
+	height: 32upx;
+	font-size: 1em;
+}
+
 .cu-avatar.sm {
 	width: 48upx;
 	height: 48upx;
@@ -2526,11 +2532,13 @@ button.cuIcon.lg {
 .cu-modal.drawer-modal.show .cu-dialog {
 	transform: translateX(0%);
 }
-.cu-modal .cu-dialog>.cu-bar:first-child .action{
-  min-width: 100rpx;
-  margin-right: 0;
-  min-height: 100rpx;
+
+.cu-modal .cu-dialog>.cu-bar:first-child .action {
+	min-width: 100rpx;
+	margin-right: 0;
+	min-height: 100rpx;
 }
+
 /* ==================
          轮播
  ==================== */
@@ -2960,11 +2968,13 @@ scroll-view.cu-steps .cu-item {
 	position: relative;
 	overflow: hidden;
 }
+
 .grid.grid-square>view.bg-img image {
 	width: 100%;
 	height: 100%;
 	position: absolute;
 }
+
 .grid.col-1.grid-square>view {
 	padding-bottom: 100%;
 	height: 0;
@@ -3831,6 +3841,16 @@ scroll-view.cu-steps .cu-item {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
+}
+
+.text-cut-3 {
+	display: -webkit-box;
+	overflow: hidden;
+	white-space: normal !important;
+	text-overflow: ellipsis;
+	word-wrap: break-word;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical
 }
 
 .text-bold {

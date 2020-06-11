@@ -15,6 +15,16 @@ import org.springframework.web.multipart.MultipartFile;
 public interface ISysOssRecordService {
 
     /**
+     * 上传文件
+     * @param file
+     * @param filePath
+     * @param businessType
+     * @return
+     * @throws IOException
+     */
+    String uploadFile(MultipartFile file, String filePath, String businessType) throws IOException;
+
+    /**
      * 上传用户头像
      * @param file 头像
      * @return url地址
@@ -49,6 +59,13 @@ public interface ISysOssRecordService {
      * @return
      */
     String uploadRecoComp(MultipartFile file) throws IOException;
+
+    /**
+     * 上传帖子封面
+     * @param file
+     * @return
+     */
+    String uploadPostCover(MultipartFile file) throws IOException;
 
 
 

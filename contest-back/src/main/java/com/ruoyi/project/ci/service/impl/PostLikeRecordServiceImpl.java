@@ -59,9 +59,10 @@ public class PostLikeRecordServiceImpl implements IPostLikeRecordService {
      * @return 结果
      */
     @Override
-    public int insertPostLikeRecord(PostLikeRecord postLikeRecord) {
+    public PostLikeRecord insertPostLikeRecord(PostLikeRecord postLikeRecord) {
         postLikeRecord.preInsert();
-        return postLikeRecordMapper.insertPostLikeRecord(postLikeRecord);
+        int res = postLikeRecordMapper.insertPostLikeRecord(postLikeRecord);
+        return postLikeRecord;
     }
 
     /**

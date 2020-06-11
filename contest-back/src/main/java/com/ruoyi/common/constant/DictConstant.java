@@ -30,4 +30,14 @@ public final class DictConstant {
      * 搜索类别-帖子
      */
     public static final String SEARCH_TYPE_POST = "2";
+
+    /**
+     * 帖子状态-发布
+     */
+    public static final String POST_STATUS_PUBLIC = "1";
+
+    /**
+     * 帖子状态-草稿
+     */
+    public static final String POST_STATUS_DRAFT = "0";
 }
