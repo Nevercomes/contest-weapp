@@ -4,6 +4,9 @@
 		<view class="info-top-right">
 			<text class="cuIcon-more margin-bottom text-lg" @click="show = true"></text>
 			<button open-type='share' class="cuIcon-share text-lg icon-btn"></button>
+			<view class="margin-top" :class="concerned?'text-orange':'text-gray'" @click="onConcernClick">
+				<view :class="concerned?'cuIcon-favorfill':'cuIcon-favor'"></view>
+			</view>
 		</view>
 
 		<view class="flex flex-direction padding justify-center align-center bg-white">
@@ -96,6 +99,11 @@
 	import {
 		addInvite
 	} from '@/api/ci/invite.js'
+	import {
+		listConcernUser,
+		addConcernUser,
+		delConcernUser
+	} from '@/api/ci/concern.js'
 
 	export default {
 		name: 'UserShowIndex',
@@ -123,7 +131,10 @@
 				// 队伍列表modal
 				modalName: null,
 				teamList: [],
-				radioIndex: 0
+				radioIndex: 0,
+				// 关注
+				concerned: false,
+				concern: {}
 			}
 		},
 		onLoad(options) {
@@ -156,6 +167,22 @@
 				listTeamInfo({}, 'create').then(res => {
 					this.teamList = res.rows
 				})
+			},
+			onConcernClick() {
+				if (this.concerned) {
+					delConcernUser(this.concern.id).then(res => {
+						this.msgInfo('取消关注成功')
+						this.concerned = false
+					})
+				} else {
+					addConcernUser({
+						userId: this.user.userId,
+					}).then(res => {
+						this.concerned = true
+						this.concern = res.data
+						this.msgInfo('添加关注成功')
+					})
+				}
 			},
 			RadioChange(e) {
 				this.radioIndex = e.detail.value

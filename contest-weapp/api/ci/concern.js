@@ -62,6 +62,15 @@ export function getConcernUserOptions(label) {
     })
 }
 
+// 查询关注用户
+export function listConcernUser(query) {
+	return http.request({
+		url: '/ci/concernUser/list',
+		method: 'get',
+		params: query
+	})
+}
+
 // 新增关注用户
 export function addConcernUser(data) {
   return http.request({

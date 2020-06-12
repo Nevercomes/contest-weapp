@@ -40,7 +40,7 @@ public interface IUserConcernUserService {
      * @param userConcernUser 关注用户
      * @return 结果
      */
-    int insertUserConcernUser(UserConcernUser userConcernUser);
+    UserConcernUser insertUserConcernUser(UserConcernUser userConcernUser);
 
     /**
      * 修改关注用户

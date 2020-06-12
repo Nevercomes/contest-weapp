@@ -178,6 +178,7 @@
                school_id,
                user_id,
                true_name,
+               major,
                (select school_name
                 from edu_school
                 where sys_user.school_id = edu_school.school_id) as "school_name"

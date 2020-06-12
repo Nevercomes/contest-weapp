@@ -70,9 +70,10 @@ public class UserConcernUserServiceImpl implements IUserConcernUserService {
      * @return 结果
      */
     @Override
-    public int insertUserConcernUser(UserConcernUser userConcernUser) {
+    public UserConcernUser insertUserConcernUser(UserConcernUser userConcernUser) {
         userConcernUser.preInsert();
-        return userConcernUserMapper.insertUserConcernUser(userConcernUser);
+        int res = userConcernUserMapper.insertUserConcernUser(userConcernUser);
+        return userConcernUser;
     }
 
     /**

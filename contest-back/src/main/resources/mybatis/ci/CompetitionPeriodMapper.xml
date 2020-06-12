@@ -116,6 +116,7 @@
             <if test="schoolId != null ">and school_id = #{schoolId}</if>
             <if test="holder != null  and holder != ''">and holder = #{holder}</if>
         </where>
+        order by cci.view_number desc
     </select>
 
     <select id="selectConcernedCompetitionPeriodList" parameterType="CompetitionPeriod" resultMap="CompetitionPeriodResult">

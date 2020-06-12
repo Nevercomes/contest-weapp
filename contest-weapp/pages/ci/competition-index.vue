@@ -11,16 +11,19 @@
 
 		<view v-for="(item,index) in dataList" :key="index" @click="onItemClick(item.id)" class="cu-card case no-card margin-bottom">
 			<view class="cu-item shadow">
-				<view class="image">
+				<view v-if="item.picUrl" class="image">
 					<image :src="item.picUrl" mode="scaleToFill"></image>
 					<view class="cu-tag bg-blue">{{levelFormat(item.basic.level)}}</view>
 				</view>
 				<view class="cu-list padding">
-					<view v-if="calSignDate(item.signEndTime)" class="">
-						<text class="text-green margin-right">正在报名</text><text>离报名截止还有{{calSignDate(item.signEndTime)}}天</text>
-					</view>
-					<view v-else class="">
-						<text class="text-grey">报名已结束</text>
+					<view class="flex justify-between align-center">
+						<view v-if="calSignDate(item.signEndTime)" class="">
+							<text class="text-green margin-right">正在报名</text><text>离报名截止还有{{calSignDate(item.signEndTime)}}天</text>
+						</view>
+						<view v-else class="">
+							<text class="text-grey">报名已结束</text>
+						</view>
+						<view v-if="!item.picUrl" class="cu-tag bg-blue">{{levelFormat(item.basic.level)}}</view>
 					</view>
 					<view class="text-bold text-lg padding-tb-xs">{{item.name}}</view>
 					<view class=""><text class="margin-right nl-label">报名时间</text>

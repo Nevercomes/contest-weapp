@@ -2,11 +2,11 @@
 	<view class="app-container">
 		<van-tabs>
 			<van-tab title="关注的竞赛">
-				<view v-for="(item,index) in periodList" :key="index" @click="goToCompInfo(item.id)" class="cu-card case no-card margin-bottom">
+				<view v-for="(item,index) in periodList" :key="index" @click="goToCompInfo(item.id)" class="cu-card case no-card margin-tb-sm">
 					<view class="cu-item shadow">
 						<view class="image">
 							<image :src="item.picUrl" mode="scaleToFill"></image>
-							<view class="cu-tag bg-blue">{{levelFormat(item.basic.level)}}</view>
+							<!-- <view class="cu-tag bg-blue">{{levelFormat(item.basic.level)}}</view> -->
 						</view>
 						<view class="cu-list padding">
 							<view class="text-bold text-lg padding-tb-xs">{{item.name}}</view>
@@ -33,7 +33,7 @@
 						<view class="content flex-sub flex justify-between align-center">
 							<view class="flex-direction align-start">
 								<view class="text-df margin-right-sm">{{item.nickName}}</view>
-								<view class="text-grey text-cut">{{item.schoolName}},{{trueName}}</view>
+								<view class="text-grey text-cut">{{item.schoolName}},{{item.major}}</view>
 							</view>
 						</view>
 						<view class="move">
@@ -41,6 +41,7 @@
 						</view>
 					</view>
 				</view>
+				<nl-empty v-if="periodList == undefined || periodList.length == 0" :show="true"></nl-empty>
 			</van-tab>
 		</van-tabs>
 	</view>
@@ -163,12 +164,20 @@
 					this.modalName = null
 				}
 				this.listTouchDirection = null
+			},
+			levelFormat(value, dict) {
+				return this.selectDictLabel(this.levelOptions, value)
 			}
 		}
 	}
 </script>
 
 <style scoped lang="scss">
+	
+	.align-start {
+		justify-content: flex-start !important ;
+	}
+	
 	.cu-card .cu-item .image {
 		margin: 0;
 		// height: 280upx;

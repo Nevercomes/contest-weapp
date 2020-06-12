@@ -34,6 +34,7 @@ public class UserConcernUserController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(UserConcernUser userConcernUser) {
         startPage();
+        listSelf((userConcernUser));
         List<UserConcernUser> list = userConcernUserService.selectUserConcernUserList(userConcernUser);
         return getDataTable(list);
     }
@@ -75,7 +76,8 @@ public class UserConcernUserController extends BaseController {
     @Log(title = "关注用户", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody UserConcernUser userConcernUser) {
-        return toAjax(userConcernUserService.insertUserConcernUser(userConcernUser));
+        UserConcernUser res = userConcernUserService.insertUserConcernUser(userConcernUser);
+        return AjaxResult.success(res);
     }
 
     /**

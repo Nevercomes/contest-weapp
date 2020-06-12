@@ -88,6 +88,9 @@
 	import {
 		listPostInfo
 	} from '@/api/ci/postInfo.js'
+	import {
+		listCollection
+	} from '@/api/ci/collection.js'
 
 	export default {
 		name: "HomeIndex",
@@ -95,6 +98,9 @@
 			return {
 				// 搜索关键词
 				keyword: undefined,
+				
+				// 收藏数目
+				collectNum: 1,
 
 				// 轮播参数
 				cardCur: 0,
@@ -114,9 +120,9 @@
 				}, {
 					cuIcon: 'newshotfill',
 					color: 'yellow',
-					badge: 22,
+					badge: this.collectNum,
 					name: '收藏',
-					url: 'user-collection-index'
+					url: 'news-list?type=collection'
 				}, {
 					cuIcon: 'presentfill',
 					color: 'olive',
@@ -156,6 +162,13 @@
 						pageSize: 30
 					}).then(res => {
 						this.newsList = this.getRandomArrayElements(res.rows, 4)
+					})
+					listCollection().then(res => {
+						if(res.total <= 1) {
+							this.collectNum = 1
+						} else {
+							this.collectNum = res.total
+						}
 					})
 				}
 			})
