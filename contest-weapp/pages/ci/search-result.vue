@@ -6,9 +6,10 @@
 		</van-search>
 		
 		<!-- 竞赛结果 -->
-		<view v-for="(item,index) in compList" :key="index" @click="goToCompPage(item.id)" class="cu-card case no-card margin-top-100">
+		<view v-for="(item,index) in compList" :key="index" @click="goToCompPage(item.id)" class="cu-card case no-card margin-top-100" style="position: relative;">
+			<view v-if="!item.picUrl" class="cu-tag bg-blue" style="position: absolute; right: 0; top: 0;">{{levelFormat(item.basic.level)}}</view>
 			<view class="cu-item shadow">
-				<view class="image">
+				<view v-if="item.picUrl" class="image">
 					<image :src="item.picUrl" mode="scaleToFill"></image>
 					<view class="cu-tag bg-blue">{{levelFormat(item.basic.level)}}</view>
 				</view>

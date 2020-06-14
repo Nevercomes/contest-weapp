@@ -81,13 +81,16 @@
             <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
             <if test="type != null  and type != ''">and type = #{type}</if>
             <if test="status != null  and status != ''">and status = #{status}</if>
+            <if test="createBy != null  and createBy != ''">and create_by = #{createBy}</if>
             <if test="summary != null  and summary != ''">and summary like concat('%', #{summary}, '%')</if>
         </where>
+        order by id desc
     </select>
 
     <select id="selectPostInfoCollection" parameterType="PostInfo" resultMap="PostInfoResult">
         <include refid="selectPostInfoVo"/>
         where id in (select post_id from ci_collection_content where create_by = #{createBy})
+        order by id desc
     </select>
 
     <select id="selectPostInfoById" parameterType="Long" resultMap="PostInfoResult">

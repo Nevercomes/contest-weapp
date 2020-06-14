@@ -4,7 +4,7 @@
 			<van-tab title="关注的竞赛">
 				<view v-for="(item,index) in periodList" :key="index" @click="goToCompInfo(item.id)" class="cu-card case no-card margin-tb-sm">
 					<view class="cu-item shadow">
-						<view class="image">
+						<view v-if="item.picUrl" class="image">
 							<image :src="item.picUrl" mode="scaleToFill"></image>
 							<!-- <view class="cu-tag bg-blue">{{levelFormat(item.basic.level)}}</view> -->
 						</view>
@@ -30,10 +30,10 @@
 					<view class="cu-item" :class="modalName=='move-box-'+ index?'move-cur':''" @click="goToUserShow(item.userId)" v-for="(item,index) in userList" :key="index" @touchstart="ListTouchStart"
 					 @touchmove="ListTouchMove" @touchend="ListTouchEnd" :data-target="'move-box-' + index">
 						<image :src="item.avatar" class="cu-avatar round lg bg-white"></image>
-						<view class="content flex-sub flex justify-between align-center">
-							<view class="flex-direction align-start">
+						<view class="content flex-sub flex">
+							<view class="flex flex-direction align-start">
 								<view class="text-df margin-right-sm">{{item.nickName}}</view>
-								<view class="text-grey text-cut">{{item.schoolName}},{{item.major}}</view>
+								<view class="text-grey text-cut">{{item.schoolName ? item.schoolName : ''}},{{item.major ? item.major : ''}}</view>
 							</view>
 						</view>
 						<view class="move">
@@ -175,7 +175,7 @@
 <style scoped lang="scss">
 	
 	.align-start {
-		justify-content: flex-start !important ;
+		align-items: flex-start !important ;
 	}
 	
 	.cu-card .cu-item .image {

@@ -25,7 +25,7 @@
 				<text>{{item.name}}</text>
 			</view>
 		</view>
-
+		
 		<view class="cu-bar bg-white">
 			<view class="action">
 				<text class="cuIcon-title text-green"></text>
@@ -45,8 +45,8 @@
 				<text class="text-lg text-bold">动态推荐</text>
 			</view>
 		</view>
-		<view class="cu-list">
-			<view class="cu-item post-card padding-sm bg-white shadow-blur margin-bottom-sm" @click="goToPostPage(item.id)" v-for="(item,index) in newsList"
+		<view class="cu-list padding-lr">
+			<view class="cu-item post-card padding-tb-sm bg-white shadow-blur margin-bottom-sm" @click="goToPostPage(item.id)" v-for="(item,index) in newsList"
 			 :key="index">
 				<view class="text-bold text-df padding-tb-xs">{{item.name}}</view>
 				<!-- 作者信息 -->
@@ -58,7 +58,7 @@
 				<!-- 竞赛 -->
 				<view class="text-grey text-sm padding-tb-xs">{{item.cpName}}</view>
 				<!-- 内容摘要 -->
-				<view class="flex padding-tb-xs" style="height: 4.5em; position: relative;">
+				<view class="flex padding-tb-xs" style="max-height: 4.5em; position: relative;">
 					<view style="line-height: 1.5em; position: relative;" class="flex-sub text-cut-3 text-sm">{{item.summary}}</view>
 					<view v-if="item.coverUrl">
 						<image style="height: 4em; max-width: 170upx; margin-left: 10upx; border-radius: 5px" :src="item.coverUrl" mode="aspectFit"></image>
@@ -72,6 +72,7 @@
 				</view>
 			</view>
 		</view>
+		
 	</view>
 </template>
 
@@ -205,7 +206,7 @@
 			// 取代搜索事件改为setting设置
 			goToSettingPage() {
 				uni.navigateTo({
-					url: 'view-mode-setting'
+					url: 'sys-setting-index'
 				})
 			},
 			goToPage(url) {

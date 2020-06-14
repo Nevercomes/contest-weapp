@@ -12,7 +12,6 @@
 				<input v-model="form.name" name="name" placeholder="请输入标题" confirm-type="next">
 			</view>
 
-
 			<view class="cu-form-group">
 				<textarea v-model="form.content" maxlength="-1" placeholder="写下你想说的..." show-confirm-bar></textarea>
 			</view>
@@ -89,6 +88,8 @@
 		name: 'NewsPublicForm',
 		data() {
 			return {
+				// 加载
+				loading: false,
 				// 表单数据
 				form: {},
 				// 封面图片
@@ -143,17 +144,19 @@
 		},
 		onBackPress() {
 			if (this.form.content) {
-				updatePostInfo(self.form).then(res => {
-					self.msgSuccess('已保存为草稿')
-					self.back()
+				updatePostInfo(this.form).then(res => {
+					this.msgSuccess('已保存为草稿')
+					this.back()
 				}).catch(res => {
-					self.back()
+					this.back()
 				})
 			} else {
-				addPostInfo(self.form).then(res => {
-					self.msgSuccess('已保存为草稿')
+				addPostInfo(this.form).then(res => {
+					this.msgSuccess('已保存为草稿')
+					this.form.id = res.data.id
+					this.back()
 				}).catch(res => {
-					self.back()
+					this.back()
 				})
 			}
 		},
@@ -168,7 +171,6 @@
 			chooseFile() {
 				let fsm = wx.getFileSystemManager()
 				console.log(fsm)
-
 			},
 			getFormData() {
 				getPostInfo(this.form.id).then(res => {
@@ -186,9 +188,15 @@
 					} else {
 						addPostInfo(this.form).then(res => {
 							this.loading = false
+							this.form.id = res.data.id
 							publicPost(this.form.id).then(res => {
 								// 跳转到帖子界面
 								this.msgSuccess('发布成功')
+								setTimeout(() => {
+									uni.navigateTo({
+										url: 'news-info?id=' + this.form.id
+									})
+								}, 1000)
 							})
 						}).catch(res => {
 							this.loading = false
@@ -204,7 +212,6 @@
 						this.loading = false
 						this.needSave = false
 						this.msgSuccess('修改成功')
-						this.back()
 					}).catch(res => {
 						this.loading = false
 					})
@@ -212,6 +219,7 @@
 					addPostInfo(this.form).then(res => {
 						this.loading = false
 						this.needSave = false
+						this.form.id = res.data.id
 						this.msgSuccess('已保存为草稿')
 					}).catch(res => {
 						this.loading = false

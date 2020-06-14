@@ -31,9 +31,12 @@
 					</view>
 				</view>
 				
-				<view class="padding-tb-xs" style="line-height: 2em;">
+				<!-- <view class="padding-tb-xs" style="line-height: 2em;">
 					{{item.content}}
-				</view>
+				</view> -->
+				<text selectable="true" space="emsp" class="padding-tb-xs" style="display: block; line-height: 2em;">
+					{{item.content}}
+				</text>
 				<!-- 资源下载 -->
 				
 			</view>

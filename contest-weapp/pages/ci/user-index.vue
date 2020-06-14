@@ -16,12 +16,12 @@
 							<text v-if="nickName" class="text-black text-bold">{{nickName}}</text>
 							<open-data v-else type="userNickName" class="text-black text-bold" ></open-data>
 						</view>
-						<van-row gutter="10">
-							<van-col>
-								<!-- <van-icon name="points" /> -->
-							积分</van-col>
-							<van-col>{{points.value}}</van-col>
-						</van-row>
+						<view class="flex justify-start align-center">
+							<text class="margin-right-xs">积分</text>
+							<text v-if="points.value" class="margin-right-xs" >{{points.value}}</text>
+							<button v-if="!todayChecked" class="cu-btn sm bg-green shadow-blur" @click.stop="onCheckClick">签到</button>
+							<view v-else class="cu-tag round text-green">已签到</view>
+						</view>
 					</view>
 				</view>
 			</van-cell>
@@ -91,17 +91,26 @@
 					manual: '/pages/ci/user-manual-index'
 				},
 				// 用户积分
-				points: {}
+				points: {},
+				// 今日签到
+				todayChecked: true
 			}
 		},
 		onLoad() {
 			this.$store.dispatch('GetInfo')
 			getUserPoints().then(res => {
-				this.points = res.data
+				this.points = res.data || {}
 			})
+			// 获取今日是否已经签到
+			this.todayChecked = false
 		},
 		methods: {
-			
+			onCheckClick() {
+				this.msgInfo('签到+10 积分')
+				this.points.value = this.points.value || 0
+				this.points.value = Number(this.points.value) + 10
+				this.todayChecked = true
+			}
 		}
 	}
 </script>

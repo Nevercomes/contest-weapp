@@ -13,7 +13,7 @@
 				<!-- 竞赛 -->
 				<view class="text-grey text-sm padding-tb-xs">{{item.cpName}}</view>
 				<!-- 内容摘要 -->
-				<view class="flex padding-tb-xs" style="height: 4.5em; position: relative;">
+				<view class="flex padding-tb-xs" style="max-height: 4.5em; position: relative;">
 					<view style="line-height: 1.5em; position: relative;" class="flex-sub text-cut-3 text-sm">{{item.summary}}</view>
 					<view v-if="item.coverUrl">
 						<image style="height: 4em; max-width: 170upx; margin-left: 10upx; border-radius: 5px" :src="item.coverUrl" mode="aspectFit"></image>
@@ -59,6 +59,25 @@
 		},
 		onLoad(options) {
 			this.listType = options.type
+			switch (this.listType) {
+				case 'draft':
+					uni.setNavigationBarTitle({
+						title: '我的草稿'
+					})
+					break;
+				case 'public':
+					uni.setNavigationBarTitle({
+						title: '已发布动态'
+					})
+					break;
+				case 'collection':
+					uni.setNavigationBarTitle({
+						title: '我的收藏'
+					})
+					break;
+				default:
+					break;
+			}
 			this.loadList()
 		},
 		// 列表数据刷新
@@ -84,7 +103,7 @@
 				})
 			},
 			onItemClick(id) {
-				if(this.listType == 'draft') {
+				if (this.listType == 'draft') {
 					uni.navigateTo({
 						url: 'news-public-form?id=' + id
 					})

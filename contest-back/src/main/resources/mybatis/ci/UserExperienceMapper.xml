@@ -39,7 +39,7 @@
             <if test="awards != null  and awards != ''">and awards = #{awards}</if>
             <if test="createBy != null and createBy != ''">and create_by = #{createBy}</if>
         </where>
-        order by create_time desc
+        order by id desc
     </select>
 
     <select id="selectUserExperienceById" parameterType="Long" resultMap="UserExperienceResult">

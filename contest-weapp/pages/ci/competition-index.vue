@@ -9,7 +9,8 @@
 			搜索过滤
 		</view> -->
 
-		<view v-for="(item,index) in dataList" :key="index" @click="onItemClick(item.id)" class="cu-card case no-card margin-bottom">
+		<view v-for="(item,index) in dataList" :key="index" @click="onItemClick(item.id)" class="cu-card case no-card margin-bottom" style="position: relative;">
+			<view v-if="!item.picUrl" class="cu-tag bg-blue" style="position: absolute; right: 0; top: 0;">{{levelFormat(item.basic.level)}}</view>
 			<view class="cu-item shadow">
 				<view v-if="item.picUrl" class="image">
 					<image :src="item.picUrl" mode="scaleToFill"></image>
@@ -23,7 +24,6 @@
 						<view v-else class="">
 							<text class="text-grey">报名已结束</text>
 						</view>
-						<view v-if="!item.picUrl" class="cu-tag bg-blue">{{levelFormat(item.basic.level)}}</view>
 					</view>
 					<view class="text-bold text-lg padding-tb-xs">{{item.name}}</view>
 					<view class=""><text class="margin-right nl-label">报名时间</text>

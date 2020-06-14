@@ -21,7 +21,7 @@
 				<!-- 竞赛 -->
 				<view class="text-grey text-sm padding-tb-xs">{{item.cpName}}</view>
 				<!-- 内容摘要 -->
-				<view class="flex padding-tb-xs" style="height: 4.5em; position: relative;">
+				<view class="flex padding-tb-xs" style="max-height: 4.5em; position: relative;">
 					<view style="line-height: 1.5em; position: relative;" class="flex-sub text-cut-3 text-sm">{{item.summary}}</view>
 					<view v-if="item.coverUrl">
 						<image style="height: 4em; max-width: 170upx; margin-left: 10upx; border-radius: 5px" :src="item.coverUrl" mode="aspectFit"></image>
