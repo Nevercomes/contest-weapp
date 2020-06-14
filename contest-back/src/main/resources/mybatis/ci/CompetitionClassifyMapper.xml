@@ -32,6 +32,7 @@
             resultMap="CompetitionClassifyResult">
         <include refid="selectCompetitionClassifyVo"/>
         <where>
+            <if test="parentId != null">parent_id = #{parentId}</if>
             <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
         </where>
         order by sort asc

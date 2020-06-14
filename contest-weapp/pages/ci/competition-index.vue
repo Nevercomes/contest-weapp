@@ -2,14 +2,18 @@
 	<view class="app-container">
 		<!-- 与tab头相同的过度 最右边是一个search -->
 		<van-search :value="keyword" use-action-slot placeholder="请输入搜索关键词" @focus="goToSearchPage">
-
+			<view style="display: flex; align-items: center;" slot="action" @click="modalName = 'DrawerModalR'">
+				<van-icon size="24" name="filter-o"></van-icon>
+			</view>
 		</van-search>
+
 		<!-- TODO 竞赛列表搜索过滤 -->
 		<!-- <view class="select-search">
 			搜索过滤
 		</view> -->
 
-		<view v-for="(item,index) in dataList" :key="index" @click="onItemClick(item.id)" class="cu-card case no-card margin-bottom" style="position: relative;">
+		<view v-for="(item,index) in dataList" :key="index" @click="onItemClick(item.id)" class="cu-card case no-card margin-bottom"
+		 style="position: relative;">
 			<view v-if="!item.picUrl" class="cu-tag bg-blue" style="position: absolute; right: 0; top: 0;">{{levelFormat(item.basic.level)}}</view>
 			<view class="cu-item shadow">
 				<view v-if="item.picUrl" class="image">
@@ -46,6 +50,55 @@
 				</view>
 			</view>
 		</view>
+
+		<!-- 竞赛筛选抽屉 -->
+		<view class="cu-modal drawer-modal justify-end" style="text-align: left;" :class="modalName=='DrawerModalR'?'show':''"
+		 @tap="hideModal">
+			<view class="cu-dialog basis-lg" @tap.stop="" style="height: 100vh;">
+				<!-- 分类栏 -->
+				<view class="text-df padding text-gray">竞赛分类</view>
+				<view class="padding-lr-sm">
+					<button @click="queryParams.classify = undefined" :class="queryParams.classify==undefined?'bg-green':'line-green'"
+					 class="cu-btn margin-xs">
+						全部
+					</button>
+					<button @click="onClassifyClick(item.id)" :class="queryParams.classify==item.id?'bg-green':'line-green'"
+					 class="cu-btn margin-xs" v-for="(item,index) in classifyList" :key="index">
+						{{item.name}}
+					</button>
+				</view>
+				<!-- 级别 -->
+				<view class="text-df padding text-gray">竞赛级别</view>
+				<view class="padding-lr-sm">
+					<button @click="queryParams.level = undefined" :class="queryParams.level==undefined?'bg-green':'line-green'" class="cu-btn margin-xs">
+						全部
+					</button>
+					<button @click="onLevelClick(item.dictValue)" :class="queryParams.level==item.dictValue?'bg-green':'line-green'"
+					 class="cu-btn margin-xs" v-for="(item,index) in levelOptions" :key="index">
+						{{item.dictLabel}}
+					</button>
+				</view>
+
+				<view class="text-df padding text-gray">搜索优先</view>
+				<view class="padding-lr-sm">
+					<button @click="onSortWayClick(item.dictValue)" :class="queryParams.sortWay==item.dictValue?'bg-green':'line-green'"
+					 class="cu-btn margin-xs" v-for="(item,index) in sortWayList" :key="index">
+						{{item.dictLabel}}
+					</button>
+				</view>
+
+				<view class="text-df padding text-gray flex justify-between align-center">
+					<text class="text-grey">选定学校</text>
+					<switch @change="OnlySchool" :class="onlySchool?'checked':''" :checked="onlySchool?true:false"></switch>
+				</view>
+
+				<view class="flex justify-around padding">
+					<button class="cu-btn round line-green shadow" @click.stop="onClearClick">清空</button>
+					<button class="cu-btn bg-green shadow round" @click.stop="onConfirmClick">确定</button>
+				</view>
+			</view>
+		</view>
+
 	</view>
 </template>
 
@@ -53,6 +106,9 @@
 	import {
 		listPeriod
 	} from '@/api/ci/period.js'
+	import {
+		listClassify
+	} from '@/api/ci/classify.js'
 
 	export default {
 		name: 'CompetitionIndex',
@@ -71,12 +127,27 @@
 					classify: undefined,
 					level: undefined,
 					sortWay: undefined,
-					schoolId: undefined
+					schoolId: undefined,
+					signStatus: undefined
 				},
 				// 数据列表
 				dataList: [],
 				// 竞赛级别字典
-				levelOptions: []
+				levelOptions: [],
+				// 显示右侧过滤抽屉
+				modalName: null,
+				// 分类目录
+				classifyList: [],
+				sortWayList: [{
+						dictValue: undefined,
+						dictLabel: '热度优先'
+					},
+					{
+						dictValue: 'onlySign',
+						dictLabel: '报名优先'
+					}
+				],
+				onlySchool: false
 			}
 		},
 		onLoad() {
@@ -84,12 +155,15 @@
 			this.getDicts('ci_competition_level').then(res => {
 				this.levelOptions = res.data
 			})
+			listClassify({
+				parentId: 0
+			}).then(res => {
+				this.classifyList = res.data
+			})
 		},
 		// 列表数据刷新
 		onPullDownRefresh() {
-			this.queryParams.pageNum = 1
-			this.dataList = []
-			this.loadList()
+			this.reload()
 		},
 		onReachBottom() {
 			if (this.hasMoreData) {
@@ -98,6 +172,11 @@
 			}
 		},
 		methods: {
+			reload() {
+				this.queryParams.pageNum = 1
+				this.dataList = []
+				this.loadList()
+			},
 			loadList() {
 				this.loading = true
 				listPeriod(this.queryParams).then(res => {
@@ -125,6 +204,33 @@
 				uni.navigateTo({
 					url: 'competition-info?id=' + id
 				})
+			},
+			onClassifyClick(value) {
+				this.queryParams.classify = value
+			},
+			onLevelClick(value) {
+				this.queryParams.level = value
+			},
+			onSortWayClick(value) {
+				this.queryParams.sortWay = value
+			},
+			OnlySchool(e) {
+				this.onlySchool = e.detail.value
+			},
+			onClearClick() {
+				this.queryParams.classify = undefined
+				this.queryParams.level = undefined
+				this.queryParams.sortWay = undefined
+				this.queryParams.schoolId = undefined
+				this.queryParams.signStatus = undefined
+				this.onlySchool = false
+			},
+			onConfirmClick() {
+				this.modalName = null
+				this.reload()
+			},
+			hideModal() {
+				this.modalName = null
 			},
 			calSignDate(date) {
 				try {
@@ -163,7 +269,7 @@
 		height: 260upx;
 		border-radius: 0;
 	}
-	
+
 	.cu-card .cu-item .image image {
 		height: 100%;
 	}
