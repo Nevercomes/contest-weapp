@@ -2,6 +2,10 @@ package com.ruoyi.project.system.controller;
 
 import java.util.List;
 
+import com.ruoyi.common.constant.Constants;
+import com.ruoyi.framework.redis.RedisCache;
+import com.ruoyi.framework.security.service.PermissionService;
+import com.ruoyi.framework.security.service.SysPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -50,6 +54,11 @@ public class SysUserController extends BaseController {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private RedisCache redisCache;
+    @Autowired
+    private SysPermissionService permissionService;
 
     /**
      * 获取用户列表
@@ -199,8 +208,13 @@ public class SysUserController extends BaseController {
         Long userId = SecurityUtils.getUserId();
         user.setUserId(userId);
         int rows = userService.createUserIdentify(user);
-        // TODO 更新缓存内的用户权限数据
-
+        SysUser newUser = userService.selectUserById(userId);
+        // 更新缓存内的用户权限数据
+        LoginUser loginUser = SecurityUtils.getLoginUser();
+        loginUser.setPermissions(permissionService.getMenuPermission(newUser));
+        loginUser.setUser(newUser);
+        String token =  SecurityUtils.getLoginUser().getToken();
+        redisCache.setCacheObject(Constants.LOGIN_TOKEN_KEY + token, loginUser);
         return toAjax(rows);
     }
 }

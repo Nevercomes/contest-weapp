@@ -144,9 +144,10 @@
 			this.$store.dispatch('Login').then(loginRes => {
 				// 跳转到欢迎页面去获取微信信息
 				if (loginRes.data.needInfo) {
-					uni.redirectTo({
-						url: './a_welcome'
-					})
+					// 不跳转的欢迎页面
+					// uni.redirectTo({
+					// 	url: './a_welcome'
+					// })
 				} else {
 					listRecoComp({
 						pageNum: 1,

@@ -14,7 +14,7 @@
 
 		<view v-for="(item,index) in dataList" :key="index" @click="onItemClick(item.id)" class="cu-card case no-card margin-bottom"
 		 style="position: relative;">
-			<view v-if="!item.picUrl" class="cu-tag bg-blue" style="position: absolute; right: 0; top: 0;">{{levelFormat(item.basic.level)}}</view>
+			<view v-if="!item.picUrl" class="cu-tag bg-blue" style="position: absolute; right: 0; top: 0;">{{levelFormat(item.level)}}</view>
 			<view class="cu-item shadow">
 				<view v-if="item.picUrl" class="image">
 					<image :src="item.picUrl" mode="scaleToFill"></image>
@@ -125,10 +125,10 @@
 					pageNum: 1,
 					pageSize: 10,
 					classify: undefined,
-					level: undefined,
 					sortWay: undefined,
 					schoolId: undefined,
-					signStatus: undefined
+					signStatus: undefined,
+					'level': undefined
 				},
 				// 数据列表
 				dataList: [],

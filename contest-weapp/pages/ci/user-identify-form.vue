@@ -24,7 +24,7 @@
 			</view>
 
 			<view class="padding flex flex-direction">
-				<button class="cu-btn bg-green margin-tb-sm lg shadow-blur round" form-type="submit">提 交</button>
+				<button  class="cu-btn bg-green margin-tb-sm lg shadow-blur round" open-type="getUserInfo" @getuserinfo="getUserInfo">提 交</button>
 			</view>
 		</form>
 
@@ -40,6 +40,10 @@
 	import WxValidate from '@/utils/WxValidate.js'
 	import {
 		identify
+	} from '@/api/system/user.js'
+	import {
+		updateUserProfile,
+		getUserProfile
 	} from '@/api/system/user.js'
 
 	export default {
@@ -88,13 +92,22 @@
 				// 显示的年级选项
 				gradeOptionsPicker: [],
 				// 年级picker显示
-				showPicker: false
+				showPicker: false,
+				// 不同的展示信息
+				msg: '实名认证成功'
 			}
 		},
 		onLoad() {
 			this.getDicts('sys_user_grade').then(res => {
 				this.gradeOptions = res.data
 				this.gradeOptionsPicker = res.data.map(item => item.dictLabel)
+				getUserProfile().then(res => {
+					this.form = res.data
+					if(this.form.grade) {
+						this.form.gradeLabel = this.selectDictLabel(this.gradeOptions, this.form.grade)
+						this.msg = '修改成功'
+					}
+				})
 			})
 		},
 		methods: {
@@ -114,13 +127,29 @@
 				this.form.gradeLabel = this.gradeOptions[index].dictLabel
 				this.$forceUpdate()
 			},
+			getUserInfo() {
+				let self = this
+				uni.getUserInfo({
+					success(res) {
+						const userInfo = res.userInfo
+						if(!self.form.nickName) {
+							updateUserProfile({
+								nickName: userInfo.nickName,
+								avatar: userInfo.avatarUrl
+							})
+						} else {
+							self.submitForm()
+						}
+					}
+				})
+			},
 			submitForm() {
 				if (this.validForm(this.form)) {
 					// 调用提交方法
 					this.loading = true
 					identify(this.form).then(res => {
 						this.loading = false
-						this.msgSuccess('实名认证成功')
+						this.msgSuccess(this.msg)
 						this.back()
 					}).catch(() => {
 						this.loading = false
