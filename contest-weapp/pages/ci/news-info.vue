@@ -3,14 +3,14 @@
 		<!-- 展示信息 -->
 		<view class="cu-item bg-white" style="margin-bottom: 120upx;">
 			<!-- 封面图片 -->
-			<image style="width: 100%; height: 200upx;" mode="center" :src="item.coverUrl"></image>
+			<image v-if="item.coverUrl" style="width: 100%; height: 200upx;" mode="center" :src="item.coverUrl"></image>
 			<view class="padding-lr">
 				<!-- 标题 -->
 				<view class="padding-tb-sm text-lg text-bold">
-					{{item.name}}
+					<text>{{item.name}}</text>
 				</view>
 				<view class="<padding-tb-sm></padding-tb-sm> text-sm text-grey">
-					{{item.cpName}}
+					<text>{{item.cpName}}</text>
 				</view>
 
 				<!-- 浏览信息 -->

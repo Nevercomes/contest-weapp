@@ -7,14 +7,9 @@
 			</view>
 		</van-search>
 
-		<!-- TODO 竞赛列表搜索过滤 -->
-		<!-- <view class="select-search">
-			搜索过滤
-		</view> -->
-
 		<view v-for="(item,index) in dataList" :key="index" @click="onItemClick(item.id)" class="cu-card case no-card margin-bottom"
 		 style="position: relative;">
-			<view v-if="!item.picUrl" class="cu-tag bg-blue" style="position: absolute; right: 0; top: 0;">{{levelFormat(item.level)}}</view>
+			<view v-if="!item.picUrl" class="cu-tag bg-blue" style="position: absolute; right: 0; top: 0;">{{levelFormat(item.basic.level)}}</view>
 			<view class="cu-item shadow">
 				<view v-if="item.picUrl" class="image">
 					<image :src="item.picUrl" mode="scaleToFill"></image>
@@ -89,7 +84,7 @@
 
 				<view class="text-df padding text-gray flex justify-between align-center">
 					<text class="text-grey">选定学校</text>
-					<switch @change="OnlySchool" :class="onlySchool?'checked':''" :checked="onlySchool?true:false"></switch>
+					<switch @change="OnlySchool" :class="queryParams.onlySchool?'checked':''" :checked="queryParams.onlySchool?true:false"></switch>
 				</view>
 
 				<view class="flex justify-around padding">
@@ -98,6 +93,9 @@
 				</view>
 			</view>
 		</view>
+
+	<nl-loading :loading="loading"></nl-loading>
+	<nl-empty v-if="empty" :show="true"></nl-empty>
 
 	</view>
 </template>
@@ -116,6 +114,8 @@
 			return {
 				// 加载状态
 				loading: false,
+				// 是否为空
+				empty: false,
 				// 是否有更多数据
 				hasMoreData: false,
 				// 搜索关键词
@@ -128,7 +128,8 @@
 					sortWay: undefined,
 					schoolId: undefined,
 					signStatus: undefined,
-					'level': undefined
+					'level': undefined,
+					onlySchool: false
 				},
 				// 数据列表
 				dataList: [],
@@ -146,8 +147,7 @@
 						dictValue: 'onlySign',
 						dictLabel: '报名优先'
 					}
-				],
-				onlySchool: false
+				]
 			}
 		},
 		onLoad() {
@@ -192,6 +192,7 @@
 						}
 					})
 					this.dataList = this.dataList.concat(res.rows)
+					this.empty = this.dataList.length == 0
 				})
 			},
 			// 当搜索框聚焦的时候跳转到搜索界面
@@ -215,7 +216,7 @@
 				this.queryParams.sortWay = value
 			},
 			OnlySchool(e) {
-				this.onlySchool = e.detail.value
+				this.queryParams.onlySchool = e.detail.value
 			},
 			onClearClick() {
 				this.queryParams.classify = undefined
@@ -223,7 +224,7 @@
 				this.queryParams.sortWay = undefined
 				this.queryParams.schoolId = undefined
 				this.queryParams.signStatus = undefined
-				this.onlySchool = false
+				this.queryParams.onlySchool = false
 			},
 			onConfirmClick() {
 				this.modalName = null

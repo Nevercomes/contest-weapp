@@ -5,7 +5,8 @@ export function listSwiper(query) {
   return http.request({
     url: '/ci/swiper/list',
     method: 'get',
-    params: query
+    params: query,
+	anonymous: true
   })
 }
 

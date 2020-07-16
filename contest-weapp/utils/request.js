@@ -26,8 +26,9 @@ http.validateStatus = (statusCode) => {
 }
 
 // 配置请求拦截器,每次请求前都会调用,这里如果存在token则注入
+// 2020.7.16 改造一下,可以选择不带token,以实现某些匿名接口的调用
 http.interceptor.request((config, cancel) => {
-	if (getToken()) {
+	if (!config.anonymous && getToken()) {
 		config.header['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token
 	}
 	return config

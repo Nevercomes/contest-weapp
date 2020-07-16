@@ -1,8 +1,12 @@
 package com.ruoyi.project.ci.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import com.ruoyi.common.constant.DictConstant;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.project.system.domain.SysUser;
 import com.ruoyi.project.system.mapper.SysUserMapper;
@@ -111,6 +115,21 @@ public class PointsActionServiceImpl implements IPointsActionService {
     @Override
     public PointsAction getUserPoints(Long userId) {
         return pointsActionMapper.getUserPoints(userId);
+    }
+
+    /**
+     * 判断当日是否签到
+     * @return
+     */
+    @Override
+    public boolean isTodayCheck() {
+        PointsAction query = new PointsAction();
+        query.setCreateBy(SecurityUtils.getUsername());
+        query.setChangeCause(DictConstant.POINTS_CHANGE_CHECK);
+        query.setBeginTime(DateUtils.getDayStart(new Date()));
+        query.setEndTime(DateUtils.getDayEnd(new Date()));
+        List<PointsAction> list = this.selectPointsActionList(query);
+        return list != null && list.size() > 0;
     }
 
     private void setAssociated(PointsAction pointsAction) {

@@ -14,13 +14,13 @@
 					<view v-else class="padding-tb-sm">
 						<text class="text-grey">报名已结束</text>
 					</view>
-					<view class="text-bold text-lg padding-tb-sm">{{period.name}}</view>
+					<text class="text-bold text-lg padding-tb-sm">{{period.name}}</text>
 					<view class="padding-tb-sm"><text class="text-grey margin-right">官网链接</text>
 						<text selectable="true" class="text-blue" style="text-decoration: underline; word-break: break-all;">{{period.details.officialLink}}</text></view>
 					<view class="padding-tb-sm"><text class="text-grey margin-right">报名时间</text>
-						{{formatDate(period.signBeginTime)}} —— {{formatDate(period.signEndTime)}}</view>
+						<text v-if="formatDate(period.signBeginTime)">{{formatDate(period.signBeginTime)}} —— {{formatDate(period.signEndTime)}}</text></view>
 					<view class="padding-tb-sm">
-						<view><text class="text-grey margin-right">主办单位</text> {{period.holder}}</view>
+						<view><text class="text-grey margin-right">主办单位</text>{{period.holder}}</view>
 					</view>
 					<view class="text-right">
 						<text class="cuIcon-attentionfill margin-lr-xs text-grey"></text> <text class="text-gray">浏览 {{period.basic.viewNumber}}</text>
@@ -143,8 +143,8 @@
 			},
 			// 跳转到关于该竞赛的动态页面
 			onNewsClick() {
-				uni.navigateTo({
-					url: 'news-competition?cpId=' + this.id
+				uni.switchTab({
+					url: 'news-index'
 				})
 			},
 			// 跳转到评论页面
@@ -183,7 +183,7 @@
 	}
 	
 	.margin-bottom-xxl {
-		margin-bottom: 70upx;
+		margin-bottom: 120upx;
 	}
 	
 </style>

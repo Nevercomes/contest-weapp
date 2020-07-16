@@ -35,7 +35,7 @@ public class RecommendSwiperController extends BaseController {
     /**
      * 查询首页推荐列表
      */
-    @PreAuthorize("@ss.hasPermi('ci:swiper:list')")
+//    @PreAuthorize("@ss.hasPermi('ci:swiper:list')")
     @GetMapping("/list")
     public TableDataInfo list(RecommendSwiper recommendSwiper) {
         startPage();

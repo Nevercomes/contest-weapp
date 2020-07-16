@@ -140,25 +140,26 @@
 			}
 		},
 		onLoad() {
-			// 请求放在登录回调之后
+			// 安全性关系不大的不放在回调里面，可以匿名请求
+			listRecoComp({
+				pageNum: 1,
+				pageSize: 10
+			}).then(res => {
+				this.compList = this.getRandomArrayElements(res.rows, 4)
+			})
+			// 加载首页推荐
+			listSwiper().then(res => {
+				this.swiperList = res.rows
+			})
+			
+			// 部分请求放在登录回调之后
 			this.$store.dispatch('Login').then(loginRes => {
-				// 跳转到欢迎页面去获取微信信息
-				if (loginRes.data.needInfo) {
-					// 不跳转的欢迎页面
-					// uni.redirectTo({
-					// 	url: './a_welcome'
-					// })
+				// 跳转到欢迎页面 (去获取微信信息,根据小程序的规范不直接获取)
+				if (loginRes.data.register) {
+					uni.redirectTo({
+						url: './a_welcome'
+					})
 				} else {
-					listRecoComp({
-						pageNum: 1,
-						pageSize: 10
-					}).then(res => {
-						this.compList = this.getRandomArrayElements(res.rows, 4)
-					})
-					// 加载首页推荐
-					listSwiper().then(res => {
-						this.swiperList = res.rows
-					})
 					listPostInfo({
 						pageNum: 1,
 						pageSize: 30

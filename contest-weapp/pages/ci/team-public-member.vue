@@ -1,13 +1,15 @@
 <template>
 	<view class="app-container">
 
-		<view class="bg-white padding">
+		<!-- <view class="bg-white padding">
 			<view class="cu-steps">
 				<view class="cu-item" :class="index>step?'':'text-red'" v-for="(item,index) in stepList" :key="index">
 					<text :class="'cuIcon-' + item.cuIcon"></text> {{item.name}}
 				</view>
 			</view>
-		</view>
+		</view> -->
+		
+		<van-steps :steps="stepList" :active="step" />
 
 		<view class="cu-card article padding no-card bg-white" v-for="(item,index) in recruitList" :key="index">
 			<view class="cu-item shadow solid-bottom">
@@ -57,16 +59,28 @@
 				// 步骤进度
 				step: 1,
 				// 步骤条进度
+				// stepList: [{
+				// 	cuIcon: 'usefullfill',
+				// 	name: '队伍信息'
+				// }, {
+				// 	cuIcon: 'radioboxfill',
+				// 	name: '队员信息'
+				// }, {
+				// 	cuIcon: 'roundcheckfill',
+				// 	name: '创建完成'
+				// }],
+				
 				stepList: [{
-					cuIcon: 'usefullfill',
-					name: '队伍信息'
-				}, {
-					cuIcon: 'radioboxfill',
-					name: '队员信息'
-				}, {
-					cuIcon: 'roundcheckfill',
-					name: '创建完成'
-				}],
+						text: '队伍信息',
+					},
+					{
+						text: '队员信息',
+					},
+					{
+						text: '创建完成',
+					},
+				],
+				
 				// 表单数据
 				form: {},
 				// 招募队友列表

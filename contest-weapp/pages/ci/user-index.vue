@@ -60,7 +60,9 @@
 		mapGetters
 	} from 'vuex'
 	import {
-		getUserPoints
+		getUserPoints,
+		todayCheck,
+		isTodayCheck
 	} from '@/api/ci/points.js'
 
 	export default {
@@ -102,14 +104,20 @@
 				this.points = res.data || {}
 			})
 			// 获取今日是否已经签到
-			this.todayChecked = false
+			isTodayCheck().then(res => {
+				this.todayChecked = res.data
+			})
 		},
 		methods: {
 			onCheckClick() {
-				this.msgInfo('签到+10 积分')
-				this.points.value = this.points.value || 0
-				this.points.value = Number(this.points.value) + 10
-				this.todayChecked = true
+				todayCheck().then(res => {
+					this.msgInfo('签到+10 积分')
+					this.points.value = this.points.value || 0
+					this.points.value = Number(this.points.value) + 10
+					this.todayChecked = true
+				}).catch(error => {
+					this.msgInfo(error.msg)
+				})
 			}
 		}
 	}

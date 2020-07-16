@@ -72,4 +72,9 @@ public interface IPointsActionService {
      * @return
      */
     PointsAction getUserPoints(Long userId);
+
+    /**
+     * 判断当日是否签到
+     */
+    boolean isTodayCheck();
 }

@@ -4,11 +4,6 @@
       <el-form-item label="创建者" prop="createBy">
         <el-input v-model="queryParams.createBy" placeholder="请输入创建者" clearable size="small" @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="正负" prop="changeType">
-        <el-select v-model="queryParams.changeType" placeholder="请选择正负" clearable size="small">
-          <el-option v-for="dict in changeTypeOptions" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue" />
-        </el-select>
-      </el-form-item>
       <el-form-item label="变化原因" prop="changeCause">
         <el-select v-model="queryParams.changeCause" placeholder="请选择变化原因" clearable size="small">
           <el-option v-for="dict in changeCauseOptions" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue" />
@@ -43,7 +38,6 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="编号" align="center" prop="id" />
       <el-table-column label="创建者" align="center" prop="createBy" />
-      <el-table-column label="正负" align="center" prop="changeType" :formatter="changeTypeFormat" />
       <el-table-column label="变化原因" align="center" prop="changeCause" :formatter="changeCauseFormat" />
       <el-table-column label="值" align="center" prop="value" />
       <el-table-column label="归属用户" align="center" prop="ownUser" />
@@ -61,11 +55,6 @@
     <!-- 添加或修改积分记录对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="正负">
-          <el-select v-model="form.changeType" placeholder="请选择正负">
-            <el-option v-for="dict in changeTypeOptions" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue"></el-option>
-          </el-select>
-        </el-form-item>
         <el-form-item label="变化原因">
           <el-select v-model="form.changeCause" placeholder="请选择变化原因">
             <el-option v-for="dict in changeCauseOptions" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue"></el-option>

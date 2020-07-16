@@ -1,12 +1,14 @@
 <template>
 	<view class="app-container">
 		<!-- 搜索框 -->
-		<van-search style="position: fixed; width: 100%; top: 0; z-index: 1024;" :value="keyword" use-action-slot placeholder="请输入搜索关键词" @search="onSearch">
-			
+		<van-search style="position: fixed; width: 100%; top: 0; z-index: 1024;" :value="keyword" use-action-slot placeholder="请输入搜索关键词"
+		 @search="onSearch">
+
 		</van-search>
-		
+
 		<!-- 竞赛结果 -->
-		<view v-for="(item,index) in compList" :key="index" @click="goToCompPage(item.id)" class="cu-card case no-card margin-top-100" style="position: relative;">
+		<view v-for="(item,index) in compList" :key="index" @click="goToCompPage(item.id)" class="cu-card case no-card margin-top-100"
+		 style="position: relative;">
 			<view v-if="!item.picUrl" class="cu-tag bg-blue" style="position: absolute; right: 0; top: 0;">{{levelFormat(item.basic.level)}}</view>
 			<view class="cu-item shadow">
 				<view v-if="item.picUrl" class="image">
@@ -54,7 +56,14 @@
 				</view>
 			</view>
 		</view>
-		
+
+		<view v-if="loading" class="margin-top-100">
+			<nl-loading :loading="loading"></nl-loading>
+		</view>
+		<view v-if="empty" class="margin-top-100">
+			<nl-empty v-if="empty" :show="true"></nl-empty>
+		</view>
+
 	</view>
 </template>
 
@@ -75,7 +84,8 @@
 				compList: [],
 				postList: [],
 				// 竞赛级别字典
-				levelOptions: []
+				levelOptions: [],
+				empty: false
 			}
 		},
 		onLoad(options) {
@@ -97,6 +107,7 @@
 						this.compList = res.comp
 					}
 					this.postList = res.post
+					this.empty = (!res.comp || res.comp.length == 0) && (!res.post || res.post.length == 0)
 				})
 			},
 			onSearch(e) {
@@ -110,7 +121,7 @@
 			},
 			goToPostPage(id) {
 				uni.navigateTo({
-					url: 'news-info?id=' +id
+					url: 'news-info?id=' + id
 				})
 			},
 			levelFormat(value, dict) {
@@ -129,24 +140,23 @@
 					return false
 				}
 			},
-			
+
 		}
 	}
 </script>
 
 <style scoped lang="scss">
-	
 	.margin-top-100 {
 		margin-top: 100upx;
 	}
-	
+
 	.cu-card .cu-item .image {
 		margin: 0;
 		// height: 280upx;
 		height: 260upx;
 		border-radius: 0;
 	}
-	
+
 	.cu-card .cu-item .image image {
 		height: 100%;
 	}

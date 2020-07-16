@@ -20,10 +20,6 @@ public class PointsAction extends BaseEntity {
     /** 编号 */
     private Long id;
 
-    /** 正负 */
-    @Excel(name = "正负")
-    private String changeType;
-
     /** 变化原因 */
     @Excel(name = "变化原因")
     private String changeCause;

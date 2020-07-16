@@ -11,7 +11,7 @@ const param = {
 
 const config = {
 	// 当前请求的api
-	REQ_API: param.TEST_API
+	REQ_API: param.PROD_API
 }
 
 export default config

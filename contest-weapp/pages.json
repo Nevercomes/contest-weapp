@@ -510,7 +510,7 @@
 			"van-search": "/wxcomponents/vant/search/index",
 			// "van-slider": "/wxcomponents/vant/slider/index",
 			// "van-stepper": "/wxcomponents/vant/stepper/index",
-			// "van-steps": "/wxcomponents/vant/steps/index",
+			"van-steps": "/wxcomponents/vant/steps/index",
 			// "van-submit-bar": "/wxcomponents/vant/submit-bar/index",
 			// "van-swipe-cell": "/wxcomponents/vant/swipe-cell/index",
 			// "van-switch": "/wxcomponents/vant/switch/index",

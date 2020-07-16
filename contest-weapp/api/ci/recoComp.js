@@ -5,7 +5,8 @@ export function listRecoComp(query) {
   return http.request({
     url: '/ci/recoComp/list',
     method: 'get',
-    params: query
+    params: query,
+	anonymous: true
   })
 }
 

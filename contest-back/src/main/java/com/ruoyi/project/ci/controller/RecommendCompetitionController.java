@@ -35,7 +35,7 @@ public class RecommendCompetitionController extends BaseController {
     /**
      * 查询竞赛推荐列表
      */
-    @PreAuthorize("@ss.hasPermi('ci:recoComp:list')")
+//    @PreAuthorize("@ss.hasPermi('ci:recoComp:list')")
     @GetMapping("/list")
     public TableDataInfo list(RecommendCompetition recommendCompetition) {
         startPage();

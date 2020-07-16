@@ -1,13 +1,15 @@
 <template>
 	<view class="app-container bg-white">
 
-		<view class="bg-white padding">
+		<!-- <view class="bg-white padding">
 			<view class="cu-steps">
 				<view class="cu-item" :class="index>step?'':'text-red'" v-for="(item,index) in stepList" :key="index">
 					<text :class="'cuIcon-' + item.cuIcon"></text> {{item.name}}
 				</view>
 			</view>
-		</view>
+		</view> -->
+		
+		<van-steps :steps="stepList" :active="step" />
 		
 		<nl-success :icon="false" msg="队伍创建成功!"></nl-success>
 		
@@ -45,16 +47,27 @@
 				// 步骤进度
 				step: 2,
 				// 步骤条进度
+				// stepList: [{
+				// 	cuIcon: 'usefullfill',
+				// 	name: '队伍信息'
+				// }, {
+				// 	cuIcon: 'radioboxfill',
+				// 	name: '队员信息'
+				// }, {
+				// 	cuIcon: 'roundcheckfill',
+				// 	name: '创建完成'
+				// }],
 				stepList: [{
-					cuIcon: 'usefullfill',
-					name: '队伍信息'
-				}, {
-					cuIcon: 'radioboxfill',
-					name: '队员信息'
-				}, {
-					cuIcon: 'roundcheckfill',
-					name: '创建完成'
-				}],
+						text: '队伍信息',
+					},
+					{
+						text: '队员信息',
+					},
+					{
+						text: '创建完成',
+					},
+				],
+				
 				// 想要加入队伍的用户列表
 				dataList: [],
 				expectList: [],
@@ -81,7 +94,7 @@
 				listExpect(this.queryParams).then(res => {
 					this.hasMoreData = this.hasMore(res.total, this.queryParams.pageNum, this.queryParams.pageSize)
 					this.dataList = this.dataList.concat(res.rows)
-					this.expectList = this.getRandomArrayElements(this.dataList, 5)
+					this.expectList = this.getRandomArrayElements(this.dataList, 4)
 				})
 			},
 			onChangeClick() {
@@ -89,7 +102,7 @@
 					this.queryParams.pageNum = this.queryParams.pageNum + 1
 					this.loadList()
 				} else {
-					this.expectList = this.getRandomArrayElements(this.dataList, 5)
+					this.expectList = this.getRandomArrayElements(this.dataList, 4)
 				}
 			},
 			// 跳转到用户展示页面

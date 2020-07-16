@@ -2,13 +2,16 @@
 <template>
 	<view class="app-container">
 		<!-- 队伍创建 -->
-		<view class="bg-white padding">
+		<!-- <view class="bg-white padding">
 			<view class="cu-steps">
 				<view class="cu-item" :class="index>step?'':'text-red'" v-for="(item,index) in stepList" :key="index">
 					<text :class="'cuIcon-' + item.cuIcon"></text> {{item.name}}
 				</view>
 			</view>
-		</view>
+		</view> -->
+
+		<van-steps :steps="stepList" :active="step" />
+
 		<!-- 步骤一，选择比赛，填写队伍需知 -->
 		<form @submit="submitForm">
 			<view class="cu-form-group margin-top">
@@ -50,16 +53,26 @@
 				// tab激活页
 				active: 0,
 				// 步骤条进度
+				// stepList: [{
+				// 	cuIcon: 'usefullfill',
+				// 	name: '队伍信息'
+				// }, {
+				// 	cuIcon: 'radioboxfill',
+				// 	name: '队员信息'
+				// }, {
+				// 	cuIcon: 'roundcheckfill',
+				// 	name: '创建完成'
+				// }],
 				stepList: [{
-					cuIcon: 'usefullfill',
-					name: '队伍信息'
-				}, {
-					cuIcon: 'radioboxfill',
-					name: '队员信息'
-				}, {
-					cuIcon: 'roundcheckfill',
-					name: '创建完成'
-				}],
+						text: '队伍信息',
+					},
+					{
+						text: '队员信息',
+					},
+					{
+						text: '创建完成',
+					},
+				],
 				form: {},
 				rules1: {
 					cpName: {

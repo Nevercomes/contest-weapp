@@ -8,14 +8,13 @@
         <result property="id" column="id"/>
         <result property="createBy" column="create_by"/>
         <result property="createTime" column="create_time"/>
-        <result property="changeType" column="change_type"/>
         <result property="changeCause" column="change_cause"/>
         <result property="value" column="value"/>
         <result property="userId" column="user_id"/>
     </resultMap>
 
     <sql id="selectPointsActionVo">
-        select id, create_by, create_time, change_type, change_cause, value, user_id
+        select id, create_by, create_time, change_cause, value, user_id
         from ci_points_action
     </sql>
 
@@ -23,9 +22,11 @@
         <include refid="selectPointsActionVo"/>
         <where>
             <if test="createBy != null  and createBy != ''">and create_by like concat('%', #{createBy}, '%')</if>
-            <if test="changeType != null  and changeType != ''">and change_type = #{changeType}</if>
             <if test="changeCause != null  and changeCause != ''">and change_cause = #{changeCause}</if>
             <if test="userId != null ">and user_id = #{userId}</if>
+            <if test="beginTime != null and endTime != null">
+                and create_time between #{beginTime} and #{endTime}
+            </if>
         </where>
         ${dataScope}
     </select>
@@ -57,7 +58,6 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="createBy != null  and createBy != ''">create_by,</if>
             <if test="createTime != null ">create_time,</if>
-            <if test="changeType != null  and changeType != ''">change_type,</if>
             <if test="changeCause != null  and changeCause != ''">change_cause,</if>
             <if test="value != null ">value,</if>
             <if test="userId != null ">user_id,</if>
@@ -65,7 +65,6 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="createBy != null  and createBy != ''">#{createBy},</if>
             <if test="createTime != null ">#{createTime},</if>
-            <if test="changeType != null  and changeType != ''">#{changeType},</if>
             <if test="changeCause != null  and changeCause != ''">#{changeCause},</if>
             <if test="value != null ">#{value},</if>
             <if test="userId != null ">#{userId},</if>
@@ -77,7 +76,6 @@
         <trim prefix="SET" suffixOverrides=",">
             <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
             <if test="createTime != null ">create_time = #{createTime},</if>
-            <if test="changeType != null  and changeType != ''">change_type = #{changeType},</if>
             <if test="changeCause != null  and changeCause != ''">change_cause = #{changeCause},</if>
             <if test="value != null ">value = #{value},</if>
             <if test="userId != null ">user_id = #{userId},</if>

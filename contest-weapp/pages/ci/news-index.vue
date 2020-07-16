@@ -36,6 +36,9 @@
 			</view>
 		</view>
 		
+		<nl-loading :loading="loading"></nl-loading>
+		<nl-empty v-if="empty" :show="true"></nl-empty>
+		
 	</div>
 </template>
 
@@ -51,6 +54,8 @@
 			return {
 				// 加载状态
 				loading: false,
+				// 无数据
+				empty: false,
 				// 是否有更多数据
 				hasMoreData: false,
 				// 搜索关键词
@@ -87,6 +92,7 @@
 					// 计算是否有更多数据
 					this.hasMoreData = this.hasMore(res.total, this.queryParams.pageNum, this.queryParams.pageSize)
 					this.dataList = this.dataList.concat(res.rows)
+					this.empty = this.dataList.length == 0
 				})
 			},
 			goToSearchPage() {
@@ -96,9 +102,11 @@
 			},
 			// 取代搜索事件改为setting设置
 			goToPublicPost() {
-				uni.navigateTo({
-					url: 'news-public-form'
-				})
+				// 动态发布功能已关闭
+				this.msgInfo('发布暂时关闭')
+				// uni.navigateTo({
+				// 	url: 'news-public-form'
+				// })
 			},
 			onItemClick(id) {
 				uni.navigateTo({

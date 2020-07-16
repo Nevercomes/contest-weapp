@@ -61,13 +61,13 @@ public class BaseEntity implements Serializable {
      * 开始时间
      */
     @JsonIgnore
-    private String beginTime;
+    private Date beginTime;
 
     /**
      * 结束时间
      */
     @JsonIgnore
-    private String endTime;
+    private Date endTime;
 
     /**
      * 删除标记

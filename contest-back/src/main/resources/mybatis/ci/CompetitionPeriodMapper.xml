@@ -115,8 +115,9 @@
         <where>
             <if test="cpInfoId != null ">and cp_info_id = #{cpInfoId}</if>
             <if test="name != null  and name != ''">and ci_competition_period.name like concat('%', #{name}, '%')</if>
-            <if test="signBeginTime != null ">and sign_begin_time = #{signBeginTime}</if>
-            <if test="signEndTime != null ">and sign_end_time = #{signEndTime}</if>
+            <if test="signTime != null">
+                and #{signTime} between sign_begin_time and sign_end_time
+            </if>
             <if test="schoolId != null ">and school_id = #{schoolId}</if>
             <if test="holder != null  and holder != ''">and holder = #{holder}</if>
             <if test="level != null and level != ''">and level = #{level}</if>

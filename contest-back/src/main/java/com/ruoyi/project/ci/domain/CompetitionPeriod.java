@@ -72,9 +72,15 @@ public class CompetitionPeriod extends BaseEntity {
      * 基本信息
      */
     private CompetitionInfo basic;
+
+    /**
+     * 用于搜索的字段
+     */
     private String level;
     private Long classify;
     private String sortWay;
+    private boolean onlySchool;
+    private Date signTime;
 
     /**
      * 详情信息

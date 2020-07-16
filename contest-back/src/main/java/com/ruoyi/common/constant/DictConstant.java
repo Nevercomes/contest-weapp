@@ -40,4 +40,10 @@ public final class DictConstant {
      * 帖子状态-草稿
      */
     public static final String POST_STATUS_DRAFT = "0";
+
+    /**
+     * 积分变动原因-签到
+     */
+    public static final String POINTS_CHANGE_CHECK = "3";
+
 }

@@ -2,6 +2,7 @@ package com.ruoyi.project.ci.controller;
 
 import java.util.List;
 
+import com.ruoyi.common.constant.DictConstant;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.framework.aspectj.lang.annotation.DataScope;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -95,6 +96,34 @@ public class PointsActionController extends BaseController {
     @PostMapping
     public AjaxResult add(@RequestBody PointsAction pointsAction) {
         return toAjax(pointsActionService.insertPointsAction(pointsAction));
+    }
+
+    /**
+     * 当日签到
+     */
+    @PreAuthorize("@ss.hasPermi('ci:points:add')")
+    @Log(title = "积分记录", businessType = BusinessType.INSERT)
+    @PostMapping("/todayCheck")
+    public AjaxResult todayCheck(@RequestBody PointsAction pointsAction) {
+        // 检查是否签到
+        if (pointsActionService.isTodayCheck()) {
+            return AjaxResult.error("今日已签到");
+        } else {
+            pointsAction.setUserId(SecurityUtils.getUserId());
+            pointsAction.setValue(10);
+            pointsAction.setChangeCause(DictConstant.POINTS_CHANGE_CHECK);
+            return toAjax(pointsActionService.insertPointsAction(pointsAction));
+        }
+    }
+
+    /**
+     * 判断当日是否签到
+     * @return
+     */
+    @PreAuthorize("@ss.hasPermi('ci:points:add')")
+    @GetMapping("/todayCheck")
+    public AjaxResult isTodayCheck() {
+        return AjaxResult.success(pointsActionService.isTodayCheck());
     }
 
     /**

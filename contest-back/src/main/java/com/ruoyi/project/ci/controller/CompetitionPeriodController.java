@@ -1,9 +1,6 @@
 package com.ruoyi.project.ci.controller;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import com.ruoyi.common.utils.CommonUtil;
 import com.ruoyi.common.utils.SecurityUtils;
@@ -49,6 +46,14 @@ public class CompetitionPeriodController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(CompetitionPeriod competitionPeriod) {
         startPage();
+        // 是否选定学校
+        if (competitionPeriod.isOnlySchool() && SecurityUtils.getLoginUser().getUser().getSchoolId() != null) {
+            competitionPeriod.setSchoolId(SecurityUtils.getLoginUser().getUser().getSchoolId());
+        }
+        // 排序方式-报名
+        if ("onlySign".equals(competitionPeriod.getSortWay())) {
+            competitionPeriod.setSignTime(new Date());
+        }
         List<CompetitionPeriod> list = competitionPeriodService.selectCompetitionPeriodList(competitionPeriod);
         return getDataTable(list);
     }

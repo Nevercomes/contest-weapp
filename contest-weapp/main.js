@@ -15,6 +15,9 @@ Vue.component('plugin', plugin)
 import cuCustom from './colorui/components/cu-custom.vue'
 Vue.component('cu-custom', cuCustom)
 
+import NlLoading from './nl_componet/nl-loading.vue'
+Vue.component('nl-loading', NlLoading)
+
 import NlMaskLoading from './nl_componet/nl-mask-loading.vue'
 Vue.component('nl-mask-loading', NlMaskLoading)
 

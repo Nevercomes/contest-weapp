@@ -69,3 +69,19 @@ export function exportPoints(query) {
     params: query
   })
 }
+
+// 当日是否签到
+export function isTodayCheck() {
+	return http.request({
+		url: '/ci/points/todayCheck',
+		method: 'get'
+	})
+}
+
+// 每日签到
+export function todayCheck() {
+	return http.request({
+		url: '/ci/points/todayCheck',
+		method: 'post'
+	})
+}

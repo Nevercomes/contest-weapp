@@ -102,7 +102,7 @@ public class SysLoginService {
     public Map<String, Object> wxLogin(String code) {
         String openId = WeAppUtil.getOpenId(code);
         Map<String, Object> res = new HashMap<>();
-        res.put("needInfo", false);
+        res.put("register", false);
         if (StringUtils.isNotEmpty(openId)) {
             // 通过openId查找用户
             SysUser user = userService.selectUserByUserName(openId);
@@ -111,7 +111,7 @@ public class SysLoginService {
             if (user == null) {
                 // 根据openId创建用户
                 userService.createWeappUser(openId, BCPwd);
-                res.put("needInfo", true);
+                res.put("register", true);
             } else if (StringUtils.isEmpty(user.getNickName())) {
                 res.put("needInfo", true);
             }
