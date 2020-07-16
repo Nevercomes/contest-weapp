@@ -482,7 +482,7 @@
 		"navigationBarTextStyle": "black",
 		// "navigationStyle": "custom",
 		"usingComponents": { //这里为方便，全局引入了所有组件，也可以在某个page下单独引用某个组件
-			// "van-action-sheet": "/wxcomponents/vant/action-sheet/index",
+			"van-action-sheet": "/wxcomponents/vant/action-sheet/index",
 			// "van-area": "/wxcomponents/vant/area/index",
 			// "van-button": "/wxcomponents/vant/button/index",
 			// "van-card": "/wxcomponents/vant/card/index",
