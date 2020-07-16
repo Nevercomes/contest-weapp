@@ -2,9 +2,9 @@
 	<view class="app-container">
 		<!-- 弹出action-sheet和分享 -->
 		<view class="info-top-right">
-			<text class="cuIcon-more margin-bottom text-lg" @click="onMoreClick"></text>
+			<text class="cuIcon-more margin-bottom text-xl" @click="onMoreClick"></text>
 			<!-- <text class="cuIcon-share text-lg" @click="onShareClick"></text> -->
-			<button open-type='share' class="cuIcon-share text-lg icon-btn"></button>
+			<button open-type='share' class="cuIcon-share text-xl icon-btn"></button>
 		</view>
 		<!-- 基本信息 -->
 		<view class="flex justify-center padding-tb-xl bg-white">
@@ -174,6 +174,7 @@
 			// 展示action-sheet
 			onMoreClick() {
 				this.show = true
+				console.log('click')
 			},
 			// TODO 弹出分享选项
 			onShareAppMessage() {
