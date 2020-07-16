@@ -10,7 +10,7 @@ const param = {
 }
 
 const config = {
-	// 当前请求的api
+	// 当前请求的api地址
 	REQ_API: param.PROD_API
 }
 
