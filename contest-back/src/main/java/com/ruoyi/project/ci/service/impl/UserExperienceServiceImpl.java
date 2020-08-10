@@ -113,6 +113,15 @@ public class UserExperienceServiceImpl implements IUserExperienceService {
         return userExperienceMapper.deleteUserExperienceById(id);
     }
 
+    /**
+     * 查询竞赛经历大于1的username
+     * @return
+     */
+    @Override
+    public List<String> selectUsernameTalentList() {
+        return userExperienceMapper.selectUsernameTalentList();
+    }
+
     private void setCreated(UserExperience userExperience) {
         if (userExperience == null) return;
         if (StringUtils.isNotEmpty(userExperience.getCreateBy())) {

@@ -17,12 +17,12 @@
 				<view class="title">个人能力</view>
 				<view v-for="(item,index) in capabilityList" :key="index" class='cu-tag radius' @click="onNotSelectClick(item)">{{item}}</view>
 			</view>
-		
+
 			<!-- 默认的能力选择label -->
 			<view class="box bg-white padding solid-top">
 				<view v-for="(item,index) in capabilityLabelOptions" :key="index" class='cu-tag round margin-xs' @click="onSelectClick(item)">{{item}}</view>
 			</view>
-		
+
 			<view class="padding flex flex-direction">
 				<button class="cu-btn bg-green margin-tb-sm lg  shadow-blur round" form-type="submit">发布组队期望信息</button>
 			</view>
@@ -32,13 +32,12 @@
 </template>
 
 <script>
-	
 	import WxValidate from '@/utils/WxValidate.js'
-	
+
 	import {
 		addExpect
 	} from '@/api/ci/expect.js'
-	
+
 	export default {
 		name: 'TeamPublicExpect',
 		data() {
@@ -90,12 +89,12 @@
 				}
 			},
 			submitAddForm() {
-				this.loading = true
 				if (this.validAddForm(this.form)) {
 					// 发布加入信息
-					this.loading = false
+					this.loading = true
 					this.form.capability = this.capabilityList.join(',')
 					addExpect(this.form).then(res => {
+						this.loading = false
 						uni.navigateTo({
 							url: 'team-public-expect-success?cpId=' + this.form.cpId
 						})

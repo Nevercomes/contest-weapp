@@ -103,10 +103,10 @@
 			// 取代搜索事件改为setting设置
 			goToPublicPost() {
 				// 动态发布功能已关闭
-				this.msgInfo('发布暂时关闭')
-				// uni.navigateTo({
-				// 	url: 'news-public-form'
-				// })
+				// this.msgInfo('发布暂时关闭')
+				uni.navigateTo({
+					url: 'news-public-form'
+				})
 			},
 			onItemClick(id) {
 				uni.navigateTo({

@@ -167,6 +167,14 @@
         where u.user_name = #{userName}
     </select>
 
+    <select id="selectUserListByUsername" parameterType="List" resultMap="SysUserResult">
+        <include refid="selectUserVo"/>
+        where u.user_name in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
     <select id="selectUserById" parameterType="Long" resultMap="SysUserResult">
         <include refid="selectUserVo"/>
         where u.user_id = #{userId}

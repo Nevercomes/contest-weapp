@@ -1,6 +1,10 @@
 package com.ruoyi.project.ci.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.ruoyi.project.ci.service.IUserTalentService;
+import com.ruoyi.project.system.domain.SysUser;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +35,8 @@ import com.ruoyi.framework.web.page.TableDataInfo;
 public class TeamExpectController extends BaseController {
     @Autowired
     private ITeamExpectService teamExpectService;
+    @Autowired
+    private IUserTalentService userTalentService;
 
     /**
      * 查询组队意愿列表
@@ -41,6 +47,29 @@ public class TeamExpectController extends BaseController {
         startPage();
         listSelf(teamExpect);
         List<TeamExpect> list = teamExpectService.selectTeamExpectList(teamExpect);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询可能愿意加入队伍的用户 冷启动
+     */
+    @PreAuthorize("@ss.hasPermi('ci:expect:list')")
+    @GetMapping("/possible")
+    public TableDataInfo listPossible(TeamExpect teamExpect) {
+        startPage();
+        // 真正的意愿数据
+        List<TeamExpect> list = teamExpectService.selectTeamExpectList(teamExpect);
+        // 如果意愿数据不足，则查询达人数据
+        if (list == null || list.size() < 8) {
+            List<SysUser> userList = userTalentService.selectUserTalentList();
+            if(list == null) list = new ArrayList<>();
+            for (SysUser user : userList) {
+                TeamExpect temp = new TeamExpect();
+                temp.setCapability("竞赛达人");
+                temp.setCreateUser(user);
+                list.add(temp);
+            }
+        }
         return getDataTable(list);
     }
 

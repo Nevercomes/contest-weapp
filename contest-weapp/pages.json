@@ -144,7 +144,9 @@
 		{
 			"path": "pages/ci/competition-comment",
 			"style": {
-				"navigationBarTitleText":"消息列表"
+				"navigationBarTitleText":"评论列表",
+				"enablePullDownRefresh": true
+				
 			}
 		},
 		
@@ -469,6 +471,7 @@
 				"selectedIconPath": "static/tabbar/about_cur.png",
 				"text": "我的"
 			}
+			
 		]
 	},
 	"globalStyle": {
@@ -575,6 +578,11 @@
 				"name":"postInfo",
 				"path":"pages/ci/news-info",
 				"query":"id=1"
+			},
+			{
+				"name":"compComment",
+				"path":"pages/ci/competition-comment",
+				"query":"cpId=7"
 			}
 		]
 	}

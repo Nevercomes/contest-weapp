@@ -29,3 +29,12 @@ export function undoExpect(id) {
 		}
 	})
 }
+
+// 队伍创建成功之后展示可能的用户
+export function listPossibleUser(query) {
+	return http.request({
+		url: '/ci/expect/possible',
+		method: 'get',
+		params: query
+	})
+}

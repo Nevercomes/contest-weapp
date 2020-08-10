@@ -139,4 +139,11 @@ public interface SysUserMapper {
      * @return
      */
     List<SysUser> selectConcernedUserList(SysUser user);
+
+    /**
+     * 根据username 的list查询用户
+     * @param usernameList
+     * @return
+     */
+    List<SysUser> selectUserListByUsername(List<String> usernameList);
 }

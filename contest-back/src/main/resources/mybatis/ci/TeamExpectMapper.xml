@@ -36,6 +36,7 @@
             <if test="work != null  and work != ''">and work = #{work}</if>
             <if test="capability != null  and capability != ''">and capability like concat('%', #{capability}, '%')</if>
             <if test="status != null  and status != ''">and status = #{status}</if>
+            <if test="createBy != null  and createBy != ''">and create_by = #{createBy}</if>
         </where>
         order by id desc
     </select>

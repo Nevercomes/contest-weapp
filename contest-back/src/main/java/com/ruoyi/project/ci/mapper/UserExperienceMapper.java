@@ -65,4 +65,11 @@ public interface UserExperienceMapper {
      * @return 结果
      */
     int deleteUserExperienceByIds(Long[] ids);
+
+    /**
+     * 查询竞赛经历大于1的username
+     * @return
+     */
+    List<String> selectUsernameTalentList();
+
 }

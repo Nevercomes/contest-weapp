@@ -23,8 +23,8 @@
 		
 		<view  class="flex-sub text-center">
 			<view class="solid-top text-df padding text-gray">
-				<text v-if="expectList && expectList.length > 0">他们也在找队伍，试着邀请一下吧</text>
-				<text v-else>好像没有人在寻找队伍呢</text>
+				<text v-if="expectList && expectList.length > 0">他们也在找队伍，或者竞赛经验丰富哦~</text>
+				<text v-else>好像没有人合适的人在找队伍呢</text>
 			</view>
 		</view>
 		
@@ -36,8 +36,10 @@
 </template>
 
 <script>
+	
+	// 这里更换为冷启动方式，可能没有Expect
 	import {
-		listExpect
+		listPossibleUser
 	} from '@/api/ci/expect.js'
 
 	export default {
@@ -76,7 +78,7 @@
 				// 查询参数
 				queryParams: {
 					pageNum: 1,
-					pageSize: 5,
+					pageSize: 30,
 					cpId: undefined
 				},
 				// 队伍id
@@ -91,19 +93,19 @@
 		},
 		methods: {
 			loadList() {
-				listExpect(this.queryParams).then(res => {
+				listPossibleUser(this.queryParams).then(res => {
 					this.hasMoreData = this.hasMore(res.total, this.queryParams.pageNum, this.queryParams.pageSize)
 					this.dataList = this.dataList.concat(res.rows)
 					this.expectList = this.getRandomArrayElements(this.dataList, 4)
 				})
 			},
 			onChangeClick() {
-				if (this.hasMoreData) {
-					this.queryParams.pageNum = this.queryParams.pageNum + 1
-					this.loadList()
-				} else {
+				// if (this.hasMoreData) {
+				// 	this.queryParams.pageNum = this.queryParams.pageNum + 1
+				// 	this.loadList()
+				// } else {
 					this.expectList = this.getRandomArrayElements(this.dataList, 4)
-				}
+				// }
 			},
 			// 跳转到用户展示页面
 			goToUserShowPage(userId) {

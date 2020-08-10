@@ -65,4 +65,12 @@ public interface IUserExperienceService {
      * @return 结果
      */
     int deleteUserExperienceById(Long id);
+
+
+    /**
+     * 查询竞赛经历大于1的用户username
+     * @return
+     */
+    List<String> selectUsernameTalentList();
+
 }

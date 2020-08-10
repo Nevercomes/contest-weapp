@@ -136,6 +136,8 @@
 							updateUserProfile({
 								nickName: userInfo.nickName,
 								avatar: userInfo.avatarUrl
+							}).then(response => {
+								self.submitForm()
 							})
 						} else {
 							self.submitForm()

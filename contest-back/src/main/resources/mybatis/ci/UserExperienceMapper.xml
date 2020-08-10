@@ -56,6 +56,10 @@
         </if>
     </select>
 
+    <select id="selectUsernameTalentList" resultType="java.lang.String">
+        SELECT create_by FROM `ci_user_experience` group by create_by having count(1)>1 limit 10
+    </select>
+
     <insert id="insertUserExperience" parameterType="UserExperience" useGeneratedKeys="true" keyProperty="id">
         insert into ci_user_experience
         <trim prefix="(" suffix=")" suffixOverrides=",">

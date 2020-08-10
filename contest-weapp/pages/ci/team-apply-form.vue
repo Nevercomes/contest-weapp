@@ -92,15 +92,17 @@
 				}
 			},
 			submitForm() {
-				this.loading = true
 				if (this.validForm(this.form)) {
 					// 发布加入信息
-					this.loading = false
+					this.loading = true
 					this.form.capability = this.capabilityList.join(',')
 					addApply(this.form).then(res => {
+						this.loading = false
 						uni.navigateTo({
 							url: 'team-apply'
 						})
+					}).catch(() => {
+						this.loading = false
 					})
 				}
 			},

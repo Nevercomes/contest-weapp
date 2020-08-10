@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.ci.mapper.CompetitionCommentMapper">
+
+    <resultMap type="CompetitionComment" id="CompetitionCommentResult">
+        <result property="id" column="id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="content" column="content"/>
+        <result property="cpId" column="cp_id"/>
+        <result property="cpName" column="cp_name"/>
+    </resultMap>
+
+    <sql id="selectCompetitionCommentVo">
+        select id,
+               create_by,
+               create_time,
+               content,
+               cp_id,
+               (select name from ci_competition_period where id = cp_id) as cp_name
+        from ci_competition_comment
+    </sql>
+
+    <select id="selectCompetitionCommentList" parameterType="CompetitionComment" resultMap="CompetitionCommentResult">
+        <include refid="selectCompetitionCommentVo"/>
+        <where>
+            <if test="content != null  and content != ''">and content like concat('%', #{content}, '%')</if>
+            <if test="cpId != null ">and cp_id = #{cpId}</if>
+            order by id desc
+        </where>
+    </select>
+
+    <select id="selectCompetitionCommentById" parameterType="Long" resultMap="CompetitionCommentResult">
+        <include refid="selectCompetitionCommentVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectCompetitionCommentOptions" parameterType="CompetitionComment" resultType="Map">
+        select id as "value",
+        `name` as "label"
+        from ci_competition_comment
+        <if test="name != null and name != ''">
+            where `name` like concat('%', #{name}, '%')
+        </if>
+    </select>
+
+    <insert id="insertCompetitionComment" parameterType="CompetitionComment" useGeneratedKeys="true" keyProperty="id">
+        insert into ci_competition_comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="content != null  and content != ''">content,</if>
+            <if test="cpId != null ">cp_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="content != null  and content != ''">#{content},</if>
+            <if test="cpId != null ">#{cpId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCompetitionComment" parameterType="CompetitionComment">
+        update ci_competition_comment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="content != null  and content != ''">content = #{content},</if>
+            <if test="cpId != null ">cp_id = #{cpId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCompetitionCommentById" parameterType="Long">
+        delete
+        from ci_competition_comment
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteCompetitionCommentByIds" parameterType="String">
+        delete from ci_competition_comment where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
