@@ -8,6 +8,7 @@ import com.ruoyi.common.constant.DictConstant;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.job.ScheduleUtils;
 import com.ruoyi.project.system.domain.SysUser;
 import com.ruoyi.project.system.mapper.SysUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,9 @@ public class PointsActionServiceImpl implements IPointsActionService {
      */
     @Override
     public List<PointsAction> selectPointsActionList(PointsAction pointsAction) {
+        if(!SecurityUtils.isAdmin(SecurityUtils.getUserId())) {
+            pointsAction.setUserId(SecurityUtils.getUserId());
+        }
         return pointsActionMapper.selectPointsActionList(pointsAction);
     }
 

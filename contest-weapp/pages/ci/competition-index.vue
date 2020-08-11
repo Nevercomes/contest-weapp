@@ -50,47 +50,49 @@
 		<view class="cu-modal drawer-modal justify-end" style="text-align: left;" :class="modalName=='DrawerModalR'?'show':''"
 		 @tap="hideModal">
 			<view class="cu-dialog basis-lg" @tap.stop="" style="height: 100vh;">
-				<!-- 分类栏 -->
-				<view class="text-df padding text-gray">竞赛分类</view>
-				<view class="padding-lr-sm">
-					<button @click="queryParams.classify = undefined" :class="queryParams.classify==undefined?'bg-green':'line-green'"
-					 class="cu-btn margin-xs">
-						全部
-					</button>
-					<button @click="onClassifyClick(item.id)" :class="queryParams.classify==item.id?'bg-green':'line-green'"
-					 class="cu-btn margin-xs" v-for="(item,index) in classifyList" :key="index">
-						{{item.name}}
-					</button>
-				</view>
-				<!-- 级别 -->
-				<view class="text-df padding text-gray">竞赛级别</view>
-				<view class="padding-lr-sm">
-					<button @click="queryParams.level = undefined" :class="queryParams.level==undefined?'bg-green':'line-green'" class="cu-btn margin-xs">
-						全部
-					</button>
-					<button @click="onLevelClick(item.dictValue)" :class="queryParams.level==item.dictValue?'bg-green':'line-green'"
-					 class="cu-btn margin-xs" v-for="(item,index) in levelOptions" :key="index">
-						{{item.dictLabel}}
-					</button>
-				</view>
-
-				<view class="text-df padding text-gray">搜索优先</view>
-				<view class="padding-lr-sm">
-					<button @click="onSortWayClick(item.dictValue)" :class="queryParams.sortWay==item.dictValue?'bg-green':'line-green'"
-					 class="cu-btn margin-xs" v-for="(item,index) in sortWayList" :key="index">
-						{{item.dictLabel}}
-					</button>
-				</view>
-
-				<view class="text-df padding text-gray flex justify-between align-center">
-					<text class="text-grey">选定学校</text>
-					<switch @change="OnlySchool" :class="queryParams.onlySchool?'checked':''" :checked="queryParams.onlySchool?true:false"></switch>
-				</view>
-
-				<view class="flex justify-around padding">
-					<button class="cu-btn round line-green shadow" @click.stop="onClearClick">清空</button>
-					<button class="cu-btn bg-green shadow round" @click.stop="onConfirmClick">确定</button>
-				</view>
+				<scroll-view scroll-y="true" style="height: 100vh;">
+					<!-- 分类栏 -->
+					<view class="text-df padding text-gray">竞赛分类</view>
+					<view class="padding-lr-sm">
+						<button @click="queryParams.classify = undefined" :class="queryParams.classify==undefined?'bg-green':'line-green'"
+						 class="cu-btn margin-xs">
+							全部
+						</button>
+						<button @click="onClassifyClick(item.id)" :class="queryParams.classify==item.id?'bg-green':'line-green'"
+						 class="cu-btn margin-xs" v-for="(item,index) in classifyList" :key="index">
+							{{item.name}}
+						</button>
+					</view>
+					<!-- 级别 -->
+					<view class="text-df padding text-gray">竞赛级别</view>
+					<view class="padding-lr-sm">
+						<button @click="queryParams.level = undefined" :class="queryParams.level==undefined?'bg-green':'line-green'" class="cu-btn margin-xs">
+							全部
+						</button>
+						<button @click="onLevelClick(item.dictValue)" :class="queryParams.level==item.dictValue?'bg-green':'line-green'"
+						 class="cu-btn margin-xs" v-for="(item,index) in levelOptions" :key="index">
+							{{item.dictLabel}}
+						</button>
+					</view>
+					
+					<view class="text-df padding text-gray">搜索优先</view>
+					<view class="padding-lr-sm">
+						<button @click="onSortWayClick(item.dictValue)" :class="queryParams.sortWay==item.dictValue?'bg-green':'line-green'"
+						 class="cu-btn margin-xs" v-for="(item,index) in sortWayList" :key="index">
+							{{item.dictLabel}}
+						</button>
+					</view>
+					
+					<view class="text-df padding text-gray flex justify-between align-center">
+						<text class="text-grey">选定学校</text>
+						<switch @change="OnlySchool" :class="queryParams.onlySchool?'checked':''" :checked="queryParams.onlySchool?true:false"></switch>
+					</view>
+					
+					<view class="flex justify-around padding">
+						<button class="cu-btn round line-green shadow" @click.stop="onClearClick">清空</button>
+						<button class="cu-btn bg-green shadow round" @click.stop="onConfirmClick">确定</button>
+					</view>
+				</scroll-view>
 			</view>
 		</view>
 

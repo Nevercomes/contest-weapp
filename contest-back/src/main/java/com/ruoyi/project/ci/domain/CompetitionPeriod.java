@@ -69,6 +69,12 @@ public class CompetitionPeriod extends BaseEntity {
     private String holder;
 
     /**
+     * 分类信息
+     */
+    @Excel(name = "分类信息")
+    private String classifyLabels;
+
+    /**
      * 基本信息
      */
     private CompetitionInfo basic;

@@ -41,7 +41,6 @@ public class PointsActionController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('ci:points:list')")
     @GetMapping("/list")
-    @DataScope(userAlias = "u")
     public TableDataInfo list(PointsAction pointsAction) {
         startPage();
         List<PointsAction> list = pointsActionService.selectPointsActionList(pointsAction);

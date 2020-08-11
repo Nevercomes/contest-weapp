@@ -6,14 +6,22 @@
 				<van-icon size="24" name="setting-o"></van-icon>
 			</view>
 		</van-search>
-		<!-- swipe部分 -->
-		<swiper class="screen-swiper square-dot" :indicator-dots="true" :circular="true" :autoplay="true" interval="5000"
-		 duration="500">
+		<!-- 全屏样式 -->
+		<swiper class="screen-swiper square-dot" :indicator-dots="true" :circular="true"
+		 :autoplay="true" interval="5000" duration="500">
 			<swiper-item v-for="(item,index) in swiperList" :key="index" @click="onSwiperClick(item)">
 				<image :src="item.picUrl" mode="aspectFill"></image>
-				<!-- <video :src="item.picUrl" autoplay loop muted :show-play-btn="false" :controls="false" objectFit="cover" v-if="item.type=='video'"></video> -->
 			</swiper-item>
 		</swiper>
+		<!-- Card样式 -->
+		<!-- <swiper class="card-swiper round-dot" :indicator-dots="true" :circular="true" :autoplay="true" interval="5000"
+		 duration="500" @change="cardSwiper" indicator-color="#8799a3" indicator-active-color="#0081ff">
+			<swiper-item v-for="(item,index) in swiperList" :key="index" :class="cardCur==index?'cur':''" @click="onSwiperClick(item)">
+				<view class="swiper-item">
+					<image :src="item.picUrl" mode="aspectFill"></image>
+				</view>
+			</swiper-item>
+		</swiper> -->
 		<!-- 主界面操作组 -->
 		<view class="cu-list grid col-4 no-border">
 			<view class="cu-item" v-for="(item,index) in cuIconList" :key="index" v-if="index<4" @click="goToPage(item.url)">
@@ -29,13 +37,25 @@
 		<view class="cu-bar bg-white">
 			<view class="action">
 				<text class="cuIcon-title text-green"></text>
+				<text class="text-lg text-bold">团队达人</text>
+			</view>
+		</view>
+
+		<view class="cu-bar bg-white">
+			<view class="action">
+				<text class="cuIcon-title text-green"></text>
 				<text class="text-lg text-bold">竞赛推荐</text>
 			</view>
 		</view>
-		<view class="content-container content-flex">
-			<view v-for="(item, index) in compList" :key="index" class="item-2 margin-bottom" @click="goToCompInfoPage(item.cpId)">
-				<image style="width: 100%;  height: 300upx;" :src="item.picUrl"></image>
-				<view class="text-sm">{{item.cpName}}</view>
+		<view v-for="(item, index) in compList" :key="index" class="flex padding-lr padding-tb-sm bg-white" @click="goToCompInfoPage(item.cpId)">
+			<view class="inline-image margin-right-sm">
+				<image class="inline-image" :src="item.picUrl"></image>
+			</view>
+			<view class="flex flex-direction justify-around">
+				<view class="text-df">{{item.cpName}}</view>
+				<view>
+					<text v-if="index<3" class='cu-tag margin-right-xs radius' v-for="(label,index) in item.classifyList" :key="index">{{label}}</text>
+				</view>
 			</view>
 		</view>
 
@@ -46,8 +66,8 @@
 			</view>
 		</view>
 		<view class="cu-list padding-lr">
-			<view class="cu-item post-card padding-tb-sm bg-white shadow-blur margin-bottom-sm" @click="goToPostPage(item.id)" v-for="(item,index) in newsList"
-			 :key="index">
+			<view class="cu-item post-card padding-tb-sm bg-white shadow-blur margin-bottom-sm" @click="goToPostPage(item.id)"
+			 v-for="(item,index) in newsList" :key="index">
 				<view class="text-bold text-df padding-tb-xs">{{item.name}}</view>
 				<!-- 作者信息 -->
 				<view class="flex align-center">
@@ -72,7 +92,7 @@
 				</view>
 			</view>
 		</view>
-		
+
 	</view>
 </template>
 
@@ -97,9 +117,11 @@
 		name: "HomeIndex",
 		data() {
 			return {
+				ColorList: this.ColorList,
+				
 				// 搜索关键词
 				keyword: undefined,
-				
+
 				// 收藏数目
 				collectNum: 1,
 
@@ -146,12 +168,15 @@
 				pageSize: 10
 			}).then(res => {
 				this.compList = this.getRandomArrayElements(res.rows, 4)
+				this.compList.forEach(item => {
+					item.classifyList = item.classifyLabels ? item.classifyLabels.split(",") : []
+				})
 			})
 			// 加载首页推荐
 			listSwiper().then(res => {
 				this.swiperList = res.rows
 			})
-			
+
 			// 部分请求放在登录回调之后
 			this.$store.dispatch('Login').then(loginRes => {
 				// 跳转到欢迎页面 (去获取微信信息,根据小程序的规范不直接获取)
@@ -167,7 +192,7 @@
 						this.newsList = this.getRandomArrayElements(res.rows, 4)
 					})
 					listCollection().then(res => {
-						if(res.total <= 1) {
+						if (res.total <= 1) {
 							this.collectNum = 1
 						} else {
 							this.collectNum = res.total
@@ -262,4 +287,11 @@
 		justify-content: space-between;
 		padding: 0 20upx;
 	}
+	
+	.inline-image {
+		width: 140upx;
+		height: 140upx;
+		border-radius: 14upx;
+	}
+	
 </style>

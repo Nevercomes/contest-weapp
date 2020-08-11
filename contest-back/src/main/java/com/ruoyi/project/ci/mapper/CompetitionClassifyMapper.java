@@ -64,4 +64,11 @@ public interface CompetitionClassifyMapper {
      * @return
      */
     List<Integer> selectCompetitionClassifyListByInfoId(Long infoId);
+
+    /**
+     * 根据id查询分类的名称
+     * @param classifyIds
+     * @return
+     */
+    List<String> selectClassifyNameByIds(Long[] classifyIds);
 }

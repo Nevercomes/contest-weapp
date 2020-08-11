@@ -18,6 +18,7 @@
         <result property="schoolId" column="school_id"/>
         <result property="schoolName" column="school_name"/>
         <result property="holder" column="holder"/>
+        <result property="classifyLabels" column="classify_labels"/>
         <association property="basic" column="cp_info_id" javaType="CompetitionInfo" resultMap="infoResult"/>
         <association property="details" column="cp_id" javaType="CompetitionPeriodDetails" resultMap="detailsResult"/>
     </resultMap>
@@ -51,7 +52,8 @@
                (select school_name
                 from edu_school
                 where edu_school.school_id = ci_competition_period.school_id) as "school_name",
-               holder
+               holder,
+               classify_labels
         from ci_competition_period
     </sql>
 
@@ -71,6 +73,7 @@
                 from edu_school
                 where edu_school.school_id = ci_competition_period.school_id) as "school_name",
                holder,
+               classify_labels,
                cci.level,
                cci.view_number,
                cci.concern_number
@@ -94,6 +97,7 @@
                 from edu_school
                 where edu_school.school_id = ci_competition_period.school_id) as "school_name",
                holder,
+               classify_labels,
                d.cp_id,
                d.official_link,
                d.intro,
@@ -163,6 +167,7 @@
             <if test="signEndTime != null ">sign_end_time,</if>
             <if test="schoolId != null ">school_id,</if>
             <if test="holder != null  and holder != ''">holder,</if>
+            <if test="classifyLabels != null  and classifyLabels != ''">classify_labels,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="createBy != null  and createBy != ''">#{createBy},</if>
@@ -176,6 +181,7 @@
             <if test="signEndTime != null ">#{signEndTime},</if>
             <if test="schoolId != null ">#{schoolId},</if>
             <if test="holder != null  and holder != ''">#{holder},</if>
+            <if test="classifyLabels != null  and classifyLabels != ''">#{classifyLabels},</if>
         </trim>
     </insert>
 
@@ -201,6 +207,12 @@
         update ci_competition_period
         set pic_url = #{url}
         where id = #{id}
+    </update>
+
+    <update id="updateClassifyLabelsByInfoId">
+        update ci_competition_period
+        set classify_labels = #{classifyLabels}
+        where cp_info_id = #{cpInfoId}
     </update>
 
     <delete id="deleteCompetitionPeriodById" parameterType="Long">

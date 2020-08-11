@@ -19,6 +19,7 @@
     <select id="selectInfoClassifyList" parameterType="InfoClassify" resultMap="InfoClassifyResult">
         <include refid="selectInfoClassifyVo"/>
         <where>
+            <if test="cpInfoId != null ">and cp_info_id = #{cpInfoId}</if>
         </where>
     </select>
 
@@ -57,11 +58,6 @@
     <delete id="deleteInfoClassifyByInfoId" parameterType="Long">
         delete from ci_info_classify
         where cp_info_id = #{cpInfoId}
-    </delete>
-
-    <delete id="deleteRoleMenuByRoleId" parameterType="Long">
-        delete from ci_info_classify
-        where cp_info_id = #{infoId}
     </delete>
 
     <delete id="deleteInfoClassifyByIds" parameterType="String">

@@ -8,6 +8,7 @@
 					<view class="cu-tag bg-blue">{{levelFormat(period.basic.level)}}</view>
 				</view>
 				<view class="cu-list padding">
+					<text v-if="index < 4" class='cu-tag margin-right-xs radius' v-for="(label,index) in period.classifyList" :key="index">{{label}}</text>
 					<view v-if="calSignDate(period.signEndTime)" class="padding-tb-sm">
 						<text class="text-green margin-right">正在报名</text><text>离报名截止还有{{calSignDate(period.signEndTime)}}天</text>
 					</view>
@@ -22,21 +23,18 @@
 					<view class="padding-tb-sm">
 						<view><text class="text-grey margin-right">主办单位</text>{{period.holder}}</view>
 					</view>
+
 					<view class="text-right">
 						<text class="cuIcon-attentionfill margin-lr-xs text-grey"></text> <text class="text-gray">浏览 {{period.basic.viewNumber}}</text>
-						<text class="cuIcon-favorfill margin-lr-xs text-grey"></text> <text class="text-gray">关注 {{period.basic.concernNumber}}</text>
+						<text class="cuIcon-favorfill margin-lr-xs text-grey"></text> <text class="text-gray"> 关注 {{period.basic.concernNumber}}</text>
 					</view>
 				</view>
-				<!-- <view class="cu-bar bg-white">
-					<view class="action">
-						<text class="cuIcon-title text-green"></text>
-						<text>竞赛简介</text>
-					</view>
-				</view> -->
+
 				<!-- 加入资讯块的显示 -->
 				<scroll-view scroll-x class="bg-white nav">
 					<view class="flex text-center">
-						<view class="cu-item flex-sub" :class="index==tabCur?'text-orange cur':''" v-for="(item,index) in tabList" :key="index" @tap="tabSelect(index)" :data-id="index">
+						<view class="cu-item flex-sub" :class="index==tabCur?'text-orange cur':''" v-for="(item,index) in tabList" :key="index"
+						 @tap="tabSelect(index)" :data-id="index">
 							<text :class="'cuIcon-' + item.icon" class="margin-right-xs"></text> {{item.label}}
 						</view>
 					</view>
@@ -46,13 +44,7 @@
 						<rich-text :nodes="period.details.content"></rich-text>
 					</view>
 					<view v-if="tabCur == 1">
-						<van-steps
-						  :steps="timelineSteps"
-						  :active="timelineActive"
-						  direction="vertical"
-						  active-color="#39b54a"
-						  @click="clipLink"
-						/>
+						<van-steps :steps="timelineSteps" :active="timelineActive" direction="vertical" active-color="#39b54a" @click="clipLink" />
 						<nl-empty v-if="!timelineList || timelineList.length==0" :msg="'暂无资讯'"></nl-empty>
 					</view>
 				</view>
@@ -100,6 +92,7 @@
 		name: 'CompetitionInfo',
 		data() {
 			return {
+				ColorList: this.ColorList,
 				id: undefined,
 				// 竞赛信息
 				period: {},
@@ -114,7 +107,7 @@
 				tabList: [{
 					icon: 'tag',
 					label: '信息简介'
-				},{
+				}, {
 					icon: 'community',
 					label: '竞赛资讯'
 				}],
@@ -122,7 +115,7 @@
 				timelineList: [],
 				timelineSteps: [],
 				timelineActive: 0
-				
+
 			}
 		},
 		onLoad(options) {
@@ -133,6 +126,7 @@
 			if (this.id) {
 				getPeriod(this.id).then(res => {
 					this.period = res.data
+					this.period.classifyList = res.data.classifyLabels ? res.data.classifyLabels.split(",") : []
 				})
 				listConcernCp({
 					cpId: this.id
@@ -233,13 +227,12 @@
 		height: 280upx;
 		border-radius: 0;
 	}
-	
+
 	.cu-card .cu-item .image image {
 		height: 100%;
 	}
-	
+
 	.margin-bottom-xxl {
 		margin-bottom: 120upx;
 	}
-	
 </style>

@@ -76,4 +76,12 @@ public interface CompetitionPeriodMapper {
      * @return
      */
     List<CompetitionPeriod> selectConcernedCompetitionPeriodList(CompetitionPeriod competitionPeriod);
+
+    /**
+     * 更新分类标签
+     * @param competitionPeriod
+     * @return
+     */
+    int updateClassifyLabelsByInfoId(CompetitionPeriod competitionPeriod);
+
 }

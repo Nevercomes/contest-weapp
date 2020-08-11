@@ -28,7 +28,6 @@
                 and create_time between #{beginTime} and #{endTime}
             </if>
         </where>
-        ${dataScope}
     </select>
 
     <select id="selectPointsActionById" parameterType="Long" resultMap="PointsActionResult">

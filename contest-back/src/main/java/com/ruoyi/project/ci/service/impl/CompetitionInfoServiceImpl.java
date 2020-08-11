@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.ruoyi.project.ci.domain.CompetitionPeriod;
 import com.ruoyi.project.ci.domain.InfoClassify;
+import com.ruoyi.project.ci.mapper.CompetitionClassifyMapper;
+import com.ruoyi.project.ci.mapper.CompetitionPeriodMapper;
 import com.ruoyi.project.ci.mapper.InfoClassifyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,10 @@ public class CompetitionInfoServiceImpl implements ICompetitionInfoService {
     private CompetitionInfoMapper competitionInfoMapper;
     @Autowired
     private InfoClassifyMapper infoClassifyMapper;
+    @Autowired
+    private CompetitionPeriodMapper competitionPeriodMapper;
+    @Autowired
+    private CompetitionClassifyMapper competitionClassifyMapper;
 
     /**
      * 查询竞赛信息模板
@@ -76,7 +83,15 @@ public class CompetitionInfoServiceImpl implements ICompetitionInfoService {
         // 删除分类映射
         infoClassifyMapper.deleteInfoClassifyByInfoId(competitionInfo.getId());
         // 批量出入映射
-        return insertInfoClassify(competitionInfo);
+        int res =  insertInfoClassify(competitionInfo);
+        // 更新存在的period的分类信息，冗余写入（这一过程异步完成更好）
+        List<String> classifyLabelList = competitionClassifyMapper.selectClassifyNameByIds(competitionInfo.getClassifyIds());
+        String classifyLabels = String.join(",", classifyLabelList);
+        CompetitionPeriod period = new CompetitionPeriod();
+        period.setCpInfoId(competitionInfo.getId());
+        period.setClassifyLabels(classifyLabels);
+        competitionPeriodMapper.updateClassifyLabelsByInfoId(period);
+        return res;
     }
 
     /**
@@ -117,7 +132,7 @@ public class CompetitionInfoServiceImpl implements ICompetitionInfoService {
      */
     private int insertInfoClassify(CompetitionInfo info) {
         int rows = 1;
-        // 新增用户与角色管理
+        // 新增分类与竞赛信息模板
         List<InfoClassify> list = new ArrayList<>();
         for (Long cId : info.getClassifyIds()) {
             InfoClassify ic = new InfoClassify();

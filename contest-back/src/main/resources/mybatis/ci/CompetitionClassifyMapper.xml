@@ -38,6 +38,14 @@
         order by sort asc
     </select>
 
+    <select id="selectClassifyNameByIds" parameterType="String" resultType="java.lang.String">
+        select name from ci_competition_classify where id in
+        <foreach collection="array" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        order by sort
+    </select>
+
     <select id="selectCompetitionClassifyById" parameterType="Long" resultMap="CompetitionClassifyResult">
         <include refid="selectCompetitionClassifyVo"/>
         where id = #{id}

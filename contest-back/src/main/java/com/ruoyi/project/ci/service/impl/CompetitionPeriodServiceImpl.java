@@ -1,10 +1,18 @@
 package com.ruoyi.project.ci.service.impl;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.project.ci.domain.CompetitionInfo;
 import com.ruoyi.project.ci.domain.CompetitionPeriodDetails;
+import com.ruoyi.project.ci.domain.InfoClassify;
+import com.ruoyi.project.ci.mapper.CompetitionClassifyMapper;
+import com.ruoyi.project.ci.mapper.CompetitionInfoMapper;
+import com.ruoyi.project.ci.mapper.InfoClassifyMapper;
 import com.ruoyi.project.ci.service.ICompetitionPeriodDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +33,10 @@ public class CompetitionPeriodServiceImpl implements ICompetitionPeriodService {
     private CompetitionPeriodMapper competitionPeriodMapper;
     @Autowired
     private ICompetitionPeriodDetailsService competitionPeriodDetailsService;
+    @Autowired
+    private InfoClassifyMapper infoClassifyMapper;
+    @Autowired
+    private CompetitionClassifyMapper competitionClassifyMapper;
 
     /**
      * 查询竞赛列表信息
@@ -58,6 +70,14 @@ public class CompetitionPeriodServiceImpl implements ICompetitionPeriodService {
     @Transactional
     public int insertCompetitionPeriod(CompetitionPeriod competitionPeriod) {
         competitionPeriod.preInsert();
+        // 获取分类标签数据
+        InfoClassify query = new InfoClassify();
+        query.setCpInfoId(competitionPeriod.getCpInfoId());
+        List<InfoClassify> list = infoClassifyMapper.selectInfoClassifyList(query);
+        Long[] ids = list.stream().map(InfoClassify::getClassifyId).toArray(Long[]::new);
+        List<String> labelList = competitionClassifyMapper.selectClassifyNameByIds(ids);
+        String labels = String.join(",", labelList);
+        competitionPeriod.setClassifyLabels(labels);
         int res = competitionPeriodMapper.insertCompetitionPeriod(competitionPeriod);
         CompetitionPeriodDetails details = competitionPeriod.getDetails();
         if (details != null) {

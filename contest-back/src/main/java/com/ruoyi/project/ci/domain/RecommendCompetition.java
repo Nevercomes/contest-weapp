@@ -40,5 +40,10 @@ public class RecommendCompetition extends BaseEntity {
     @Excel(name = "竞赛")
     private String cpName;
 
+    /**
+     * 分类标签
+     */
+    private String classifyLabels;
+
 
 }
