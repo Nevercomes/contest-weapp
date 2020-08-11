@@ -44,7 +44,7 @@
 		name: 'UserDetailExperienceForm',
 		computed: {
 			minDate: function() {
-				// 今天的四年前
+				// 今天的六年前
 				const date = new Date()
 				return date.getTime() - (1000 * 60 * 60 * 24 * 365 * 6)
 			},

@@ -27,16 +27,34 @@
 						<text class="cuIcon-favorfill margin-lr-xs text-grey"></text> <text class="text-gray">关注 {{period.basic.concernNumber}}</text>
 					</view>
 				</view>
-				<view class="cu-bar bg-white">
+				<!-- <view class="cu-bar bg-white">
 					<view class="action">
 						<text class="cuIcon-title text-green"></text>
 						<text>竞赛简介</text>
 					</view>
-				</view>
-				<view class="padding margin-bottom-xxl">
-					<rich-text :nodes="period.details.content"></rich-text>
-					<!-- {{period.details.content}} -->
-					<!-- TODO 富文本显示竞赛介绍 -->
+				</view> -->
+				<!-- 加入资讯块的显示 -->
+				<scroll-view scroll-x class="bg-white nav">
+					<view class="flex text-center">
+						<view class="cu-item flex-sub" :class="index==tabCur?'text-orange cur':''" v-for="(item,index) in tabList" :key="index" @tap="tabSelect(index)" :data-id="index">
+							<text :class="'cuIcon-' + item.icon" class="margin-right-xs"></text> {{item.label}}
+						</view>
+					</view>
+				</scroll-view>
+				<view class="tab-content padding margin-bottom-xxl">
+					<view v-if="tabCur == 0">
+						<rich-text :nodes="period.details.content"></rich-text>
+					</view>
+					<view v-if="tabCur == 1">
+						<van-steps
+						  :steps="timelineSteps"
+						  :active="timelineActive"
+						  direction="vertical"
+						  active-color="#39b54a"
+						  @click="clipLink"
+						/>
+						<nl-empty v-if="!timelineList || timelineList.length==0" :msg="'暂无资讯'"></nl-empty>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -74,6 +92,9 @@
 		delConcernCp,
 		addConcernCp
 	} from '@/api/ci/concern.js'
+	import {
+		listTimeline
+	} from '@/api/ci/timeline.js'
 
 	export default {
 		name: 'CompetitionInfo',
@@ -87,8 +108,21 @@
 				// 是否关注
 				concerned: false,
 				// 竞赛级别字典
-				levelOptions: []
-
+				levelOptions: [],
+				// tab内容
+				tabCur: 0,
+				tabList: [{
+					icon: 'tag',
+					label: '信息简介'
+				},{
+					icon: 'community',
+					label: '竞赛资讯'
+				}],
+				// 竞赛资讯
+				timelineList: [],
+				timelineSteps: [],
+				timelineActive: 0
+				
 			}
 		},
 		onLoad(options) {
@@ -110,9 +144,28 @@
 						this.concerned = false
 					}
 				})
+				listTimeline({
+					cpId: this.id
+				}).then(res => {
+					this.timelineList = res.rows
+					this.timelineSteps = res.rows.map(item => {
+						return {
+							text: item.content,
+							desc: this.formatDate(item.time)
+						}
+					})
+				})
 			}
 		},
 		methods: {
+			// 切换竞赛简介和资讯tab
+			tabSelect(index) {
+				this.tabCur = index
+			},
+			// 复制文章链接
+			clipLink(e) {
+				console.log(e)
+			},
 			// 设置关注
 			onConcernClick() {
 				if (this.concerned) {
@@ -149,10 +202,10 @@
 			},
 			// 跳转到评论页面
 			onCommentClick() {
-				// this.msgInfo('评论功能已关闭')
-				uni.navigateTo({
-					url: './competition-comment?cpId=' + this.id
-				})
+				this.msgInfo('评论功能已关闭')
+				// uni.navigateTo({
+				// 	url: './competition-comment?cpId=' + this.id
+				// })
 			},
 			calSignDate(date) {
 				try {
@@ -169,7 +222,7 @@
 			},
 			levelFormat(value, dict) {
 				return this.selectDictLabel(this.levelOptions, value)
-			}
+			},
 		}
 	}
 </script>

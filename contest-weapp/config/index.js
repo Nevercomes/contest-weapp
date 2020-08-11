@@ -8,8 +8,10 @@ const param = {
 	// 测试环境api地址
 	TEST_API_β: 'https://rowingtest.nevercome.net',
 
-	// 生产环境api地址
-	PROD_API: 'https://rowing.nevercome.net'
+	// 生产环境api地址-发布版
+	PROD_API_PUBLIC: 'https://rowing.nevercome.net',
+	// 生产环境api地址-体验版
+	PROD_API_EXP: 'https://rowingexp.nevercome.net'
 }
 
 const config = {

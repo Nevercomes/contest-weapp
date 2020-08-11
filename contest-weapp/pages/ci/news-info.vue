@@ -195,6 +195,9 @@
 			// 跳转到评论页面
 			onCommentClick() {
 				this.msgInfo('评论功能已关闭')
+				// uni.navigateTo({
+				// 	url:'news-comment?postId=' + this.id
+				// })
 			},
 			goToUserShowPage(userId) {
 				uni.navigateTo({

@@ -188,6 +188,13 @@
 				"backgroundColor":"#FFFFFF"
 			}
 		},
+		{
+			"path":"pages/ci/news-comment",
+			"style": {
+				"navigationBarTitleText":"评论列表",
+				"backgroundColor":"#FFFFFF"
+			}
+		},
 
 		// 用户相关
 		{
@@ -526,11 +533,11 @@
 			// "van-toast": "/wxcomponents/vant/toast/index",
 			// "van-transition": "/wxcomponents/vant/transition/index",
 			// "van-tree-select": "/wxcomponents/vant/tree-select/index",
-			// "van-datetime-picker": "/wxcomponents/vant/datetime-picker/index",
+			"van-datetime-picker": "/wxcomponents/vant/datetime-picker/index", 
 			// "van-rate": "/wxcomponents/vant/rate/index",
 			// "van-collapse": "/wxcomponents/vant/collapse/index",
 			// "van-collapse-item": "/wxcomponents/vant/collapse-item/index",
-			// "van-picker": "/wxcomponents/vant/picker/index",
+			"van-picker": "/wxcomponents/vant/picker/index",
 			// "van-dropdown-menu": "/wxcomponents/vant/dropdown-menu/index",
 			// "van-dropdown-item": "/wxcomponents/vant/dropdown-item/index",
 			// "van-uploader": "/wxcomponents/vant/uploader/index",

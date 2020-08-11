@@ -20,8 +20,12 @@ public final class WeAppUtil {
 
     private static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
 
-    private final static String APP_ID = "wxf4a68b53013e8def";
-    private final static String APP_SECRET = "f3546751d8cb7e9ca6be6f3a14d6c536";
+    //    个人主体体验版
+//    private final static String APP_ID = "wxf4a68b53013e8def";
+//    private final static String APP_SECRET = "f3546751d8cb7e9ca6be6f3a14d6c536";
+    //    企业主体发布版
+    private final static String APP_ID = "wx54f5d0b96853b41b";
+    private final static String APP_SECRET = "a46c3b577431a99dcee6f97cf2f55dd6";
     private final static String JSCODE_SESSION_URL = "https://api.weixin.qq.com/sns/jscode2session";
 
     public static String getOpenId(String code) {

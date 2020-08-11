@@ -28,8 +28,8 @@
         <where>
             <if test="content != null  and content != ''">and content like concat('%', #{content}, '%')</if>
             <if test="cpId != null ">and cp_id = #{cpId}</if>
-            order by id desc
         </where>
+        order by id desc
     </select>
 
     <select id="selectCompetitionCommentById" parameterType="Long" resultMap="CompetitionCommentResult">

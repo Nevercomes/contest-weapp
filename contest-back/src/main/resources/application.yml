@@ -138,9 +138,11 @@ oss:
 
 # 小程序参数
 weapp:
-  # appId
-  appId: wxf4a68b53013e8def
-  # appSecret
-  appSecret: f3546751d8cb7e9ca6be6f3a14d6c536
+  # appId & appSecret 个人主体体验版
+#  appId: wxf4a68b53013e8def
+#  appSecret: f3546751d8cb7e9ca6be6f3a14d6c536
+  # appId & appSecret  企业主体发布版
+  appId: wx54f5d0b96853b41b
+  appSecret: a46c3b577431a99dcee6f97cf2f55dd6
   # 获取openId的api
   jscode2session: https://api.weixin.qq.com/sns/jscode2session

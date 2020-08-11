@@ -137,7 +137,7 @@
 			submitForm() {
 				if (this.validForm(this.form)) {
 					addTeamInfo(this.form).then(res => {
-						this.msgInfo('队伍信息已添加')
+						// this.msgInfo('队伍信息已添加')
 						uni.navigateTo({
 							url: 'team-public-member?teamId=' + res.data.id + '&recruitNumber=' +
 								this.form.recruitNumber
