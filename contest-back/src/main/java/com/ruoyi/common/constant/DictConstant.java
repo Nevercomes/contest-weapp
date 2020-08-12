@@ -46,4 +46,14 @@ public final class DictConstant {
      */
     public static final String POINTS_CHANGE_CHECK = "3";
 
+    /**
+     * 首页famous推荐-用户
+     */
+    public static final String INDEX_FAMOUS_USER = "user";
+
+    /**
+     * 首页famous推荐-队伍
+     */
+    public static final String INDEX_FAMOUS_TEAM = "team";
+
 }

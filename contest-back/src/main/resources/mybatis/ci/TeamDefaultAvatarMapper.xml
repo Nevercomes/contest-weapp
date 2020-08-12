@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.ci.mapper.TeamDefaultAvatarMapper">
+    
+    <resultMap type="TeamDefaultAvatar" id="TeamDefaultAvatarResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="picUrl"    column="pic_url"    />
+    </resultMap>
+
+    <sql id="selectTeamDefaultAvatarVo">
+        select id, create_by, create_time, pic_url from ci_team_default_avatar
+    </sql>
+
+    <select id="selectTeamDefaultAvatarList" parameterType="TeamDefaultAvatar" resultMap="TeamDefaultAvatarResult">
+        <include refid="selectTeamDefaultAvatarVo"/>
+        <where>  
+            <if test="picUrl != null  and picUrl != ''"> and pic_url like concat('%', #{picUrl}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectTeamDefaultAvatarById" parameterType="Long" resultMap="TeamDefaultAvatarResult">
+        <include refid="selectTeamDefaultAvatarVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectTeamDefaultAvatarOptions" parameterType="TeamDefaultAvatar" resultType="Map">
+         select id as "value",
+         `name` as "label"
+        from ci_team_default_avatar
+        <if test="name != null and name != ''">
+            where `name` like concat('%', #{name}, '%')
+         </if>
+    </select>
+        
+    <insert id="insertTeamDefaultAvatar" parameterType="TeamDefaultAvatar" useGeneratedKeys="true" keyProperty="id">
+        insert into ci_team_default_avatar
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="picUrl != null  and picUrl != ''">pic_url,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="picUrl != null  and picUrl != ''">#{picUrl},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTeamDefaultAvatar" parameterType="TeamDefaultAvatar">
+        update ci_team_default_avatar
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="picUrl != null  and picUrl != ''">pic_url = #{picUrl},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTeamDefaultAvatarById" parameterType="Long">
+        delete from ci_team_default_avatar where id = #{id}
+    </delete>
+
+    <delete id="deleteTeamDefaultAvatarByIds" parameterType="String">
+        delete from ci_team_default_avatar where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -23,7 +23,7 @@
 			</swiper-item>
 		</swiper> -->
 		<!-- 主界面操作组 -->
-		<view class="cu-list grid col-4 no-border">
+		<view class="cu-list grid col-4 no-border" style="padding-bottom: 0 !important;">
 			<view class="cu-item" v-for="(item,index) in cuIconList" :key="index" v-if="index<4" @click="goToPage(item.url)">
 				<view :class="['cuIcon-' + item.cuIcon,'text-' + item.color]">
 					<view class="cu-tag badge" v-if="item.badge!=0">
@@ -40,6 +40,15 @@
 				<text class="text-lg text-bold">团队达人</text>
 			</view>
 		</view>
+		<scroll-view scroll-x="true">
+			<view class="flex padding-lr-sm padding-tb-sm">
+				<view class="flex flex-direction align-center justify-center padding-lr-sm" v-for="(item,index) in famousList" :key="index" @click="onFamousItemClick(item)">
+					<image class="cu-avatar round xl" :src="item.avatarUrl"></image>
+					<text class="text-gray text-sm text-cut margin-top-xs">{{item.name}}</text>
+					<text class="text-gray text-sm">{{item.desc}}</text>
+				</view>
+			</view>
+		</scroll-view>
 
 		<view class="cu-bar bg-white">
 			<view class="action">
@@ -112,6 +121,9 @@
 	import {
 		listCollection
 	} from '@/api/ci/collection.js'
+	import {
+		listIndexFamous
+	} from '@/api/ci/indexFamous.js'
 
 	export default {
 		name: "HomeIndex",
@@ -157,7 +169,9 @@
 				// 竞赛推荐list
 				compList: [],
 				// 动态推荐list
-				newsList: []
+				newsList: [],
+				// famous推荐List
+				famousList: []
 
 			}
 		},
@@ -175,6 +189,16 @@
 			// 加载首页推荐
 			listSwiper().then(res => {
 				this.swiperList = res.rows
+			})
+			// 加载famous数据
+			listIndexFamous({
+				pageNum: 1,
+				pageSize: 10,
+				orderByColumn: 'id',
+				isAsc: 'desc'
+			}).then(res => {
+				this.famousList = res.rows
+				this.famousList = this.getRandomArrayElements(this.famousList, 12)
 			})
 
 			// 部分请求放在登录回调之后

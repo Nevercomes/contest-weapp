@@ -61,7 +61,7 @@
 				<view class="cuIcon-mark"></view> 评论
 			</view>
 			<view class="action text-gray add-action" @click="onPublicClick">
-				<button class="cu-btn cuIcon-add bg-green shadow"></button> 发布
+				<button class="cu-btn cuIcon-add bg-green shadow"></button> 建队
 			</view>
 			<view class="action text-gray" @click="onTeamClick">
 				<view class="cuIcon-friendfill"></view> 队伍
