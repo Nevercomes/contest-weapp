@@ -9,6 +9,7 @@ import com.ruoyi.project.ci.domain.InfoClassify;
 import com.ruoyi.project.ci.mapper.CompetitionClassifyMapper;
 import com.ruoyi.project.ci.mapper.CompetitionPeriodMapper;
 import com.ruoyi.project.ci.mapper.InfoClassifyMapper;
+import com.ruoyi.project.ci.service.ICompetitionClassifyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.project.ci.mapper.CompetitionInfoMapper;
@@ -31,7 +32,7 @@ public class CompetitionInfoServiceImpl implements ICompetitionInfoService {
     @Autowired
     private CompetitionPeriodMapper competitionPeriodMapper;
     @Autowired
-    private CompetitionClassifyMapper competitionClassifyMapper;
+    private ICompetitionClassifyService competitionClassifyService;
 
     /**
      * 查询竞赛信息模板
@@ -85,7 +86,7 @@ public class CompetitionInfoServiceImpl implements ICompetitionInfoService {
         // 批量出入映射
         int res =  insertInfoClassify(competitionInfo);
         // 更新存在的period的分类信息，冗余写入（这一过程异步完成更好）
-        List<String> classifyLabelList = competitionClassifyMapper.selectClassifyNameByIds(competitionInfo.getClassifyIds());
+        List<String> classifyLabelList = competitionClassifyService.selectClassifyNameByIds(competitionInfo.getClassifyIds());
         String classifyLabels = String.join(",", classifyLabelList);
         CompetitionPeriod period = new CompetitionPeriod();
         period.setCpInfoId(competitionInfo.getId());

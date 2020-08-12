@@ -28,6 +28,7 @@
                 and create_time between #{beginTime} and #{endTime}
             </if>
         </where>
+        order by id desc
     </select>
 
     <select id="selectPointsActionById" parameterType="Long" resultMap="PointsActionResult">

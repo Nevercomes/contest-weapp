@@ -35,7 +35,7 @@
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="图片地址" align="center" prop="picUrl" />
+      <el-table-column label="图片地址" align="center" prop="picUrl" show-overflow-tooltip="" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)" v-hasPermi="['ci:teamAvatar:edit']">修改</el-button>
@@ -50,8 +50,13 @@
     <!-- 添加或修改默认团队头像对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="图片地址" prop="picUrl">
-          <el-input v-model="form.picUrl" placeholder="请输入图片地址" />
+        <el-form-item label="默认头像" prop="picUrl">
+          <el-upload class="image-uploader" :action="upload.url" :headers="upload.headers" :limit="1" :disabled="upload.isUploading"
+            :on-progress="handleFileUploadProgress" :show-file-list="false" :accept="'image/*'" :on-success="handleImageSuccess"
+            :before-upload="beforeImageUpload" ref="uploador">
+            <el-image fit="contain" v-if="form.picUrl" :src="form.picUrl" class="image-show" />
+            <i v-else class="el-icon-plus image-uploader-icon"></i>
+          </el-upload>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -71,6 +76,9 @@
     updateTeamAvatar,
     exportTeamAvatar
   } from "@/api/ci/teamAvatar";
+  import {
+    getToken
+  } from "@/utils/auth";
 
   export default {
     name: "TeamAvatar",
@@ -101,7 +109,21 @@
         // 表单参数
         form: {},
         // 表单校验
-        rules: {}
+        rules: {
+          picUrl: [{
+            required: true,
+            message: "图片不能为空",
+            trigger: "blur"
+          }]
+        },
+        // 上传参数
+        upload: {
+          url: process.env.VUE_APP_BASE_API + '/system/ossRecord/upload/teamDfAvatar',
+          isUploading: false,
+          headers: {
+            Authorization: "Bearer " + getToken()
+          },
+        },
       };
     },
     created() {
@@ -147,6 +169,24 @@
         this.ids = selection.map(item => item.id)
         this.single = selection.length != 1
         this.multiple = !selection.length
+      },
+      handleImageSuccess(res, file) {
+        this.upload.isUploading = false
+        this.form.picUrl = res.data
+        // 处理无法第二次上传的问题,清除上传记录
+        this.$refs.uploador.clearFiles()
+      },
+      handleFileUploadProgress(event, file, fileList) {
+        this.upload.isUploading = true;
+        console.log(event)
+      },
+      beforeImageUpload(file) {
+        console.log(file)
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+          this.$message.error('上传图片大小不能超过 2MB!');
+        }
+        return isLt2M;
       },
       /** 新增按钮操作 */
       handleAdd() {
@@ -222,3 +262,34 @@
     }
   };
 </script>
+
+<style lang="scss" scoped="scoped">
+  .image-uploader {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    width: 178px;
+    height: 178px;
+  }
+
+  .image-uploader:hover {
+    border-color: #409EFF;
+  }
+
+  .image-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+
+  .image-show {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
+</style>

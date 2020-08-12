@@ -12,6 +12,11 @@ import lombok.Data;
 public class IndexFamous {
 
     /**
+     * 用户id、队伍id
+     */
+    private Long itemId;
+
+    /**
      * 用户头像、队伍头像
      */
     private String avatarUrl;

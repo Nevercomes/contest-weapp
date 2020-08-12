@@ -17,7 +17,7 @@
 					</view>
 					<text class="text-bold text-lg padding-tb-sm">{{period.name}}</text>
 					<view class="padding-tb-sm"><text class="text-grey margin-right">官网链接</text>
-						<text selectable="true" class="text-blue" style="text-decoration: underline; word-break: break-all;">{{period.details.officialLink}}</text></view>
+						<text selectable="true" class="text-blue" style="text-decoration: underline; word-break: break-all;">{{period.details.officialLink || ''}}</text></view>
 					<view class="padding-tb-sm"><text class="text-grey margin-right">报名时间</text>
 						<text v-if="formatDate(period.signBeginTime)">{{formatDate(period.signBeginTime)}} —— {{formatDate(period.signEndTime)}}</text></view>
 					<view class="padding-tb-sm">

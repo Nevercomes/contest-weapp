@@ -49,6 +49,7 @@ public class IndexFamousController extends BaseController {
             userFamous.setDesc("竞赛达人");
             userFamous.setName(user.getNickName());
             userFamous.setType(DictConstant.INDEX_FAMOUS_USER);
+            userFamous.setItemId(user.getUserId());
             list.add(userFamous);
         }
         // 2.查询热门队伍
@@ -60,6 +61,7 @@ public class IndexFamousController extends BaseController {
             teamFamous.setDesc("新建团队");
             teamFamous.setName(team.getName());
             teamFamous.setType(DictConstant.INDEX_FAMOUS_TEAM);
+            teamFamous.setItemId(team.getId());
             list.add(teamFamous);
         }
         return getDataTable(list);

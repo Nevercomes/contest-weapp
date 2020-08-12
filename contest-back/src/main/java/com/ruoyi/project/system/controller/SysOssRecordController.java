@@ -117,6 +117,16 @@ public class SysOssRecordController extends BaseController {
         return AjaxResult.success("上传成功", sysOssRecordService.uploadFile(file, "postAppendix", OssConstants.BUSINESS_TYPE_POST_APPENDIX));
     }
 
+    /**
+     * 上传默认的团队头像
+     */
+    @PreAuthorize("@ss.hasPermi('oss:upload:teamDfAvatar')")
+    @Log(title = "OSS记录-帖子附件", businessType = BusinessType.INSERT)
+    @RequestMapping("/upload/teamDfAvatar")
+    public AjaxResult uploadTeamDfAvatar(MultipartFile file) throws IOException {
+        return AjaxResult.success("上传成功", sysOssRecordService.uploadFile(file, "teamDfAvatar", OssConstants.BUSINESS_TYPE_TEAM_DEFAULT));
+    }
+
 
 //    /**
 //     * 导出OSS上传列表

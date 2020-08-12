@@ -7,6 +7,7 @@ import com.ruoyi.common.constant.DictConstant;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.project.ci.domain.TeamMember;
+import com.ruoyi.project.ci.service.ITeamDefaultAvatarService;
 import com.ruoyi.project.ci.service.ITeamMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,8 @@ public class TeamInfoServiceImpl implements ITeamInfoService {
     private TeamInfoMapper teamInfoMapper;
     @Autowired
     private ITeamMemberService teamMemberService;
+    @Autowired
+    private ITeamDefaultAvatarService teamDefaultAvatarService;
 
     /**
      * 查询队伍信息
@@ -71,6 +74,8 @@ public class TeamInfoServiceImpl implements ITeamInfoService {
     public TeamInfo insertTeamInfo(TeamInfo teamInfo) {
         teamInfo.preInsert();
         // 1. 插入队伍信息
+        // 选取一张随机的队伍头像
+        teamInfo.setPicUrl(teamDefaultAvatarService.getRandomTeamDefaultAvatar().getPicUrl());
         int res =  teamInfoMapper.insertTeamInfo(teamInfo);
         // 2. 插入队长信息
         TeamMember captain = new TeamMember();

@@ -92,6 +92,7 @@ public class CompetitionClassifyServiceImpl implements ICompetitionClassifyServi
 
     /**
      * 构建前端所需的竞赛分类树
+     *
      * @param list
      * @return
      */
@@ -103,12 +104,24 @@ public class CompetitionClassifyServiceImpl implements ICompetitionClassifyServi
 
     /**
      * 根据竞赛Id查询分类树
+     *
      * @param infoId
      * @return
      */
     @Override
     public List<Integer> selectCompetitionClassifyListByInfoId(Long infoId) {
         return competitionClassifyMapper.selectCompetitionClassifyListByInfoId(infoId);
+    }
+
+    /**
+     * 根据id查询名称
+     * @param classifyIds
+     * @return
+     */
+    @Override
+    public List<String> selectClassifyNameByIds(Long[] classifyIds) {
+        return (classifyIds == null || classifyIds.length == 0) ? new ArrayList<>() :
+                competitionClassifyMapper.selectClassifyNameByIds(classifyIds);
     }
 
     private List<CompetitionClassify> buildCompetitionClassifyTree(List<CompetitionClassify> list) {

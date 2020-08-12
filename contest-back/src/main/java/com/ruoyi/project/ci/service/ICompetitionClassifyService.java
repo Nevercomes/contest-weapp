@@ -73,4 +73,11 @@ public interface ICompetitionClassifyService {
      * @return
      */
     List<Integer> selectCompetitionClassifyListByInfoId(Long infoId);
+
+    /**
+     * 根据id选取分类名称
+     * @param classifyIds
+     * @return
+     */
+    List<String> selectClassifyNameByIds(Long[] classifyIds);
 }

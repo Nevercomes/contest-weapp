@@ -7,7 +7,7 @@
 					<view class="solid-bottom text-lg">
 						<text class="text-black">{{item.value}}分</text>
 					</view>
-					<view class="margin-top">积分来源：{{changeTypeFormat(item.changeType)}}</view>
+					<view class="margin-top">积分来源：{{changeTypeFormat(item.changeCause)}}</view>
 				</view>
 			</view>
 		</view>

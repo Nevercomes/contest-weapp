@@ -2,6 +2,8 @@ package com.ruoyi.project.ci.service.impl;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.project.system.mapper.SysUserMapper;
@@ -100,6 +102,17 @@ public class TeamDefaultAvatarServiceImpl implements ITeamDefaultAvatarService {
     @Override
     public int deleteTeamDefaultAvatarById(Long id) {
         return teamDefaultAvatarMapper.deleteTeamDefaultAvatarById(id);
+    }
+
+    /**
+     * 选取一张随机的队伍头像
+     * @return
+     */
+    @Override
+    public TeamDefaultAvatar getRandomTeamDefaultAvatar() {
+        List<TeamDefaultAvatar> list = teamDefaultAvatarMapper.selectTeamDefaultAvatarList(new TeamDefaultAvatar());
+        int index = new Random().nextInt(list.size());
+        return list.get(index);
     }
 
     /**

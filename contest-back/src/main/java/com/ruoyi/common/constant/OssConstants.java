@@ -40,4 +40,9 @@ public class OssConstants {
      * 业务类型-帖子附件
      */
     public static final String BUSINESS_TYPE_POST_APPENDIX = "7";
+
+    /**
+     * 业务类型-默认的团队头像
+     */
+    public static final String BUSINESS_TYPE_TEAM_DEFAULT = "8";
 }

@@ -248,6 +248,18 @@
 						break;
 				}
 			},
+			// 用户团队推荐点击
+			onFamousItemClick(item) {
+				if(item.type === 'user') {
+					uni.navigateTo({
+						url: 'user-show-index?userId=' + item.itemId
+					})
+				} else if(item.type === 'team') {
+					uni.navigateTo({
+						url: 'team-info?id=' + item.itemId
+					})
+				}
+			},
 			// 当搜索框聚焦的时候跳转到搜索界面
 			goToSearchPage() {
 				uni.navigateTo({

@@ -65,4 +65,10 @@ public interface ITeamDefaultAvatarService {
      * @return 结果
      */
     int deleteTeamDefaultAvatarById(Long id);
+
+    /**
+     * 选取一张随机的团队默认头像
+     */
+    TeamDefaultAvatar getRandomTeamDefaultAvatar();
+
 }
