@@ -51,6 +51,17 @@ public class TeamExpectController extends BaseController {
     }
 
     /**
+     * 查询组队意愿列表
+     */
+    @PreAuthorize("@ss.hasPermi('ci:expect:list')")
+    @GetMapping("/list/news")
+    public TableDataInfo listNew(TeamExpect teamExpect) {
+        startPage();
+        List<TeamExpect> list = teamExpectService.selectTeamExpectList(teamExpect);
+        return getDataTable(list);
+    }
+
+    /**
      * 查询可能愿意加入队伍的用户 冷启动
      */
     @PreAuthorize("@ss.hasPermi('ci:expect:list')")

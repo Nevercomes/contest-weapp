@@ -9,6 +9,14 @@ export function listExpect(query) {
   })
 }
 
+export function listExpectNews(query) {
+  return http.request({
+    url: '/ci/expect/list/news',
+    method: 'GET',
+    params: query
+  })
+}
+
 // 新增组队意愿
 export function addExpect(data) {
   return http.request({

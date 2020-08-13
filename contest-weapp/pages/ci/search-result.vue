@@ -245,7 +245,7 @@
 				else this.msgInfo('关键词不能为空')
 			},
 			tabChange(e) {
-				console.log(e)
+				this.tabActive = e.detail.index
 			},
 			goToCompPage(id) {
 				uni.navigateTo({
