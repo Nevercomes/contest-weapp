@@ -79,7 +79,7 @@
 						<view class="content flex-sub flex justify-between align-center">
 							<view class="flex-direction align-start">
 								<view class="flex">
-									<view class="text-df margin-right-sm text-cut" style="max-width: 420upx;">{{item.cpName}}</view>
+									<view class="text-df margin-right-sm text-cut" style="max-width: 430upx;">{{item.cpName}}</view>
 									<text v-if="item.status == '1'" class="cu-tag radius text-green">等待组队</text>
 									<text v-else-if="item.status == '2'" class="cu-tag radius text-orange">已组队</text>
 									<text v-else-if="item.status == '3'" class="cu-tag radius">已撤回</text>
