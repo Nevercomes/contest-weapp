@@ -2,6 +2,8 @@ package com.ruoyi.project.ci.service;
 
 import java.util.List;
 import java.util.Map;
+
+import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.project.ci.domain.SearchRecord;
 
 /**
@@ -65,4 +67,11 @@ public interface ISearchRecordService {
      * @return 结果
      */
     int deleteSearchRecordById(Long id);
+
+    /**
+     * 删除个人的搜索记录
+     * @param q
+     * @return
+     */
+    int deleteSearchRecordByUsername(SearchRecord q);
 }

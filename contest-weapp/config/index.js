@@ -4,7 +4,7 @@ const param = {
 
 	// 测试环境api地址
 	TEST_API_α: 'http://rowingtest.nevercome.net',
-	
+
 	// 测试环境api地址
 	TEST_API_β: 'https://rowingtest.nevercome.net',
 

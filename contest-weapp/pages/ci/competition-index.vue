@@ -200,7 +200,7 @@
 			// 当搜索框聚焦的时候跳转到搜索界面
 			goToSearchPage() {
 				uni.navigateTo({
-					url: 'search-index?type=comp'
+					url: 'search-index?activeType=comp'
 				})
 			},
 			onItemClick(id) {

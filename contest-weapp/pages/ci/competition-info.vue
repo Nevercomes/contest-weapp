@@ -102,6 +102,8 @@
 				concerned: false,
 				// 竞赛级别字典
 				levelOptions: [],
+				// 默认的竞赛图片
+				defaultPic: 'https://dream-road-oss.oss-cn-hangzhou.aliyuncs.com/competition_common.png',
 				// tab内容
 				tabCur: 0,
 				tabList: [{
@@ -126,7 +128,8 @@
 			if (this.id) {
 				getPeriod(this.id).then(res => {
 					this.period = res.data
-					this.period.classifyList = res.data.classifyLabels ? res.data.classifyLabels.split(",") : []
+					this.period.classifyList = res.data.classifyLabels ? res.data.classifyLabels.split(",") : [],
+					this.period.picUrl = this.period.picUrl || this.defaultPic
 				})
 				listConcernCp({
 					cpId: this.id

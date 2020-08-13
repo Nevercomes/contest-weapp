@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.project.system.mapper.SysUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -100,6 +101,11 @@ public class SearchRecordServiceImpl implements ISearchRecordService {
     @Override
     public int deleteSearchRecordById(Long id) {
         return searchRecordMapper.deleteSearchRecordById(id);
+    }
+
+    @Override
+    public int deleteSearchRecordByUsername(SearchRecord q) {
+        return searchRecordMapper.deleteSearchRecordByUsername(q);
     }
 
     /**

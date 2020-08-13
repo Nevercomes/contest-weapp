@@ -65,4 +65,11 @@ public interface SearchRecordMapper {
      * @return 结果
      */
     int deleteSearchRecordByIds(Long[] ids);
+
+    /**
+     * 删除个人的搜素记录
+     * @param q
+     * @return
+     */
+    int deleteSearchRecordByUsername(SearchRecord q);
 }

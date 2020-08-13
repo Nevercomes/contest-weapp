@@ -23,9 +23,12 @@
         <where>
             <if test="keyword != null  and keyword != ''">and keyword like concat('%', #{keyword}, '%')</if>
             <if test="type != null  and type != ''">and type = #{type}</if>
-            <if test="createBy != null  and createBy != ''">and create_by = #{createBy}</if>
+            <if test="createBy != null  and createBy != ''">and create_by = #{createBy} and del_flag = '0'</if>
             <if test="delFlag != null  and delFlag != ''">and del_flag = #{delFlag}</if>
         </where>
+        <if test="createBy != null  and createBy != ''">
+            group by keyword
+        </if>
     </select>
 
     <select id="selectSearchRecordById" parameterType="Long" resultMap="SearchRecordResult">
@@ -81,6 +84,12 @@
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
+    </delete>
+
+    <delete id="deleteSearchRecordByUsername" parameterType="SearchRecord">
+        update ci_search_record
+        set del_flag = '1'
+        where create_by = #{createBy}
     </delete>
 
 </mapper>

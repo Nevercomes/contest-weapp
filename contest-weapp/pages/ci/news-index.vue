@@ -97,7 +97,7 @@
 			},
 			goToSearchPage() {
 				uni.navigateTo({
-					url: 'search-index?type=all'
+					url: 'search-index?activeType=post'
 				})
 			},
 			// 取代搜索事件改为setting设置

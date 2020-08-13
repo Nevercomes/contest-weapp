@@ -242,7 +242,9 @@
 						})
 						break;
 					case '3':
-						// 外部连接
+						uni.navigateTo({
+							url: './web-view?webUrl=' + item.link
+						})
 						break;
 					default:
 						break;
@@ -263,7 +265,7 @@
 			// 当搜索框聚焦的时候跳转到搜索界面
 			goToSearchPage() {
 				uni.navigateTo({
-					url: 'search-index?type=all'
+					url: 'search-index?activeType=comp'
 				})
 			},
 			// 取代搜索事件改为setting设置

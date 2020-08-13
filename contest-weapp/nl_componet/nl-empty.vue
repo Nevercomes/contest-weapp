@@ -12,7 +12,7 @@
 			show: {
 				type: Boolean,
 				required: true,
-				default: true
+				default: false
 			},
 			msg: {
 				type: String,

@@ -441,6 +441,10 @@
 			"style": {
 				"navigationBarTitleText":"帮助文档"
 			}
+		},
+		{
+			"path":"pages/ci/web-view",
+			"style": {}
 		}
 
 	],
@@ -577,19 +581,14 @@
 				"query":""
 			},
 			{
-				"name":"compIndex",
-				"path":"pages/ci/competition-index",
+				"name":"WebView",
+				"path":"pages/ci/web-view",
 				"query":""
 			},
 			{
-				"name":"postInfo",
-				"path":"pages/ci/news-info",
-				"query":"id=1"
-			},
-			{
-				"name":"compComment",
-				"path":"pages/ci/competition-comment",
-				"query":"cpId=7"
+				"name":"SearchResult",
+				"path":"pages/ci/search-result",
+				"query":"keyword=小程序&activeType=post"
 			}
 		]
 	}

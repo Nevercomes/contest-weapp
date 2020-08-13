@@ -61,7 +61,7 @@
 				// 查询参数
 				queryParams: {
 					keyword: undefined,
-					type: undefined
+					activeType: undefined
 				},
 				// 热门搜索
 				popularList: [],
@@ -70,10 +70,10 @@
 			}
 		},
 		onLoad(options) {
-			if (['all', 'comp', 'post'].indexOf(options.type) != -1) {
-				this.queryParams.type = options.type
+			if (['all', 'comp', 'post'].indexOf(options.activeType) != -1) {
+				this.queryParams.activeType = options.activeType
 			} else {
-				this.queryParams.type = 'all'
+				this.queryParams.activeType = 'comp'
 			}
 			// 获取热门搜索
 			this.loadPopular()
@@ -87,7 +87,7 @@
 			doSearch() {
 				// this.$store.dispatch('Search', value)
 				uni.navigateTo({
-					url: 'search-result?keyword=' + this.queryParams.keyword + '&type=' + this.queryParams.type,
+					url: 'search-result?keyword=' + this.queryParams.keyword + '&activeType=' + this.queryParams.activeType,
 				})
 			},
 			onSearch(e) {

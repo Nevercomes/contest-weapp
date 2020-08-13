@@ -118,7 +118,8 @@ public class SearchRecordController extends BaseController {
         SearchRecord q = new SearchRecord();
         q.setCreateBy(username);
         q.setDelFlag("0");
-        List<SearchRecord> list = searchRecordService.selectSearchRecordList(q);
-        return toAjax(searchRecordService.deleteSearchRecordByIds(list.stream().map(SearchRecord::getId).toArray(Long[]::new)));
+//        List<SearchRecord> list = searchRecordService.selectSearchRecordList(q);
+//        return toAjax(searchRecordService.deleteSearchRecordByIds(list.stream().map(SearchRecord::getId).toArray(Long[]::new)));
+        return toAjax(searchRecordService.deleteSearchRecordByUsername(q));
     }
 }

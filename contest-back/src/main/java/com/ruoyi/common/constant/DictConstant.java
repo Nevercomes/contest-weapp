@@ -32,6 +32,21 @@ public final class DictConstant {
     public static final String SEARCH_TYPE_POST = "2";
 
     /**
+     * 搜索类别-资讯
+     */
+    public static final String SEARCH_TYPE_TIMELINE = "3";
+
+    /**
+     * 搜索类别-队伍
+     */
+    public static final String SEARCH_TYPE_TEAM = "4";
+
+    /**
+     * 搜索类别用户
+     */
+    public static final String SEARCH_TYPE_USER = "5";
+
+    /**
      * 帖子状态-发布
      */
     public static final String POST_STATUS_PUBLIC = "1";
