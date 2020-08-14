@@ -8,27 +8,27 @@
 				<view class="text-orange text-bold text-xxl text-center padding-tb-xl" style="height: 10vh;">竞赛服务</view>
 
 				<view style="position: relative; height: 15vh">
-					<view class="margin-sm basis-sm shadow bg-lightorange welcome_rec" :class="[swiperName=='competition'?'animation-slide-bottom':'']"
+					<view class="margin-sm basis-sm shadow bg-lightorange welcome_rec" :class="[swiperName=='competition'?'animation-slide-bottom':'hide']"
 					 style="width: 140px; line-height: 4em; border-radius: 50%; position: absolute; bottom: 0; left: 10px;"
-					 :data-class="'slide-bottom'" :style="[{animationDelay: 0.5 + 's'}]">竞赛信息</view>
+					 :data-class="'slide-bottom'" :style="[{animationDelay: 0.1 + 's'}]">竞赛信息</view>
 
-					<view class="margin-sm basis-sm shadow bg-lightorange  welcome_rec" :class="[swiperName=='competition'?'animation-slide-bottom':'']"
+					<view class="margin-sm basis-sm shadow bg-lightorange  welcome_rec" :class="[swiperName=='competition'?'animation-slide-bottom':'hide']"
 					 style="width: 100px; line-height: 4em; border-radius: 50%; position: absolute; top: 0; right: 15px;" :data-class="'slide-bottom'"
-					 :style="[{animationDelay: 0.5 + 's'}]">热榜推荐</view>
+					 :style="[{animationDelay: 0.1 + 's'}]">热榜推荐</view>
 
 				</view>
 
-				<image class="" :style="[{animationDelay: 0.3 + 's'}]" style="width: 100%; height: 45vh" src="../../static/welcome_competition.png"
+				<image class="" :style="[{animationDelay: 0.1 + 's'}]" style="width: 100%; height: 45vh" src="../../static/welcome_competition.png"
 				 mode="aspectFit"></image>
 
 				<view style="position: relative; height: 15vh">
-					<view class="margin-sm basis-sm shadow bg-lightorange  welcome_rec" :class="[swiperName=='competition'?'animation-slide-bottom':'']"
+					<view class="margin-sm basis-sm shadow bg-lightorange  welcome_rec" :class="[swiperName=='competition'?'animation-slide-bottom':'hide']"
 					 style="width: 100px; line-height: 3.5em; border-radius: 50%; position: absolute; bottom: 0; left: 15px;"
-					 :data-class="'slide-bottom'" :style="[{animationDelay: 0.5 + 's'}]">一键关注</view>
+					 :data-class="'slide-bottom'" :style="[{animationDelay: 0.1 + 's'}]">一键关注</view>
 
-					<view class="margin-sm basis-sm shadow bg-lightorange welcome_rec" :class="[swiperName=='competition'?'animation-slide-bottom':'']"
+					<view class="margin-sm basis-sm shadow bg-lightorange welcome_rec" :class="[swiperName=='competition'?'animation-slide-bottom':'hide']"
 					 style="width: 140px; line-height: 4em; border-radius: 50%; position: absolute; top: 0; right: 15px;" :data-class="'slide-bottom'"
-					 :style="[{animationDelay: 0.5 + 's'}]">即刻成队</view>
+					 :style="[{animationDelay: 0.1 + 's'}]">即刻成队</view>
 
 				</view>
 			</swiper-item>
@@ -36,36 +36,36 @@
 			<swiper-item item-id="team">
 				<view class="text-orange text-bold text-xxl text-center padding-tb-xl" style="height: 10vh;">组队服务</view>
 
-				<image class="margin-top" :style="[{animationDelay: 0.3 + 's'}]" style="width: 100%; height: 45vh" src="../../static/welcome_team.png"
+				<image class="margin-top" :style="[{animationDelay: 0.1 + 's'}]" style="width: 100%; height: 45vh" src="../../static/welcome_team.png"
 				 mode="aspectFit"></image>
 
 				<view style="position: relative; height: 30vh">
-					<view class="margin-sm basis-sm shadow bg-lightorange welcome_rec round" :class="[swiperName=='team'?'animation-slide-bottom':'']"
+					<view class="margin-sm basis-sm shadow bg-lightorange welcome_rec round" :class="[swiperName=='team'?'animation-slide-bottom':'hide']"
 					 style="width: 120px; line-height: 4em; position: absolute; left: 10px; top: 2em;" :data-class="'slide-bottom'"
-					 :style="[{animationDelay: 0.5 + 's'}]">自主建队</view>
+					 :style="[{animationDelay: 0.1 + 's'}]">自主建队</view>
 
-					<view class="margin-sm basis-sm shadow bg-lightorange welcome_rec round" :class="[swiperName=='team'?'animation-slide-bottom':'']"
-					 style="width: 120px; line-height: 4em; position: absolute; right: 15px;" :data-class="'slide-bottom'" :style="[{animationDelay: 0.5 + 's'}]">招募队友</view>
+					<view class="margin-sm basis-sm shadow bg-lightorange welcome_rec round" :class="[swiperName=='team'?'animation-slide-bottom':'hide']"
+					 style="width: 120px; line-height: 4em; position: absolute; right: 15px;" :data-class="'slide-bottom'" :style="[{animationDelay: 0.1 + 's'}]">招募队友</view>
 
-					<view class="margin-sm basis-sm shadow bg-lightorange welcome_rec round" :class="[swiperName=='team'?'animation-slide-bottom':'']"
+					<view class="margin-sm basis-sm shadow bg-lightorange welcome_rec round" :class="[swiperName=='team'?'animation-slide-bottom':'hide']"
 					 style="width: 120px; line-height: 4em; position: absolute; bottom: 0; left: 125px;" :data-class="'slide-bottom'"
-					 :style="[{animationDelay: 0.5 + 's'}]">灵活加入</view>
+					 :style="[{animationDelay: 0.1 + 's'}]">灵活加入</view>
 
 				</view>
 			</swiper-item>
 			<swiper-item item-id="communication">
 				<view class="text-orange text-bold text-xxl text-center padding-tb-xl" style="height: 10vh;">经验交流</view>
 
-				<image class="margin-top" :style="[{animationDelay: 0.3 + 's'}]" style="width: 100%; height: 45vh" src="../../static/welcome_communication.png"
+				<image class="margin-top" :style="[{animationDelay: 0.1 + 's'}]" style="width: 100%; height: 45vh" src="../../static/welcome_communication.png"
 				 mode="aspectFit"></image>
 
 				<view class="flex align-center justify-around padding-lr" style="position: relative; height: 30vh">
 
-					<view class="margin-sm basis-sm shadow bg-lightorange welcome_rec round" :class="[swiperName=='communication'?'animation-slide-bottom':'']"
-					 style="width: 120px; line-height: 4em;" :data-class="'slide-bottom'" :style="[{animationDelay: 0.5 + 's'}]">获取经验</view>
+					<view class="margin-sm basis-sm shadow bg-lightorange welcome_rec round" :class="[swiperName=='communication'?'animation-slide-bottom':'hide']"
+					 style="width: 120px; line-height: 4em;" :data-class="'slide-bottom'" :style="[{animationDelay: 0.1 + 's'}]">获取经验</view>
 
-					<view class="margin-sm basis-sm shadow bg-lightorange welcome_rec round" :class="[swiperName=='communication'?'animation-slide-bottom':'']"
-					 style="width: 120px; line-height: 4em;" :data-class="'slide-bottom'" :style="[{animationDelay: 0.5 + 's'}]">私信交流</view>
+					<view class="margin-sm basis-sm shadow bg-lightorange welcome_rec round" :class="[swiperName=='communication'?'animation-slide-bottom':'hide']"
+					 style="width: 120px; line-height: 4em;" :data-class="'slide-bottom'" :style="[{animationDelay: 0.1 + 's'}]">私信交流</view>
 
 				</view>
 			</swiper-item>
@@ -77,13 +77,13 @@
 					陪你乘风破浪，陪你驰骋赛场
 				</view>
 
-				<image class="margin-top" :style="[{animationDelay: 0.3 + 's'}]" style="width: 100%; height: 45vh" src="../../static/rowing.png"
+				<image class="margin-top" :style="[{animationDelay: 0.1 + 's'}]" style="width: 100%; height: 45vh" src="../../static/rowing.png"
 				 mode="aspectFit"></image>
 
 				<view style="position: relative; height: 30vh">
 					<view class="padding-xl flex flex-direction" 
-					:style="[{animationDelay: 0.5 + 's'}]"
-					:class="[swiperName=='rowing'?'animation-fade':'']">
+					:style="[{animationDelay: 0.1 + 's'}]"
+					:class="[swiperName=='rowing'?'animation-fade':'hide']">
 						<button class="cu-btn bg-orange margin-tb-sm lg shadow-blur round" @click="haveFun()">开启竞赛之旅</button>
 					</view>
 				</view>
@@ -248,4 +248,9 @@
 		border-top: 1px solid #FFD7B3;
 		border-bottom: 1px solid #FFD7B3;
 	}
+	
+	.hide {
+		display: none;
+	}
+	
 </style>

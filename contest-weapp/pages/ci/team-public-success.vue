@@ -8,11 +8,11 @@
 				</view>
 			</view>
 		</view> -->
-		
+
 		<van-steps :steps="stepList" :active="step" />
-		
+
 		<nl-success :icon="false" msg="队伍创建成功!"></nl-success>
-		
+
 		<view class="cu-list grid col-2 no-border margin">
 			<view class="cu-item" v-for="(item,index) in expectList" :key="index" @click="goToUserShowPage(item.createUser.userId)">
 				<image class="cu-avatar round xl bg-white " :src="item.createUser.avatar ? item.createUser.avatar : dfUserAvatar"></image>
@@ -20,23 +20,27 @@
 				<text class="text-gray text-sm">{{item.capability}}</text>
 			</view>
 		</view>
-		
-		<view  class="flex-sub text-center">
+
+		<view class="flex-sub text-center">
 			<view class="solid-top text-df padding text-gray">
 				<text v-if="expectList && expectList.length > 0">他们也在找队伍，或者竞赛经验丰富哦~</text>
 				<text v-else>好像没有人合适的人在找队伍呢</text>
 			</view>
 		</view>
-		
-		<view class="padding flex flex-direction">
-			<!-- :disabled="!(expectList && expectList.length > 0)" -->
+
+		<!-- <view class="padding flex flex-direction">
 			<button  class="cu-btn bg-green margin-tb-sm lg shadow-blur round" @click="onChangeClick">换一批</button>
+		</view> -->
+		<view class="box margin-tb">
+			<view class="cu-bar btn-group">
+				<button class="cu-btn bg-green shadow-blur round lg" @click="goToTeamPage">查看队伍</button>
+				<button class="cu-btn bg-green margin-tb-sm lg shadow-blur round" @click="onChangeClick">换一批</button>
+			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-	
 	// 这里更换为冷启动方式，可能没有Expect
 	import {
 		listPossibleUser
@@ -69,7 +73,7 @@
 						text: '创建完成',
 					},
 				],
-				
+
 				// 想要加入队伍的用户列表
 				dataList: [],
 				expectList: [],
@@ -91,6 +95,19 @@
 			this.teamId = options.teamId
 			this.loadList()
 		},
+		// onBackPress() {
+		// 	const pages = getCurrentPages()
+		// 	console.log(pages)
+		// 	if (pages.length > 3) {
+		// 		uni.navigateBack({
+		// 			delta: 3
+		// 		})
+		// 	} else {
+		// 		uni.navigateBack({
+		// 			delta: 1
+		// 		})
+		// 	}
+		// },
 		methods: {
 			loadList() {
 				listPossibleUser(this.queryParams).then(res => {
@@ -104,13 +121,22 @@
 				// 	this.queryParams.pageNum = this.queryParams.pageNum + 1
 				// 	this.loadList()
 				// } else {
+				if (this.dataList.length < 5) {
+					this.msgInfo('好像没有更多了')
+				} else {
 					this.expectList = this.getRandomArrayElements(this.dataList, 4)
+				}
 				// }
 			},
 			// 跳转到用户展示页面
 			goToUserShowPage(userId) {
 				uni.navigateTo({
 					url: 'user-show-index?userId=' + userId + '&teamId=' + this.teamId
+				})
+			},
+			goToTeamPage() {
+				uni.navigateTo({
+					url: 'team-info?id=' + this.teamId
 				})
 			},
 			// 从一个数组中随机取得n个元素
@@ -133,7 +159,6 @@
 </script>
 
 <style scoped lang="scss">
-	
 	.grid .cu-item {
 		display: flex;
 		flex-direction: column;

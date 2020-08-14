@@ -16,8 +16,11 @@
 				<text v-else>好像这个比赛还没有什么队伍呢</text>
 			</view>
 		</view>
-		<view class="padding flex flex-direction">
-			<button class="cu-btn bg-green margin-tb-sm lg shadow-blur round" @click="onChangeClick">换一批</button>
+		<view class="box margin-tb">
+			<view class="cu-bar btn-group">
+				<button class="cu-btn bg-green shadow-blur round lg" @click="goToExpectPage">查看期望</button>
+				<button class="cu-btn bg-green margin-tb-sm lg shadow-blur round" @click="onChangeClick">换一批</button>
+			</view>
 		</view>
 	</view>
 </template>
@@ -66,13 +69,22 @@
 					this.queryParams.pageNum = this.queryParams.pageNum + 1
 					this.loadList()
 				} else {
-					this.teamList = this.getRandomArrayElements(this.dataList, 4)
+					if (this.teamList.length < 4) {
+						this.msgInfo('好像没有更多了')
+					} else {
+						this.teamList = this.getRandomArrayElements(this.dataList, 4)
+					}
 				}
 			},
 			// 跳转到用户展示页面
 			goToTeamShowPage(id) {
 				uni.navigateTo({
-					url: 'team-info?id=' + id 
+					url: 'team-info?id=' + id
+				})
+			},
+			goToExpectPage() {
+				uni.navigateTo({
+					url: 'team-expect-list'
 				})
 			},
 			// 从一个数组中随机取得n个元素

@@ -53,6 +53,9 @@
 		<view v-if="canJoin" class="padding flex flex-direction">
 			<button class="cu-btn bg-green margin-tb-sm lg shadow-blur round" @click="onApplyClick">申请加入</button>
 		</view>
+		<view v-if="isMember() && item.status=='0'" class="padding flex flex-direction">
+			<button class="cu-btn bg-green margin-tb-sm lg shadow-blur round" @click="goToExpectPage">招募队友</button>
+		</view>
 
 		<!-- 底部操作 -->
 		<van-action-sheet @cancel="show = false" @close="show = false" @select="onActionSelect" :show="show" :actions="actions"
@@ -62,16 +65,15 @@
 		<view v-if="item.status == '2'">
 			已解散
 		</view>
-		
+
 		<kps-image-cutter @ok="onOk" @cancel="onCancel" :url="url" :fixed="true" :width="160" :height="160"></kps-image-cutter>
 
 	</view>
 </template>
 
 <script>
-	
 	import kpsImageCutter from '@/components/ksp-image-cutter/ksp-image-cutter.vue'
-	
+
 	import {
 		mapGetters
 	} from 'vuex'
@@ -228,7 +230,7 @@
 							}
 						}
 					})
-				} else if(name == '完结组队') {
+				} else if (name == '完结组队') {
 					let self = this
 					uni.showModal({
 						title: '操作确认',
@@ -250,17 +252,27 @@
 					url: 'team-apply-form?teamId=' + this.item.id + '&teamName=' + this.item.name
 				})
 			},
+			goToExpectPage() {
+				uni.navigateTo({
+					url: 'expect-list?cpId=' + this.item.cpId
+				})
+			},
 			// 更换头像
 			onChangeAvatarClick() {
 				let self = this
-				uni.chooseImage({
-					count: 1,
-					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-					sourceType: ['album'], //从相册选择
-					success: function(res) {
-						self.url = res.tempFilePaths[0]
-					}
-				});
+				if (this.isCaptain()) {
+					uni.chooseImage({
+						count: 1,
+						sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+						sourceType: ['album'], //从相册选择
+						success: function(res) {
+							self.url = res.tempFilePaths[0]
+						}
+					});
+				} else {
+					this.msgInfo('只有队长可以换头像哦')
+				}
+
 			},
 			onOk(e) {
 				uploadTeamAvatar(e.path).then(res => {
@@ -349,7 +361,6 @@
 </script>
 
 <style>
-	
 	.info-top-right {
 		position: absolute;
 		right: 20px;
@@ -363,16 +374,15 @@
 		height: 160upx;
 		border-radius: 50%;
 	}
-	
+
 	.icon-btn {
 		margin: 0 !important;
 		padding: 0 !important;
 		line-height: normal;
 	}
-	
+
 	.icon-btn::after {
 		content: '';
 		border: none;
 	}
-		
 </style>
