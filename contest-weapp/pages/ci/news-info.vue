@@ -71,10 +71,13 @@
 				<text v-else>收藏 {{item.collectNum}}</text>
 			</view>
 			<view class="action text-gray" @click="onTeamClick">
-				<view class="cuIcon-friendfill"></view> 队伍
+				<view class="cuIcon-discover"></view> 队伍
 			</view>
-			<view class="action text-gray" @click="onCommentClick">
+			<!-- <view class="action text-gray" @click="onCommentClick">
 				<view class="cuIcon-mark"></view> 评论
+			</view> -->
+			<view class="action text-gray" @click="onExpectClick">
+				<view class="cuIcon-friend"></view> 期望
 			</view>
 		</view>
 	</view>
@@ -190,6 +193,11 @@
 			onTeamClick() {
 				uni.navigateTo({
 					url: './team-list?cpId=' + this.item.cpId
+				})
+			},
+			onExpectClick() {
+				uni.navigateTo({
+					url: './expect-list?cpId=' + this.item.cpId
 				})
 			},
 			// 跳转到评论页面

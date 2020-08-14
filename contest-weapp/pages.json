@@ -379,6 +379,12 @@
 				"navigationBarTitleText":"加入申请"
 			}
 		},
+		{
+			"path":"pages/ci/expect-list",
+			"style": {
+				"navigationBarTitleText":"期望列表"
+			}
+		},
 
 		// 搜索
 		{

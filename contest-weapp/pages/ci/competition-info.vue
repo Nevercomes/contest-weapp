@@ -57,14 +57,18 @@
 				<text v-if="concerned">已关注</text>
 				<text v-else>关注</text>
 			</view>
-			<view class="action text-gray" @click="onCommentClick">
+			<!-- 评论暂时更换为期望tab -->
+			<!-- <view class="action text-gray" @click="onCommentClick">
 				<view class="cuIcon-mark"></view> 评论
+			</view> -->
+			<view class="action text-gray" @click="onExpectClick">
+				<view class="cuIcon-friend"></view> 期望
 			</view>
 			<view class="action text-gray add-action" @click="onPublicClick">
 				<button class="cu-btn cuIcon-add bg-green shadow"></button> 建队
 			</view>
 			<view class="action text-gray" @click="onTeamClick">
-				<view class="cuIcon-friendfill"></view> 队伍
+				<view class="cuIcon-discover"></view> 队伍
 			</view>
 			<view class="action text-gray" @click="onNewsClick">
 				<view class="cuIcon-community"></view> 动态
@@ -180,15 +184,20 @@
 					})
 				}
 			},
-			// 跳转到关于该竞赛的队伍列表页面
 			onPublicClick() {
 				uni.navigateTo({
 					url: './team-public?cpId=' + this.id + "&cpName=" + this.period.name
 				})
 			},
+			// 跳转到关于该竞赛的队伍列表页面
 			onTeamClick() {
 				uni.navigateTo({
 					url: './team-list?cpId=' + this.id
+				})
+			},
+			onExpectClick() {
+				uni.navigateTo({
+					url: './expect-list?cpId=' + this.id
 				})
 			},
 			// 跳转到关于该竞赛的动态页面
