@@ -33,6 +33,12 @@
 </template>
 
 <script>
+	
+	import {
+		updateMsgNotice,
+		updateOnlySchool
+	} from '@/api/system/userSetting.js'
+	
 	export default {
 		name: 'SysSettingIndex',
 		data() {
@@ -69,6 +75,11 @@
 									key: 'onlySchool',
 									data: e.detail.value
 								})
+								updateOnlySchool(self.onlySchool).then(response => {
+									
+								}).catch(() => {
+									
+								})
 							} else if (res.cancel) {
 								self.onlySchool = false
 								self.$forceUpdate()
@@ -80,6 +91,11 @@
 					uni.setStorage({
 						key: 'onlySchool',
 						data: e.detail.value
+					})
+					updateOnlySchool(this.onlySchool).then(res => {
+						
+					}).catch(() => {
+						
 					})
 				}
 			},
@@ -97,6 +113,7 @@
 			},
 			MsgNotice(e) {
 				let self = this
+				const old = this.msgNotice
 				this.msgNotice = e.detail.value
 				if (!e.detail.value) {
 					uni.showModal({
@@ -108,6 +125,11 @@
 								uni.setStorage({
 									key: 'msgNotice',
 									data: e.detail.value
+								})
+								updateMsgNotice(self.msgNotice).then(response => {
+									
+								}).catch(() => {
+									
 								})
 							} else if (res.cancel) {
 								self.msgNotice = true
@@ -121,8 +143,13 @@
 						key: 'msgNotice',
 						data: e.detail.value
 					})
+					updateMsgNotice(self.msgNotice).then(res => {
+						
+					}).catch(() => {
+						
+					})
 				}
-
+				
 			}
 		}
 	}

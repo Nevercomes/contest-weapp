@@ -2,75 +2,26 @@
 <template>
 	<view class="app-container">
 
-		<swiper @animationfinish="swiperChange" class="swiper round-dot" :indicator-dots="indicatorDots" :autoplay="autoplay"
-		 :interval="interval" :duration="duration">
-			<swiper-item item-id="competition">
-				<view class="text-orange text-bold text-xxl text-center padding-tb-xl" style="height: 10vh;">竞赛服务</view>
+		<swiper @animationfinish="swiperChange" class="swiper round-dot" :indicator-dots="indicatorDots"
+		 :autoplay="autoplay" :interval="interval" :duration="duration">
 
-				<view style="position: relative; height: 15vh">
-					<view class="margin-sm basis-sm shadow bg-lightorange welcome_rec" :class="[swiperName=='competition'?'animation-slide-bottom':'hide']"
-					 style="width: 140px; line-height: 4em; border-radius: 50%; position: absolute; bottom: 0; left: 10px;"
-					 :data-class="'slide-bottom'" :style="[{animationDelay: 0.1 + 's'}]">竞赛信息</view>
-
-					<view class="margin-sm basis-sm shadow bg-lightorange  welcome_rec" :class="[swiperName=='competition'?'animation-slide-bottom':'hide']"
-					 style="width: 100px; line-height: 4em; border-radius: 50%; position: absolute; top: 0; right: 15px;" :data-class="'slide-bottom'"
-					 :style="[{animationDelay: 0.1 + 's'}]">热榜推荐</view>
-
+			<swiper-item item-id="competition" class="bgcolor-green">
+				<view class="screen-image">
+					<image :src="imageList[0]" mode="aspectFit"></image>
 				</view>
-
-				<image class="" :style="[{animationDelay: 0.1 + 's'}]" style="width: 100%; height: 45vh" src="../../static/welcome_competition.png"
-				 mode="aspectFit"></image>
-
-				<view style="position: relative; height: 15vh">
-					<view class="margin-sm basis-sm shadow bg-lightorange  welcome_rec" :class="[swiperName=='competition'?'animation-slide-bottom':'hide']"
-					 style="width: 100px; line-height: 3.5em; border-radius: 50%; position: absolute; bottom: 0; left: 15px;"
-					 :data-class="'slide-bottom'" :style="[{animationDelay: 0.1 + 's'}]">一键关注</view>
-
-					<view class="margin-sm basis-sm shadow bg-lightorange welcome_rec" :class="[swiperName=='competition'?'animation-slide-bottom':'hide']"
-					 style="width: 140px; line-height: 4em; border-radius: 50%; position: absolute; top: 0; right: 15px;" :data-class="'slide-bottom'"
-					 :style="[{animationDelay: 0.1 + 's'}]">即刻成队</view>
-
+			</swiper-item>
+			<swiper-item item-id="team" class="bgcolor-yellow">
+				<view class="screen-image">
+					<image :src="imageList[1]" mode="aspectFit"></image>
+				</view>
+			</swiper-item>
+			<swiper-item item-id="community" class="bgcolor-blue">
+				<view class="screen-image">
+					<image :src="imageList[2]" mode="aspectFit"></image>
 				</view>
 			</swiper-item>
 
-			<swiper-item item-id="team">
-				<view class="text-orange text-bold text-xxl text-center padding-tb-xl" style="height: 10vh;">组队服务</view>
-
-				<image class="margin-top" :style="[{animationDelay: 0.1 + 's'}]" style="width: 100%; height: 45vh" src="../../static/welcome_team.png"
-				 mode="aspectFit"></image>
-
-				<view style="position: relative; height: 30vh">
-					<view class="margin-sm basis-sm shadow bg-lightorange welcome_rec round" :class="[swiperName=='team'?'animation-slide-bottom':'hide']"
-					 style="width: 120px; line-height: 4em; position: absolute; left: 10px; top: 2em;" :data-class="'slide-bottom'"
-					 :style="[{animationDelay: 0.1 + 's'}]">自主建队</view>
-
-					<view class="margin-sm basis-sm shadow bg-lightorange welcome_rec round" :class="[swiperName=='team'?'animation-slide-bottom':'hide']"
-					 style="width: 120px; line-height: 4em; position: absolute; right: 15px;" :data-class="'slide-bottom'" :style="[{animationDelay: 0.1 + 's'}]">招募队友</view>
-
-					<view class="margin-sm basis-sm shadow bg-lightorange welcome_rec round" :class="[swiperName=='team'?'animation-slide-bottom':'hide']"
-					 style="width: 120px; line-height: 4em; position: absolute; bottom: 0; left: 125px;" :data-class="'slide-bottom'"
-					 :style="[{animationDelay: 0.1 + 's'}]">灵活加入</view>
-
-				</view>
-			</swiper-item>
-			<swiper-item item-id="communication">
-				<view class="text-orange text-bold text-xxl text-center padding-tb-xl" style="height: 10vh;">经验交流</view>
-
-				<image class="margin-top" :style="[{animationDelay: 0.1 + 's'}]" style="width: 100%; height: 45vh" src="../../static/welcome_communication.png"
-				 mode="aspectFit"></image>
-
-				<view class="flex align-center justify-around padding-lr" style="position: relative; height: 30vh">
-
-					<view class="margin-sm basis-sm shadow bg-lightorange welcome_rec round" :class="[swiperName=='communication'?'animation-slide-bottom':'hide']"
-					 style="width: 120px; line-height: 4em;" :data-class="'slide-bottom'" :style="[{animationDelay: 0.1 + 's'}]">获取经验</view>
-
-					<view class="margin-sm basis-sm shadow bg-lightorange welcome_rec round" :class="[swiperName=='communication'?'animation-slide-bottom':'hide']"
-					 style="width: 120px; line-height: 4em;" :data-class="'slide-bottom'" :style="[{animationDelay: 0.1 + 's'}]">私信交流</view>
-
-				</view>
-			</swiper-item>
-
-			<swiper-item item-id="rowing" style="background-color: #FFF;">
+			<swiper-item item-id="rowing" class="bgcolor-white" style="background-color: #FFF; margin-top: 60px;">
 				<view class="text-orange text-bold text-center padding-tb" style="font-size: 64upx;">赛 舟</view>
 
 				<view class="rowing-remark text-center text-lg padding-tb-xs margin-lr-xl magrin-tb">
@@ -81,9 +32,7 @@
 				 mode="aspectFit"></image>
 
 				<view style="position: relative; height: 30vh">
-					<view class="padding-xl flex flex-direction" 
-					:style="[{animationDelay: 0.1 + 's'}]"
-					:class="[swiperName=='rowing'?'animation-fade':'hide']">
+					<view class="padding-xl flex flex-direction" :style="[{animationDelay: 0.1 + 's'}]" :class="[swiperName=='rowing'?'animation-fade':'hide']">
 						<button class="cu-btn bg-orange margin-tb-sm lg shadow-blur round" @click="haveFun()">开启竞赛之旅</button>
 					</view>
 				</view>
@@ -93,9 +42,6 @@
 
 	</view>
 
-	<!-- <view class="padding flex flex-direction">
-			<button class="cu-btn bg-green margin-tb-sm lg shadow-blur round" open-type="getUserInfo" @getuserinfo="getUserInfo">开启使用</button>
-		</view> -->
 	</view>
 </template>
 
@@ -151,7 +97,20 @@
 				indicatorDots: true,
 				autoplay: false,
 				interval: 2000,
-				duration: 500
+				duration: 500,
+				// 新的欢迎页面
+				imageList: [
+					'https://dream-road-oss.oss-cn-hangzhou.aliyuncs.com/1_welcome_competition.png',
+					'https://dream-road-oss.oss-cn-hangzhou.aliyuncs.com/2_welcome_team.png',
+					'https://dream-road-oss.oss-cn-hangzhou.aliyuncs.com/3_welcome_community.png'
+				],
+				bgColor: 'bgcolor-green',
+				swiperBgColorMap: {
+					'competition': 'bgcolor-green',
+					'team': 'bgcolor-yellow',
+					'community': 'bgcolor-blue',
+					'rowing': 'bgcolor-white'
+				}
 			}
 		},
 		onLoad(options) {
@@ -160,33 +119,8 @@
 				tabUrl: '/pages/ci/home-index'
 			})
 		},
-		
+
 		methods: {
-			getUserInfo() {
-				let self = this
-				uni.getUserInfo({
-					success(res) {
-						const userInfo = res.userInfo
-						updateUserProfile({
-							nickName: userInfo.nickName,
-							avatar: userInfo.avatarUrl
-						})
-					},
-					complete() {
-						// 截取问号前的url
-						let uri = self.url.split('?')[0]
-						if (self.tabUrl.indexOf(uri) != -1) {
-							uni.switchTab({
-								url: self.url
-							})
-						} else {
-							uni.redirectTo({
-								url: self.url
-							})
-						}
-					}
-				})
-			},
 			haveFun() {
 				let self = this
 				let uri = self.url.split('?')[0]
@@ -215,6 +149,8 @@
 			},
 			swiperChange(e) {
 				this.swiperName = e.target.currentItemId
+				this.bgColor = this.swiperBgColorMap[this.swiperName]
+
 			}
 		}
 	}
@@ -224,11 +160,32 @@
 	@import "../../colorui/animation.css";
 
 	page {
-		background-color: #FFF9F4;
+		/* background-color: #FFF9F4; */
+		background-color: white;
+	}
+
+	.bgcolor-green {
+		background-color: rgb(27, 133, 97);
+	}
+
+	.bgcolor-yellow {
+		background-color: rgb(229, 200, 47);
+	}
+
+	.bgcolor-blue {
+		background-color: rgb(115, 182, 230);
+	}
+
+	.bgcolor-white {
+		background-color: #FFFFFF;
 	}
 
 	.swiper {
-		height: 95vh;
+		height: 100vh;
+	}
+	
+	.hide {
+		display: none;
 	}
 
 	.welcome_rec {
@@ -248,9 +205,14 @@
 		border-top: 1px solid #FFD7B3;
 		border-bottom: 1px solid #FFD7B3;
 	}
-	
-	.hide {
-		display: none;
+
+	.screen-image {
+		display: flex;
+		align-items: center;
 	}
-	
+
+	.screen-image image {
+		width: 100vw;
+		height: 100vh;
+	}
 </style>

@@ -79,6 +79,11 @@ public class BaseEntity implements Serializable {
      */
     private Map<String, Object> params;
 
+    /**
+     * 校内浏览模式
+     */
+    private boolean onlySchool;
+
     public Map<String, Object> getParams() {
         if (params == null) {
             params = new HashMap<>();
@@ -104,5 +109,12 @@ public class BaseEntity implements Serializable {
     public void preUpdate() {
         this.setUpdateBy(SecurityUtils.getUsername());
         this.setUpdateTime(new Date());
+    }
+
+    /**
+     * 获取校内浏览模式的设置
+     */
+    public boolean getOnlySchool() {
+        return this.onlySchool;
     }
 }

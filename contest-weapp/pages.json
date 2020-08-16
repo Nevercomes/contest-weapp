@@ -8,7 +8,9 @@
 		},
 		{
 			"path": "pages/ci/a_welcome",
-			"style": {}
+			"style": {
+				"navigationStyle":"custom"
+			}
 		},
 		
 		

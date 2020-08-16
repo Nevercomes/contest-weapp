@@ -179,7 +179,7 @@
 				this.postList = []
 				this.loadPostList()
 			} else if (this.tabActive == 1) {
-				this.timelineList.pageNum = 1
+				this.timelineQueryParams.pageNum = 1
 				this.timelineList = []
 				this.loadTimelineList()
 			} else if (this.tabActive == 2) {
@@ -200,7 +200,7 @@
 				}
 			} else if (this.tabActive == 1) {
 				if (this.hasMoreData.timeline) {
-					this.timelineList.pageNum = this.postQueryParams.pageNum + 1
+					this.timelineQueryParams.pageNum = this.timelineQueryParams.pageNum + 1
 					this.loadTimelineList()
 				}
 			} else if (this.tabActive == 2) {

@@ -78,11 +78,6 @@ http.interceptor.response((res) => {
 			// 调用处进入catch
 			return Promise.reject(res.data)
 		} else if (code != 200) {
-			// toast显示错误信息
-			// uni.showToast({
-			// 	title: res.data.msg,
-			// 	icon: 'none'
-			// })
 			console.error(res)
 			return Promise.reject(res.data)
 		} else {
